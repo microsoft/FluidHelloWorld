@@ -1,14 +1,41 @@
+# @fluid-example/app-integration-external-views
 
-# Contributing
+**Dice Roller** is a basic example that has a die and a button. Clicking the button re-rolls the die and persists the value in the root SharedDirectory. The Fluid Container is defined in container/, the Data Object is defined in dataObject/.
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+This implementation demonstrates plugging that Container into a standalone application, rather than using the webpack-fluid-loader environment that most of our packages use.  This implementation relies on [Tinylicious](/server/tinylicious), so there are a few extra steps to get started.  We bring our own view that we will bind to the data in the container.
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+## Getting Started
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+If you want to run this container follow the following steps:
+
+### Start Tinylicious
+
+Go to [/server/tinylicious](/server/tinylicious) and follow the instructions there to start the Tinylicious server.
+
+### Start the app server
+
+1. Run `npm install` and `npm run build:fast` from the `FluidFramework` root directory
+2. Navigate to this directory
+3. Run `npm run start`
+
+## Testing
+
+```bash
+    npm run test:jest
+```
+
+For in browser testing update `./jest-puppeteer.config.js` to:
+
+```javascript
+  launch: {
+    dumpio: true, // output browser console to cmd line
+    slowMo: 500,
+    headless: false,
+  },
+```
+
+## Data model
+
+Dice Roller uses the following distributed data structures:
+
+- SharedDirectory - root
