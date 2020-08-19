@@ -51,6 +51,6 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/*junit-report.xml'
-    searchFolder: /nyc
+    searchFolder: nyc
     mergeTestResults: true
   condition: succeededOrFailed()
