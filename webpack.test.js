@@ -13,7 +13,7 @@ module.exports = env => {
             app: "./tests/index.ts"
         },
         resolve: {
-            extensions: [".ts", ".tsx", ".js"],
+            extensions: [".ts", ".js"],
         },
         module: {
             rules: [{
@@ -31,7 +31,7 @@ module.exports = env => {
             library: "[name]",
             // https://github.com/webpack/webpack/issues/5767
             // https://github.com/webpack/webpack/issues/7939
-            devtoolNamespace: "fluid-example/draft-js",
+            devtoolNamespace: "fluid-example/hello-world",
             libraryTarget: "umd"
         },
         devServer: {
