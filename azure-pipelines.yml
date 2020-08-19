@@ -9,8 +9,7 @@ pr:
 variables:
   skipComponentGovernanceDetection: true
 
-pool:
-  vmImage: 'Lite'
+pool: 'Lite'
 
 steps:
 - task: ComponentGovernanceComponentDetection@0
