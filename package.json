@@ -6,7 +6,6 @@
   "license": "MIT",
   "author": "Microsoft",
   "main": "dist/index.js",
-  "module": "lib/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "npm run webpack && npm run tsc",
@@ -22,6 +21,7 @@
     "@fluidframework/get-tinylicious-container": "0.25.1-833"
   },
   "devDependencies": {
+    "@fluidframework/eslint-config-fluid": "^0.18.0",
     "@fluidframework/get-session-storage-container": "0.25.1-833",
     "@types/expect-puppeteer": "2.2.1",
     "@types/jest": "22.2.3",
