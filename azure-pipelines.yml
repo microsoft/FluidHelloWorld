@@ -33,7 +33,6 @@ steps:
   displayName: Install
   inputs:
     command: 'custom'
-    workingDir: '${{ parameter.Value }}'
     customCommand: 'install'
 
 - task: Npm@1
