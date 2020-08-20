@@ -54,16 +54,6 @@
     "webpack-dev-server": "^3.8.0",
     "webpack-merge": "^4.1.4"
   },
-  "fluid": {
-    "browser": {
-      "umd": {
-        "files": [
-          "main.bundle.js"
-        ],
-        "library": "main"
-      }
-    }
-  },
   "jest-junit": {
     "outputDirectory": "nyc",
     "outputName": "jest-junit-report.xml"
