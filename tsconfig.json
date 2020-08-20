@@ -2,7 +2,7 @@
     "exclude": [
         "dist",
         "node_modules",
-        "tests/*.test.ts"
+        "test/*.test.ts"
     ],
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
