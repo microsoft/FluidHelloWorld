@@ -10,7 +10,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = env => {
     return ({
         entry: {
-            app: "./tests/index.ts"
+            app: "./test/index.ts"
         },
         resolve: {
             extensions: [".ts", ".js"],
@@ -34,12 +34,9 @@ module.exports = env => {
             devtoolNamespace: "fluid-example/hello-world",
             libraryTarget: "umd"
         },
-        devServer: {
-            contentBase: path.join(__dirname, 'tests')
-        },
         plugins: [
             new HtmlWebpackPlugin({
-                template: "./tests/index.html",
+                template: "./test/index.html",
             }),
         ],
         mode: "development",

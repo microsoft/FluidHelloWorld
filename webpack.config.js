@@ -1,6 +1,7 @@
 const path = require("path");
 const merge = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = () => {
     return ({
@@ -17,15 +18,11 @@ module.exports = () => {
             }]
         },
         output: {
-            filename: "[name].bundle.js",
+            filename: "[name].[contenthash].js",
             path: path.resolve(__dirname, "dist"),
-            library: "[name]",
-            // https://github.com/webpack/webpack/issues/5767
-            // https://github.com/webpack/webpack/issues/7939
-            devtoolNamespace: "@fluid-example/hello-world",
-            libraryTarget: "umd"
         },
         plugins: [
+            new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 template: "./src/index.html",
             }),

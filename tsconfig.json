@@ -2,7 +2,7 @@
     "exclude": [
         "dist",
         "node_modules",
-        "tests/*.test.ts"
+        "test/*.test.ts"
     ],
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
@@ -11,7 +11,7 @@
         "noUnusedLocals": true,
         "module": "esnext",
         "moduleResolution": "node",
-        "outDir": "dist",
+        "outDir": "built",
         "sourceMap": true,
         "inlineSources": true,
         "strict": true,

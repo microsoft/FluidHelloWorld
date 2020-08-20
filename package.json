@@ -5,16 +5,12 @@
   "repository": "microsoft/FluidHelloWorld",
   "license": "MIT",
   "author": "Microsoft",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm run webpack && npm run tsc",
+    "build": "webpack",
     "start": "webpack-dev-server",
     "start:server": "tinylicious",
     "start:test": "webpack-dev-server --config webpack.test.js",
-    "test": "jest",
-    "tsc": "tsc",
-    "webpack": "webpack"
+    "test": "jest"
   },
   "dependencies": {
     "@fluidframework/aqueduct": "0.25.1-833",
@@ -53,16 +49,6 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.8.0",
     "webpack-merge": "^4.1.4"
-  },
-  "fluid": {
-    "browser": {
-      "umd": {
-        "files": [
-          "main.bundle.js"
-        ],
-        "library": "main"
-      }
-    }
   },
   "jest-junit": {
     "outputDirectory": "nyc",

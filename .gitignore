@@ -1,6 +1,6 @@
+built
 dist
 node_modules
-lib
 nyc
 *.log
 **/*.tsbuildinfo
