@@ -11,7 +11,7 @@
         "noUnusedLocals": true,
         "module": "esnext",
         "moduleResolution": "node",
-        "outDir": "dist",
+        "outDir": "built",
         "sourceMap": true,
         "inlineSources": true,
         "strict": true,
