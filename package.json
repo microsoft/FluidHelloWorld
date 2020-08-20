@@ -6,8 +6,8 @@
   "license": "MIT",
   "author": "Microsoft",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server",
+    "build": "webpack --config webpack.prod.js",
+    "start": "webpack-dev-server --config webpack.dev.js",
     "start:server": "tinylicious",
     "start:test": "webpack-dev-server --config webpack.test.js",
     "test": "jest"

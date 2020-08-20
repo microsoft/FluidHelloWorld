@@ -10,13 +10,13 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = merge(common, {
     entry: {
-        app: "./test/index.ts"
+        app: "./src/app.ts"
     },
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: "./test/index.html",
+            template: "./src/index.html",
         }),
     ],
-    mode: "development",
+    mode: "production",
 });
