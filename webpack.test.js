@@ -6,8 +6,9 @@
 const path = require("path");
 const merge = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-module.exports = env => {
+module.exports = (env) => {
     return ({
         entry: {
             app: "./test/index.ts"
@@ -19,22 +20,14 @@ module.exports = env => {
             rules: [{
                 test: /\.tsx?$/,
                 loader: "ts-loader"
-            },
-            {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
             }]
         },
         output: {
-            filename: "[name].bundle.js",
+            filename: "[name].[contenthash].js",
             path: path.resolve(__dirname, "dist"),
-            library: "[name]",
-            // https://github.com/webpack/webpack/issues/5767
-            // https://github.com/webpack/webpack/issues/7939
-            devtoolNamespace: "fluid-example/hello-world",
-            libraryTarget: "umd"
         },
         plugins: [
+            new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 template: "./test/index.html",
             }),

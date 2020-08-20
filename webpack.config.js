@@ -1,9 +1,14 @@
+/*!
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+
 const path = require("path");
 const merge = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-module.exports = () => {
+module.exports = (env) => {
     return ({
         entry: {
             app: "./src/app.ts"
@@ -13,7 +18,7 @@ module.exports = () => {
         },
         module: {
             rules: [{
-                test: /\.ts?$/,
+                test: /\.tsx?$/,
                 loader: "ts-loader"
             }]
         },
