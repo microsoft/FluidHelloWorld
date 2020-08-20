@@ -3,8 +3,6 @@
  * Licensed under the MIT License.
  */
 
-const path = require("path");
-
 module.exports = {
     resolve: {
         extensions: [".ts", ".js"],
@@ -17,7 +15,6 @@ module.exports = {
     },
     output: {
         filename: "[name].[contenthash].js",
-        path: path.resolve(__dirname, "dist"),
     },
     devtool: "inline-source-map",
 };
