@@ -9,11 +9,11 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
     entry: {
-        app: "./test/index.ts"
+        app: "./src/app.ts"
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./test/index.html",
+            template: "./src/index.html",
         }),
     ],
     mode: "development",
