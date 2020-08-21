@@ -1,37 +1,26 @@
 # @fluid-example/hello-world
 
-**Dice Roller** is a basic example that has a die and a button. Clicking the button re-rolls the die and persists the value in the root SharedDirectory. The Fluid Container is defined in container/, the Data Object is defined in dataObject/.
-
-This implementation demonstrates plugging that Container into a standalone application, rather than using the webpack-fluid-loader environment that most of our packages use.  This implementation relies on [Tinylicious](/server/tinylicious), so there are a few extra steps to get started.  We bring our own view that we will bind to the data in the container.
+This repository contains a simple app that enables all connected clients to roll a dice and view the result.
+For a walkthrough of this example and how it works, check out the [tutorial documentation](TBD).
 
 ## Getting Started
 
-If you want to run this container follow the following steps:
+After cloning the repository, install dependencies with:
 
 ```bash
-    npm i
-    npm run start:server
-    npm start
+npm i
 ```
 
-## Testing
+Clients collaborating on Fluid connect to a service that orchestrates the collaboration.  This example uses a locally-running test service, which can be started with:
 
 ```bash
-    npm run test
+npm run start:server
 ```
 
-For in browser testing update `./jest-puppeteer.config.js` to:
+The client code is hosted on a separate server.  With the test service running, open a separate terminal to start the test server for the client code with:
 
-```javascript
-  launch: {
-    dumpio: true, // output browser console to cmd line
-    slowMo: 500,
-    headless: false,
-  },
+```bash
+npm start
 ```
 
-## Data model
-
-Dice Roller uses the following distributed data structures:
-
-- SharedDirectory - root
+Once both servers are running, navigate to http://localhost:8080 to try out the example.  This will generate an id in the URL hash (e.g. http://localhost:8080/#1596520748752) which you can then open in a separate tab to observe changes propagating between clients.

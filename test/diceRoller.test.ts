@@ -14,6 +14,7 @@ describe("diceRoller", () => {
 
     beforeEach(async () => {
         await page.goto(globals.PATH, { waitUntil: "load" });
+        // We'll set a flag on the window to signal when the async load of the data object is done.
         await page.waitFor(() => (window as unknown as { fluidStarted: boolean }).fluidStarted);
     });
 
