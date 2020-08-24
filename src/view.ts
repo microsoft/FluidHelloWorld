@@ -30,12 +30,11 @@ export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement, d
     // Get the current value of the shared data to update the view whenever it changes.
     const updateDiceChar = () => {
         // Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-        const diceChar = String.fromCodePoint(0x267F + diceRoller.value);
         diceCharDiv.textContent = String.fromCodePoint(0x267F + diceRoller.value);
         diceCharDiv.style.color = `hsl(${diceRoller.value * 60}, 70%, 50%)`;
 
         // Set the Tab Title to the dice char because it's cool!
-        document.title = `${diceChar} - ${documentId}`;
+        document.title = `${diceCharDiv.textContent} - ${documentId}`;
     };
     updateDiceChar();
 
