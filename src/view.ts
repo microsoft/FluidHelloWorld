@@ -9,8 +9,9 @@ import { IDiceRoller } from "./dataObject";
  * Render an IDiceRoller into a given div as a text character, with a button to roll it.
  * @param diceRoller - The Data Object to be rendered
  * @param div - The div to render into
+ * @param documentId - Id of the current document
  */
-export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement) {
+export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement, documentId: string) {
     const wrapperDiv = document.createElement("div");
     wrapperDiv.style.textAlign = "center";
     div.append(wrapperDiv);
@@ -29,8 +30,12 @@ export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement) {
     // Get the current value of the shared data to update the view whenever it changes.
     const updateDiceChar = () => {
         // Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
+        const diceChar = String.fromCodePoint(0x267F + diceRoller.value);
         diceCharDiv.textContent = String.fromCodePoint(0x267F + diceRoller.value);
         diceCharDiv.style.color = `hsl(${diceRoller.value * 60}, 70%, 50%)`;
+
+        // Set the Tab Title to the dice char because it's cool!
+        document.title = `${diceChar} - ${documentId}`;
     };
     updateDiceChar();
 
