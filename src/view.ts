@@ -9,7 +9,6 @@ import { IDiceRoller } from "./dataObject";
  * Render an IDiceRoller into a given div as a text character, with a button to roll it.
  * @param diceRoller - The Data Object to be rendered
  * @param div - The div to render into
- * @param documentId - Id of the current document
  */
 export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement) {
     const wrapperDiv = document.createElement("div");
