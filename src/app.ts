@@ -22,7 +22,7 @@ if (location.hash.length === 0) {
     location.hash = Date.now().toString();
 }
 const documentId = location.hash.substring(1);
-document.title = `⚀ - ${documentId}`;
+document.title = documentId;
 
 async function start(): Promise<void> {
     // The getTinyliciousContainer helper function facilitates loading our container code into a Container and
@@ -48,7 +48,7 @@ async function start(): Promise<void> {
 
     // Given an IDiceRoller, we can render the value and provide controls for users to roll it.
     const div = document.getElementById("content") as HTMLDivElement;
-    renderDiceRoller(diceRoller, div, documentId);
+    renderDiceRoller(diceRoller, div);
 }
 
 start().catch((error) => console.error(error));

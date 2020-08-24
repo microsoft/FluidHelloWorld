@@ -11,7 +11,7 @@ import { IDiceRoller } from "./dataObject";
  * @param div - The div to render into
  * @param documentId - Id of the current document
  */
-export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement, documentId: string) {
+export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement) {
     const wrapperDiv = document.createElement("div");
     wrapperDiv.style.textAlign = "center";
     div.append(wrapperDiv);
@@ -32,9 +32,6 @@ export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement, d
         // Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
         diceCharDiv.textContent = String.fromCodePoint(0x267F + diceRoller.value);
         diceCharDiv.style.color = `hsl(${diceRoller.value * 60}, 70%, 50%)`;
-
-        // Set the Tab Title to the dice char because it's cool!
-        document.title = `${diceCharDiv.textContent} - ${documentId}`;
     };
     updateDiceChar();
 
