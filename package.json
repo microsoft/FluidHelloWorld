@@ -6,11 +6,11 @@
   "license": "MIT",
   "author": "Microsoft",
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
+    "build": "webpack --env.prod",
     "start": "concurrently \"npm:start:server\" \"npm:start:client\"",
-    "start:client": "webpack-dev-server --config webpack.dev.js --open",
+    "start:client": "webpack-dev-server --open",
     "start:server": "tinylicious",
-    "start:test": "webpack-dev-server --config webpack.test.js",
+    "start:test": "webpack-dev-server --env.test",
     "test": "jest"
   },
   "dependencies": {
