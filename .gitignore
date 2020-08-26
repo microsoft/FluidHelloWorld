@@ -1,6 +1,4 @@
-built
 dist
 node_modules
-nyc
 *.log
 **/*.tsbuildinfo

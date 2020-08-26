@@ -9,12 +9,6 @@
         "sourceMap": true,
         "inlineSources": true,
         "strict": true,
-        "types": [
-            "jest",
-            "puppeteer",
-            "jest-environment-puppeteer",
-            "expect-puppeteer"
-        ]
     },
     "include": [
         "src/**/*"

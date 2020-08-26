@@ -7,14 +7,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = env => {
-    const appEntry = env && env.test
-        ? "./test/app.ts"
-        : "./src/app.ts";
-
-    const htmlTemplate = env && env.test
-        ? "./test/index.html"
-        : "./src/index.html";
-    
+    const htmlTemplate = "./src/index.html";
     const plugins = env && env.prod
         ? [new CleanWebpackPlugin(), new HtmlWebpackPlugin({ template: htmlTemplate })]
         : [new HtmlWebpackPlugin({ template: htmlTemplate })];
@@ -26,7 +19,7 @@ module.exports = env => {
     return {
         devtool: "inline-source-map",
         entry: {
-            app: appEntry,
+            app: "./src/app.ts",
         },
         mode,
         module: {
