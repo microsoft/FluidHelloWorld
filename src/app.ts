@@ -49,6 +49,11 @@ async function start(): Promise<void> {
     // Given an IDiceRoller, we can render the value and provide controls for users to roll it.
     const div = document.getElementById("content") as HTMLDivElement;
     renderDiceRoller(diceRoller, div);
+
+    // Reload the page on any further hash changes, e.g. in case you want to paste in a different document ID.
+    window.addEventListener("hashchange", () => {
+        location.reload();
+    });
 }
 
 start().catch((error) => console.error(error));
