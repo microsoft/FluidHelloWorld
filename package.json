@@ -16,18 +16,8 @@
     "@fluidframework/get-tinylicious-container": "0.25.1-833"
   },
   "devDependencies": {
-    "@fluidframework/eslint-config-fluid": "^0.18.0",
-    "@typescript-eslint/eslint-plugin": "~2.17.0",
-    "@typescript-eslint/parser": "~2.17.0",
     "clean-webpack-plugin": "^3.0.0",
     "concurrently": "^5.3.0",
-    "eslint": "~6.8.0",
-    "eslint-plugin-eslint-comments": "~3.1.2",
-    "eslint-plugin-import": "2.20.0",
-    "eslint-plugin-no-null": "~1.0.2",
-    "eslint-plugin-optimize-regex": "~1.1.7",
-    "eslint-plugin-prefer-arrow": "~1.1.7",
-    "eslint-plugin-unicorn": "~15.0.1",
     "html-webpack-plugin": "^4.3.0",
     "tinylicious": "0.2.204",
     "ts-loader": "^6.1.2",
