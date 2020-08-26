@@ -39,18 +39,3 @@ steps:
   inputs:
     command: 'custom'
     customCommand: 'run build'
-
-- task: Npm@1
-  displayName: Test
-  inputs:
-    command: 'custom'
-    customCommand: 'run test -- --reporters=default --reporters=jest-junit'
-
-- task: PublishTestResults@2
-  displayName: Publish Test Results
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '**/*junit-report.xml'
-    searchFolder: nyc
-    mergeTestResults: true
-  condition: succeededOrFailed()
