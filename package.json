@@ -6,14 +6,15 @@
   "license": "MIT",
   "author": "Microsoft",
   "scripts": {
-    "build": "webpack --env.prod",
+    "build": "webpack --env.prod --env.clean",
+    "build:dev": "webpack --env.clean",
     "start": "concurrently \"npm:start:server\" \"npm:start:client\"",
     "start:client": "webpack-dev-server --open",
     "start:server": "tinylicious"
   },
   "dependencies": {
-    "@fluidframework/aqueduct": "0.25.1-833",
-    "@fluidframework/get-tinylicious-container": "0.25.1-833"
+    "@fluidframework/aqueduct": "0.25.1-1641",
+    "@fluidframework/get-tinylicious-container": "0.25.1-1641"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",
