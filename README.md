@@ -17,7 +17,7 @@ You can then run the example with:
 npm start
 ```
 
-This will open a browser window to the example.  You can navigate to the same url in a second window to see changes propagating between clients.
+This will open a browser window to the example.  You can navigate to the same URL in a second window to see changes propagating between clients.
 
 To webpack the bundle and output the result in `./dist`, you can run:
 

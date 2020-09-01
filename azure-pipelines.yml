@@ -23,11 +23,6 @@ steps:
     version: 12.x
 
 # This step will be removed after the packages are on npmjs
-- task: npmAuthenticate@0
-  displayName: Auth
-  inputs:
-    workingFile: '.npmrc'
-    customEndpoint: 'Offnet Packages'
 - task: Npm@1
   displayName: Install
   inputs:
