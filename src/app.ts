@@ -33,14 +33,13 @@ async function start(): Promise<void> {
     const container = await getTinyliciousContainer(documentId, DiceRollerContainerRuntimeFactory, createNew);
 
     // Since we're using a ContainerRuntimeFactoryWithDefaultDataStore, our dice roller is available at the URL "/".
-    const url = "/";
-    const response = await container.request({ url });
+    const response = await container.request({ url: "/" });
 
     // Verify the response to make sure we got what we expected.
     if (response.status !== 200 || response.mimeType !== "fluid/object") {
-        throw new Error(`Unable to retrieve data object at URL: "${url}"`);
+        throw new Error("Unable to retrieve data object");
     } else if (response.value === undefined) {
-        throw new Error(`Empty response from URL: "${url}"`);
+        throw new Error("Empty response");
     }
 
     // In this app, we know our container code provides a default data object that is an IDiceRoller.
