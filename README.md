@@ -8,7 +8,7 @@ For a walkthrough of this example and how it works, check out the [tutorial docu
 After cloning the repository, install dependencies with:
 
 ```bash
-npm i
+npm install
 ```
 
 You can then run the example with:
