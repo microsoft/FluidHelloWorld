@@ -3,6 +3,7 @@
  * Licensed under the MIT License.
  */
 
+import { getDefaultObjectFromContainer } from "@fluidframework/aqueduct";
 import { getTinyliciousContainer } from "@fluidframework/get-tinylicious-container";
 
 import { DiceRollerContainerRuntimeFactory } from "./containerCode";
@@ -32,18 +33,8 @@ async function start(): Promise<void> {
     // flag to specify whether we're creating a new document or loading an existing one.
     const container = await getTinyliciousContainer(documentId, DiceRollerContainerRuntimeFactory, createNew);
 
-    // Since we're using a ContainerRuntimeFactoryWithDefaultDataStore, our dice roller is available at the URL "/".
-    const response = await container.request({ url: "/" });
-
-    // Verify the response to make sure we got what we expected.
-    if (response.status !== 200 || response.mimeType !== "fluid/object") {
-        throw new Error("Unable to retrieve data object");
-    } else if (response.value === undefined) {
-        throw new Error("Empty response");
-    }
-
     // In this app, we know our container code provides a default data object that is an IDiceRoller.
-    const diceRoller: IDiceRoller = response.value;
+    const diceRoller: IDiceRoller = await getDefaultObjectFromContainer<IDiceRoller>(container);
 
     // Given an IDiceRoller, we can render the value and provide controls for users to roll it.
     const div = document.getElementById("content") as HTMLDivElement;
