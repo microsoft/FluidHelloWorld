@@ -6,9 +6,6 @@
 pr:
 - main
 
-variables:
-  skipComponentGovernanceDetection: true
-
 pool: 'Lite'
 
 steps:
@@ -21,14 +18,11 @@ steps:
   displayName: Use Node 12.x
   inputs: 
     version: 12.x
-
-# This step will be removed after the packages are on npmjs
 - task: Npm@1
   displayName: Install
   inputs:
     command: 'custom'
     customCommand: 'install'
-
 - task: Npm@1
   displayName: Build
   inputs:
