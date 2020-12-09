@@ -35,6 +35,8 @@ module.exports = env => {
         resolve: {
             extensions: [".ts", ".js"],
         },
-        
+        devServer: {
+            open: true
+        }
     };
 };
