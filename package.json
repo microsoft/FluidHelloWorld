@@ -6,7 +6,7 @@
   "license": "MIT",
   "author": "Microsoft",
   "scripts": {
-    "build": "webpack --env.prod --env.clean",
+    "build": "webpack --env prod --env clean",
     "build:dev": "webpack --env.clean",
     "start": "concurrently \"npm:start:server\" \"npm:start:client\"",
     "start:client": "webpack serve",
