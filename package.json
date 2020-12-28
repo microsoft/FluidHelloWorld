@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@fluidframework/aqueduct": "^0.30.1",
-    "@fluidframework/get-tinylicious-container": "^0.30.1",
+    "@fluidframework/get-tinylicious-container": "^0.31.1",
     "@fluidframework/map": "^0.30.1"
   },
   "devDependencies": {
