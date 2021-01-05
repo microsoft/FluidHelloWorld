@@ -4,14 +4,14 @@
  */
 
 import { createApp } from 'vue';
-import { IKeyValueDataObject } from './kvpair-dataobject';
+import { IKeyValueDataObject } from '../kvpair-dataobject';
 
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.
  * @param dataObject - The Data Object to be rendered
  * @param div - The HTMLElement to render into
  */
-export function renderDiceRoller(dataObject: IKeyValueDataObject, div: HTMLDivElement) {
+export function vueRenderView(dataObject: IKeyValueDataObject, div: HTMLDivElement) {
     const app = createApp({
         template: `
         <div style="text-align: center" >

@@ -6,7 +6,7 @@
 import { getTinyliciousContainer } from '@fluidframework/get-tinylicious-container';
 
 import { IKeyValueDataObject, ContainerRuntimeFactory } from './kvpair-dataobject';
-import { renderDiceRoller } from './jsView';
+import { jsRenderView as renderView } from './view';
 
 let createNew = false;
 if (location.hash.length === 0) {
@@ -20,27 +20,7 @@ document.title = documentId;
 getTinyliciousContainer(documentId, ContainerRuntimeFactory, createNew).then((container) => {
     container.request({ url: '/' }).then((response) => {
         if (response.status === 200) {
-            renderDiceRoller(
-                response.value as IKeyValueDataObject,
-                document.getElementById('content') as HTMLDivElement
-            );
-        } else {
-            console.log('Error loading');
-        }
-    });
-});
-
-//  Or
-
-const getContainer = getTinyliciousContainer(documentId, ContainerRuntimeFactory, createNew);
-
-getContainer.then((container) => {
-    container.request({ url: '/' }).then((response) => {
-        if (response.status === 200) {
-            renderDiceRoller(
-                response.value as IKeyValueDataObject,
-                document.getElementById('content') as HTMLDivElement
-            );
+            renderView(response.value as IKeyValueDataObject, document.getElementById('content') as HTMLDivElement);
         } else {
             console.log('Error loading');
         }
@@ -69,7 +49,7 @@ async function start(): Promise<void> {
 
     // Given an IDiceRoller, we can render the value and provide controls for users to roll it.
     const div = document.getElementById('content') as HTMLDivElement;
-    renderDiceRoller(keyValueDataObject, div);
+    renderView(keyValueDataObject, div);
 }
 
 start().catch((error) => console.error(error));

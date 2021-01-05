@@ -3,17 +3,20 @@
  * Licensed under the MIT License.
  */
 
-import { IKeyValueDataObject } from './kvpair-dataobject';
+import { IKeyValueDataObject } from '../kvpair-dataobject';
 
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.
  * @param dataObject - The Data Object to be rendered
  * @param div - The HTMLElement to render into
  */
-export function renderDiceRoller(dataObject: IKeyValueDataObject, div: HTMLDivElement) {
+export function jsRenderView(dataObject: IKeyValueDataObject, div: HTMLDivElement) {
     const dataKey = 'dataKey';
     // Set init value for dataKey
-    dataObject.set(dataKey, 1);
+    if (dataObject.get(dataKey) === undefined) {
+        dataObject.set(dataKey, 1);
+    }
+
     const wrapperDiv = document.createElement('div');
     wrapperDiv.style.textAlign = 'center';
     div.append(wrapperDiv);

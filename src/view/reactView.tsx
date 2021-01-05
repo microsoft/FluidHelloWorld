@@ -5,14 +5,14 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { IKeyValueDataObject } from "./kvpair-dataobject";
+import { IKeyValueDataObject } from "../kvpair-dataobject";
 
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.
  * @param dataObject - The Data Object to be rendered
  * @param div - The HTMLElement to render into
  */
-export function renderDiceRoller(dataObject: IKeyValueDataObject, div: HTMLDivElement) {
+export function reactRenderView(dataObject: IKeyValueDataObject, div: HTMLDivElement) {
     ReactDOM.render(<ReactView dataObject={dataObject} />, div);
 }
 
@@ -29,6 +29,9 @@ const ReactView = (props: IReactViewProps) => {
     const syncLocalAndFluidState = () => setDiceValue(dataObject.get("dice"));
 
     React.useEffect(() => {
+        if (dataObject.get("dice")) {
+            syncLocalAndFluidState();
+        }
         dataObject.on("changed", syncLocalAndFluidState);
         return () => {
             dataObject.off("changed", syncLocalAndFluidState);
