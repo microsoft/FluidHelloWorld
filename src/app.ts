@@ -9,7 +9,7 @@ import {
   IKeyValueDataObject,
   ContainerRuntimeFactory,
 } from "./kvpair-dataobject";
-import { renderDiceRoller } from "./reactView";
+import { renderDiceRoller } from "./jsView";
 
 let createNew = false;
 if (location.hash.length === 0) {
