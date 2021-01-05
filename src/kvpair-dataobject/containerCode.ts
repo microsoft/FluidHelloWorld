@@ -3,8 +3,8 @@
  * Licensed under the MIT License.
  */
 
-import { ContainerRuntimeFactoryWithDefaultDataStore } from "@fluidframework/aqueduct";
-import { KeyValueInstantiationFactory } from "./DataObject";
+import { ContainerRuntimeFactoryWithDefaultDataStore } from '@fluidframework/aqueduct';
+import { KeyValueInstantiationFactory } from './DataObject';
 
 /**
  * The ContainerRuntimeFactory is the container code for our scenario.
@@ -13,6 +13,6 @@ import { KeyValueInstantiationFactory } from "./DataObject";
  * Container with a URL of "/", so it can be retrieved via container.request("/").
  */
 export const ContainerRuntimeFactory = new ContainerRuntimeFactoryWithDefaultDataStore(
-  KeyValueInstantiationFactory,
-  new Map([KeyValueInstantiationFactory.registryEntry])
+    KeyValueInstantiationFactory,
+    new Map([KeyValueInstantiationFactory.registryEntry])
 );
