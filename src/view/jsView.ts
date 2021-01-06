@@ -12,10 +12,6 @@ import { IKeyValueDataObject } from '../kvpair-dataobject';
  */
 export function jsRenderView(dataObject: IKeyValueDataObject, div: HTMLDivElement) {
     const dataKey = 'dataKey';
-    // Set init value for dataKey
-    if (dataObject.get(dataKey) === undefined) {
-        dataObject.set(dataKey, 1);
-    }
 
     const wrapperDiv = document.createElement('div');
     wrapperDiv.style.textAlign = 'center';
@@ -34,9 +30,10 @@ export function jsRenderView(dataObject: IKeyValueDataObject, div: HTMLDivElemen
 
     // Get the current value of the shared data to update the view whenever it changes.
     const updateDiceChar = () => {
+        const diceValue = dataObject.get(dataKey) || 1;
         // Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-        diceCharDiv.textContent = String.fromCodePoint(0x267f + (dataObject.get(dataKey) as number));
-        diceCharDiv.style.color = `hsl(${dataObject.get(dataKey) * 60}, 70%, 50%)`;
+        diceCharDiv.textContent = String.fromCodePoint(0x267f + (diceValue as number));
+        diceCharDiv.style.color = `hsl(${diceValue * 60}, 70%, 50%)`;
     };
     updateDiceChar();
 

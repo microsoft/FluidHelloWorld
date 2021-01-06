@@ -17,15 +17,15 @@ const documentId = location.hash.substring(1);
 document.title = documentId;
 
 // Nested promises
-getTinyliciousContainer(documentId, ContainerRuntimeFactory, createNew).then((container) => {
-    container.request({ url: '/' }).then((response) => {
-        if (response.status === 200) {
-            renderView(response.value as IKeyValueDataObject, document.getElementById('content') as HTMLDivElement);
-        } else {
-            console.log('Error loading');
-        }
-    });
-});
+// getTinyliciousContainer(documentId, ContainerRuntimeFactory, createNew).then((container) => {
+//     container.request({ url: '/' }).then((response) => {
+//         if (response.status === 200) {
+//             renderView(response.value as IKeyValueDataObject, document.getElementById('content') as HTMLDivElement);
+//         } else {
+//             console.log('Error loading');
+//         }
+//     });
+// });
 
 // or async await
 
