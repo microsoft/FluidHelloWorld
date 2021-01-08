@@ -14,42 +14,23 @@ if (location.hash.length === 0) {
     location.hash = Date.now().toString();
 }
 const documentId = location.hash.substring(1);
-document.title = documentId;
-
-// Nested promises
-// getTinyliciousContainer(documentId, ContainerRuntimeFactory, createNew).then((container) => {
-//     container.request({ url: '/' }).then((response) => {
-//         if (response.status === 200) {
-//             renderView(response.value as IKeyValueDataObject, document.getElementById('content') as HTMLDivElement);
-//         } else {
-//             console.log('Error loading');
-//         }
-//     });
-// });
-
-// or async await
 
 async function start(): Promise<void> {
     // Get Fluid Container (creates if new url)
     const container = await getTinyliciousContainer(documentId, ContainerRuntimeFactory, createNew);
 
-    // Since we're using a ContainerRuntimeFactoryWithDefaultDataStore, our dice roller is available at the URL "/".
-    const url = '/';
-    const response = await container.request({ url });
+    // The KeyValue DataObject can be requested from the root of the container
+    const response = await container.request({ url: '/' });
 
     // Verify the response to make sure we got what we expected.
-    if (response.status !== 200 || response.mimeType !== 'fluid/object') {
-        throw new Error(`Unable to retrieve data object at URL: "${url}"`);
-    } else if (response.value === undefined) {
-        throw new Error(`Empty response from URL: "${url}"`);
+    if (response.status === 200) {
+        renderView(
+            response.value as IKeyValueDataObject,
+            document.getElementById('content') as HTMLDivElement
+        );
+    } else {
+        throw new Error(`Error Loading`);
     }
-
-    // In this app, we know our container code provides a default data object that is an IDiceRoller.
-    const keyValueDataObject: IKeyValueDataObject = response.value;
-
-    // Given an IDiceRoller, we can render the value and provide controls for users to roll it.
-    const div = document.getElementById('content') as HTMLDivElement;
-    renderView(keyValueDataObject, div);
 }
 
 start().catch((error) => console.error(error));
