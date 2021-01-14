@@ -3,16 +3,33 @@
  * Licensed under the MIT License.
  */
 
-import { ContainerRuntimeFactoryWithDefaultDataStore } from '@fluidframework/aqueduct';
+import { BaseContainerRuntimeFactory } from '@fluidframework/aqueduct';
+import { IContainerRuntime } from '@fluidframework/container-runtime-definitions';
+import { innerRequestHandler, RuntimeRequestHandler } from '@fluidframework/request-handler';
+import { RequestParser } from '@fluidframework/runtime-utils';
 import { KeyValueInstantiationFactory } from './DataObject';
 
 /**
- * The ContainerRuntimeFactory is the container code for our scenario.
- *
- * This container code will create the single default data object on our behalf and make it available on the
- * Container with a URL of "/", so it can be retrieved via container.request("/").
+ * We'll allow root data stores to be created by requesting a url like /create/dropletType/dataStoreId
  */
-export const ContainerRuntimeFactory = new ContainerRuntimeFactoryWithDefaultDataStore(
-    KeyValueInstantiationFactory,
-    new Map([KeyValueInstantiationFactory.registryEntry])
+const createRequestHandler: RuntimeRequestHandler = async (
+    request: RequestParser,
+    runtime: IContainerRuntime
+) => {
+    if (request.pathParts[0] === 'create' && request.pathParts.length === 3) {
+        await runtime.createRootDataStore(request.pathParts[1], request.pathParts[2]);
+        return runtime.request(request.createSubRequest(2));
+    }
+};
+
+/**
+ * The DropletContainerRuntimeFactory is the container code for our scenario.
+ *
+ * By including the createRequestHandler, we can create any droplet types we include in the registry on-demand.
+ * These can then be retrieved via container.request("/dataObjectId").
+ */
+export const KeyValueContainerRuntimeFactory = new BaseContainerRuntimeFactory(
+    [KeyValueInstantiationFactory.registryEntry],
+    [],
+    [createRequestHandler, innerRequestHandler]
 );

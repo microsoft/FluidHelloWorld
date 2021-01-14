@@ -3,9 +3,7 @@
  * Licensed under the MIT License.
  */
 
-import { getTinyliciousContainer } from '@fluidframework/get-tinylicious-container';
-
-import { IKeyValueDataObject, ContainerRuntimeFactory } from './kvpair-dataobject';
+import { Fluid, IKeyValueDataObject, KeyValueInstantiationFactory } from './kvpair-dataobject';
 import { jsRenderView as renderView } from './view';
 
 let createNew = false;
@@ -16,21 +14,20 @@ if (location.hash.length === 0) {
 const documentId = location.hash.substring(1);
 
 async function start(): Promise<void> {
-    // Get Fluid Container (creates if new url)
-    const container = await getTinyliciousContainer(documentId, ContainerRuntimeFactory, createNew);
+    let keyValueDataObject: IKeyValueDataObject;
 
-    // The KeyValue DataObject can be requested from the root of the container
-    const response = await container.request({ url: '/' });
-
-    // Verify the response to make sure we got what we expected.
-    if (response.status === 200) {
-        renderView(
-            response.value as IKeyValueDataObject,
-            document.getElementById('content') as HTMLDivElement
+    if (createNew) {
+        const fluidDocument = await Fluid.createDocument(documentId);
+        keyValueDataObject = await fluidDocument.createDataObject(
+            KeyValueInstantiationFactory.type,
+            'dice'
         );
     } else {
-        throw new Error(`Error Loading`);
+        const fluidDocument = await Fluid.getDocument(documentId);
+        keyValueDataObject = await fluidDocument.getDataObject('dice');
     }
+
+    renderView(keyValueDataObject, document.getElementById('content') as HTMLDivElement);
 }
 
 start().catch((error) => console.error(error));
