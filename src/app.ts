@@ -4,22 +4,22 @@
  */
 
 import { Fluid, IKeyValueDataObject, KeyValueInstantiationFactory } from './kvpair-dataobject';
-import { getDocId } from './utils';
+import { getContainerId } from './utils';
 import { jsRenderView as renderView } from './view';
 
-const { docId, isNew } = getDocId();
+const { containerId, isNew } = getContainerId();
 
 async function start(): Promise<void> {
     let keyValueDataObject: IKeyValueDataObject;
 
     if (isNew) {
-        const fluidDocument = await Fluid.createDocument(docId);
+        const fluidDocument = await Fluid.createDocument(containerId);
         keyValueDataObject = await fluidDocument.createDataObject(
             KeyValueInstantiationFactory.type,
             'dice'
         );
     } else {
-        const fluidDocument = await Fluid.getDocument(docId);
+        const fluidDocument = await Fluid.getDocument(containerId);
         keyValueDataObject = await fluidDocument.getDataObject('dice');
     }
 
