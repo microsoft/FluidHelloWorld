@@ -4,7 +4,7 @@
  */
 
 import { createApp } from 'vue';
-import { IKeyValueDataObject } from '../kvpair-dataobject';
+import { IKeyValueDataObject } from '@fluid-experimental/data-objects';
 
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.

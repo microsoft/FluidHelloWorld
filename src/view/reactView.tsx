@@ -5,7 +5,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { IKeyValueDataObject } from "../kvpair-dataobject";
+import { IKeyValueDataObject } from '@fluid-experimental/data-objects';
 
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.

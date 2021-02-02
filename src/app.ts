@@ -3,8 +3,11 @@
  * Licensed under the MIT License.
  */
 
-import { Fluid, IKeyValueDataObject, KeyValueInstantiationFactory } from './kvpair-dataobject';
-import { getContainerId } from './utils';
+import {
+    IKeyValueDataObject,
+    KeyValueInstantiationFactory,
+} from '@fluid-experimental/data-objects';
+import { Fluid, getContainerId } from './utils';
 import { jsRenderView as renderView } from './view';
 
 const { containerId, isNew } = getContainerId();
@@ -13,13 +16,15 @@ async function start(): Promise<void> {
     let keyValueDataObject: IKeyValueDataObject;
 
     if (isNew) {
-        const fluidDocument = await Fluid.createContainer(containerId);
+        const fluidDocument = await Fluid.createContainer(containerId, [
+            KeyValueInstantiationFactory,
+        ]);
         keyValueDataObject = await fluidDocument.createDataObject(
             KeyValueInstantiationFactory.type,
             'dice'
         );
     } else {
-        const fluidDocument = await Fluid.getContainer(containerId);
+        const fluidDocument = await Fluid.getContainer(containerId, [KeyValueInstantiationFactory]);
         keyValueDataObject = await fluidDocument.getDataObject('dice');
     }
 
