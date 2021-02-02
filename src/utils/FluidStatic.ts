@@ -2,11 +2,10 @@
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-
 import { getObjectWithIdFromContainer } from '@fluidframework/aqueduct';
 import { Container } from '@fluidframework/container-loader';
 import { getTinyliciousContainer } from '@fluidframework/get-tinylicious-container';
-import { KeyValueContainerRuntimeFactory } from './containerCode';
+import { getRuntimeFactory } from './containerCode';
 
 export class FluidDocument {
     constructor(private readonly container: Container, public readonly createNew: boolean) {}
@@ -25,19 +24,19 @@ export class FluidDocument {
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Fluid {
-    public static async createContainer(docId: string): Promise<FluidDocument> {
+    public static async createContainer(docId: string, factories: any[]): Promise<FluidDocument> {
         const container = await getTinyliciousContainer(
             docId,
-            KeyValueContainerRuntimeFactory,
+            getRuntimeFactory(factories),
             true /* createNew */
         );
         const document = new FluidDocument(container, true /* createNew */);
         return document;
     }
-    public static async getContainer(docId: string): Promise<FluidDocument> {
+    public static async getContainer(docId: string, factories: any[]): Promise<FluidDocument> {
         const container = await getTinyliciousContainer(
             docId,
-            KeyValueContainerRuntimeFactory,
+            getRuntimeFactory(factories),
             false /* createNew */
         );
         const document = new FluidDocument(container, false /* createNew */);

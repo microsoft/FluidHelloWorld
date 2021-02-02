@@ -13,6 +13,7 @@
         "start:server": "tinylicious"
     },
     "dependencies": {
+        "@fluid-experimental/data-objects": "^0.34.0-14942",
         "@fluidframework/aqueduct": "^0.32.1",
         "@fluidframework/get-tinylicious-container": "^0.32.1",
         "@fluidframework/map": "^0.32.1",

@@ -7,7 +7,6 @@ import { BaseContainerRuntimeFactory } from '@fluidframework/aqueduct';
 import { IContainerRuntime } from '@fluidframework/container-runtime-definitions';
 import { innerRequestHandler, RuntimeRequestHandler } from '@fluidframework/request-handler';
 import { RequestParser } from '@fluidframework/runtime-utils';
-import { KeyValueInstantiationFactory } from './DataObject';
 
 /**
  * We'll allow root data stores to be created by requesting a url like /create/dropletType/dataStoreId
@@ -28,8 +27,11 @@ const createRequestHandler: RuntimeRequestHandler = async (
  * By including the createRequestHandler, we can create any droplet types we include in the registry on-demand.
  * These can then be retrieved via container.request("/dataObjectId").
  */
-export const KeyValueContainerRuntimeFactory = new BaseContainerRuntimeFactory(
-    [KeyValueInstantiationFactory.registryEntry],
-    [],
-    [createRequestHandler, innerRequestHandler]
-);
+export const getRuntimeFactory = (factories: any[]) => {
+    const registryEntries = factories.map((i) => i.registryEntry);
+    return new BaseContainerRuntimeFactory(
+        registryEntries,
+        [],
+        [createRequestHandler, innerRequestHandler]
+    );
+};

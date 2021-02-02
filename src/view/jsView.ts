@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 
-import { IKeyValueDataObject } from '../kvpair-dataobject';
+import { IKeyValueDataObject } from '@fluid-experimental/data-objects';
 
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.
@@ -24,7 +24,9 @@ export function jsRenderView(dataObject: IKeyValueDataObject, div: HTMLDivElemen
     rollButton.style.fontSize = '50px';
     rollButton.textContent = 'Roll';
     // Set the value at our dataKey with a random number between 1 and 6.
-    rollButton.addEventListener('click', () => dataObject.set(dataKey, Math.floor(Math.random() * 6) + 1));
+    rollButton.addEventListener('click', () =>
+        dataObject.set(dataKey, Math.floor(Math.random() * 6) + 1)
+    );
 
     wrapperDiv.append(diceCharDiv, rollButton);
 
