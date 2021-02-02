@@ -25,7 +25,7 @@ export class FluidDocument {
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Fluid {
-    public static async createDocument(docId: string): Promise<FluidDocument> {
+    public static async createContainer(docId: string): Promise<FluidDocument> {
         const container = await getTinyliciousContainer(
             docId,
             KeyValueContainerRuntimeFactory,
@@ -34,7 +34,7 @@ export class Fluid {
         const document = new FluidDocument(container, true /* createNew */);
         return document;
     }
-    public static async getDocument(docId: string): Promise<FluidDocument> {
+    public static async getContainer(docId: string): Promise<FluidDocument> {
         const container = await getTinyliciousContainer(
             docId,
             KeyValueContainerRuntimeFactory,
