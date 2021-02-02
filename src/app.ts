@@ -13,13 +13,13 @@ async function start(): Promise<void> {
     let keyValueDataObject: IKeyValueDataObject;
 
     if (isNew) {
-        const fluidDocument = await Fluid.createDocument(containerId);
+        const fluidDocument = await Fluid.createContainer(containerId);
         keyValueDataObject = await fluidDocument.createDataObject(
             KeyValueInstantiationFactory.type,
             'dice'
         );
     } else {
-        const fluidDocument = await Fluid.getDocument(containerId);
+        const fluidDocument = await Fluid.getContainer(containerId);
         keyValueDataObject = await fluidDocument.getDataObject('dice');
     }
 
