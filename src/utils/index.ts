@@ -4,4 +4,3 @@
  */
 
 export * from './getContainerId';
-export * from './FluidStatic';
