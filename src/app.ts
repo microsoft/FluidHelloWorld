@@ -3,10 +3,9 @@
  * Licensed under the MIT License.
  */
 
-import {
-    IKeyValueDataObject,
-    KeyValueInstantiationFactory,
-} from '@fluid-experimental/data-objects';
+import { KeyValueDataObject } from "@fluid-experimental/data-objects";
+import { TinyliciousService } from "@fluid-experimental/get-container";
+
 import { Fluid } from '@fluid-experimental/fluid-static';
 import { getContainerId } from './utils';
 import { jsRenderView as renderView } from './view';
@@ -14,24 +13,15 @@ import { jsRenderView as renderView } from './view';
 const { containerId, isNew } = getContainerId();
 
 async function start(): Promise<void> {
-    let keyValueDataObject: IKeyValueDataObject;
+    const service = new TinyliciousService();
+    
+    const fluidContainer = isNew
+        ? await Fluid.createContainer(service, containerId, [KeyValueDataObject])
+        : await Fluid.getContainer(service, containerId, [KeyValueDataObject]);
 
-    if (isNew) {
-        const fluidDocument = await Fluid.createDocument(
-            containerId,
-            [KeyValueInstantiationFactory.registryEntry]
-        );
-        keyValueDataObject = await fluidDocument.createDataObject(
-            KeyValueInstantiationFactory.type,
-            'dice'
-        );
-    } else {
-        const fluidDocument = await Fluid.getDocument(
-            containerId,
-            [KeyValueInstantiationFactory.registryEntry]
-        );
-        keyValueDataObject = await fluidDocument.getDataObject('dice');
-    }
+    const keyValueDataObject: KeyValueDataObject = isNew
+        ? await fluidContainer.createDataObject(KeyValueDataObject, 'kvpairId')
+        : await fluidContainer.getDataObject('kvpairId');
 
     renderView(keyValueDataObject, document.getElementById('content') as HTMLDivElement);
 }
