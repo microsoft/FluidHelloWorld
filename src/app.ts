@@ -8,7 +8,7 @@ import { TinyliciousService } from "@fluid-experimental/get-container";
 
 import { Fluid } from '@fluid-experimental/fluid-static';
 import { getContainerId } from './utils';
-import { jsRenderView as renderView } from './view';
+import { jsRenderView as renderView } from './view/jsView';
 
 const { containerId, isNew } = getContainerId();
 
