@@ -8,7 +8,7 @@ import { DiceApp } from "./DiceApp";
 import * as restify from 'restify';
 // require('dotenv').config();
 import { ActivityTypes, BotFrameworkAdapter, StatusCodes, WebRequest, WebResponse } from 'botbuilder';
-import { ActionContentType, AdaptiveCardAction } from './card';
+import { ActionContentType, AdaptiveCardAction, AdaptiveCardContentType } from './card';
 
 // Create HTTP server.
 const adapter = new BotFrameworkAdapter({ appId: process.env.MicrosoftAppId, appPassword: process.env.MicrosoftAppPassword });
@@ -23,17 +23,7 @@ server.post('/api/messages', (req: WebRequest, res: WebResponse) => {
             var fluidContainer = await Fluid.getContainer(service, <string>action.id, [DiceApp]);
             let diceApp = await fluidContainer.getDataObject('kvpairId');
             let card = await diceApp.onAction(action);
-            await context.sendActivity({
-                type: "invokeResponse",
-                value: {
-                    status: StatusCodes.OK,
-                    body: {
-                        statusCode: StatusCodes.OK,
-                        type: "application/vnd.microsoft.card.adaptive",
-                        data: card
-                    }
-                }
-            });
+            await context.sendActivity({ type: "invokeResponse", value: { status: StatusCodes.OK, body: { statusCode: StatusCodes.OK, type: AdaptiveCardContentType, data: card } } });
         }
     });
 });
