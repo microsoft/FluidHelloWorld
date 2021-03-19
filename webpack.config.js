@@ -16,6 +16,14 @@ module.exports = env => {
         ? "production"
         : "development";
 
+    const target = env && env.node
+        ? "node"
+        : "web"
+
+    const filename = env && env.node
+        ? "app.js"
+        : "[name].[contenthash].js";
+
     return {
         devtool: "inline-source-map",
         entry: {
@@ -28,8 +36,9 @@ module.exports = env => {
                 loader: "ts-loader"
             }]
         },
+        target: target,
         output: {
-            filename: "[name].[contenthash].js",
+            filename: filename,
         },
         plugins,
         resolve: {

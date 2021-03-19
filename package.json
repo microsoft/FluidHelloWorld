@@ -7,16 +7,19 @@
     "author": "Microsoft",
     "scripts": {
         "build": "webpack --env prod --env clean",
+        "build:node": "webpack --env node",
         "build:dev": "webpack --env.clean",
         "start": "concurrently \"npm:start:server\" \"npm:start:client\"",
         "start:client": "webpack serve",
-        "start:server": "tinylicious"
+        "start:server": "tinylicious",
+        "start:node": "node dist/app.js"
     },
     "dependencies": {
-        "@fluidframework/aqueduct": "^0.36.0",
         "@fluid-experimental/data-objects": "^0.36.0",
         "@fluid-experimental/fluid-static": "^0.36.0",
         "@fluid-experimental/get-container": "^0.36.0",
+        "@fluidframework/aqueduct": "^0.36.0",
+        "dotenv": "^8.2.0",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "vue": "^3.0.5"

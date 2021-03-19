@@ -16,6 +16,25 @@ npm install
 npm start
 ```
 
+## Getting Started - Node
+This branch has node baked in. If you update the .env file to include the containerID you want to connect to, running npm run start:node will roll the dice.
+
+1. Start the hello world for the browser
+```bash
+npm i
+npm start
+```
+2. Note the containerID & paste it into the .env file
+   1. This is the number past the # in localhost. 
+   2. E.g. localhost:8080/#1616161660272... paste 1616161660272 into .env
+3. Start the app in node
+
+```bash
+npm i
+npm run build:node
+npm run start:node
+```
+
 ## Tutorial
 
 In this walkthrough, we’ll learn about using the Fluid Framework by building a simple DiceRoller application together. To get started, make sure you have cloned this repo and followed the steps above.

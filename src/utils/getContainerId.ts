@@ -15,6 +15,9 @@
 
 export const getContainerId = (): { containerId: string; isNew: boolean } => {
     let isNew = false;
+    if (process && process.env && process.env.containerId) {
+        return {containerId: process.env.containerId, isNew};
+    }
     if (location.hash.length === 0) {
         isNew = true;
         location.hash = Date.now().toString();
