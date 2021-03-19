@@ -16,10 +16,19 @@ module.exports = env => {
         ? "production"
         : "development";
 
+    const target = env && env.node
+        ? "node"
+        : "web"
+
+    const filename = env && env.node
+        ? "[name].js"
+        : "[name].[contenthash].js";
+
     return {
         devtool: "inline-source-map",
         entry: {
             app: "./src/app.ts",
+            server: "./src/server.ts",
         },
         mode,
         module: {
@@ -28,12 +37,16 @@ module.exports = env => {
                 loader: "ts-loader"
             }]
         },
+        target: target,
         output: {
-            filename: "[name].[contenthash].js",
+            filename: filename,
         },
         plugins,
         resolve: {
-            extensions: [".ts", ".js"],
+            extensions: [".ts", ".tsx", ".js"],
+            alias: {
+                vue$: "vue/dist/vue.esm-bundler.js",
+            },
         },
         devServer: {
             open: true

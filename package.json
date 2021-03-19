@@ -1,31 +1,48 @@
 {
-  "name": "@fluid-example/hello-world",
-  "version": "0.1.0",
-  "description": "Minimal Fluid Container & Data Object sample to implement a collaborative dice roller as a standalone app.",
-  "repository": "microsoft/FluidHelloWorld",
-  "license": "MIT",
-  "author": "Microsoft",
-  "scripts": {
-    "build": "webpack --env prod --env clean",
-    "build:dev": "webpack --env.clean",
-    "start": "concurrently \"npm:start:server\" \"npm:start:client\"",
-    "start:client": "webpack serve",
-    "start:server": "tinylicious"
-  },
-  "dependencies": {
-    "@fluidframework/aqueduct": "^0.33.0",
-    "@fluidframework/get-tinylicious-container": "^0.33.0",
-    "@fluidframework/map": "^0.33.0"
-  },
-  "devDependencies": {
-    "clean-webpack-plugin": "^3.0.0",
-    "concurrently": "^5.3.0",
-    "html-webpack-plugin": "^4.5.1",
-    "tinylicious": "0.4.13835",
-    "ts-loader": "^8.0.14",
-    "typescript": "~4.1.3",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^4.4.0",
-    "webpack-dev-server": "^3.11.2"
-  }
+    "name": "@fluid-example/hello-world",
+    "version": "0.1.0",
+    "description": "Minimal Fluid Container & Data Object sample to implement a collaborative dice roller as a standalone app.",
+    "repository": "microsoft/FluidHelloWorld",
+    "license": "MIT",
+    "author": "Microsoft",
+    "main": "./built/server.js",
+    "scripts": {
+        "build": "webpack --env prod --env clean",
+        "build:bot": "webpack --env node",
+        "build:dev": "webpack --env.clean",
+        "start": "concurrently \"npm:start:server\" \"npm:start:client\" ",
+        "start:client": "webpack serve",
+        "start:server": "tinylicious",
+        "start:bot": "node dist/server.js"
+    },
+    "dependencies": {
+        "@fluid-experimental/data-objects": "^0.36.0",
+        "@fluid-experimental/fluid-static": "^0.36.0",
+        "@fluid-experimental/get-container": "^0.36.0",
+        "@fluidframework/aqueduct": "^0.36.0",
+        "adaptivecards": "^2.8.0",
+        "adaptivecards-templating": "^2.1.0",
+        "botbuilder": "~4.12.0",
+        "botframework-schema": "^4.12.0",
+        "restify": "^8.5.1"
+    },
+    "devDependencies": {
+        "@types/restify": "^8.5.1",
+        "clean-webpack-plugin": "^3.0.0",
+        "concurrently": "^5.3.0",
+        "html-webpack-plugin": "^4.3.0",
+        "tinylicious": "0.4.17169",
+        "ts-loader": "^8.0.17",
+        "typescript": "~4.1.3",
+        "webpack": "^4.46.0",
+        "webpack-cli": "^4.2.0",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": true,
+        "printWidth": 100
+    }
 }
