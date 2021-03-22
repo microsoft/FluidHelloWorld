@@ -24,6 +24,17 @@ module.exports = env => {
         ? "[name].js"
         : "[name].[contenthash].js";
 
+    let node = {};
+    if (!(env && env.node)) {
+        node = {
+            net: 'empty',
+            fs: 'empty',
+            tls: 'empty',
+            child_process: 'empty',
+        }
+    } else {
+
+    }
     return {
         devtool: "inline-source-map",
         entry: {
@@ -44,12 +55,15 @@ module.exports = env => {
         plugins,
         resolve: {
             extensions: [".ts", ".tsx", ".js"],
-            alias: {
-                vue$: "vue/dist/vue.esm-bundler.js",
-            },
         },
+        node,
         devServer: {
             open: true
-        }
+        },
+        externals: [
+            {
+                formidable: 'commonjs formidable',
+            },
+        ],
     };
 };

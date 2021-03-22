@@ -1,4 +1,3 @@
-/*
 import { TinyliciousService } from "@fluid-experimental/get-container";
 import { Fluid } from '@fluid-experimental/fluid-static';
 import { DiceApp } from "./DiceApp";
@@ -39,4 +38,3 @@ server.post('/api/messages', (req: WebRequest, res: WebResponse) => {
         }
     });
 });
-*/
