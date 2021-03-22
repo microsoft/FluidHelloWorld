@@ -561,11 +561,13 @@ export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement) {
         diceCharDiv.textContent = String.fromCodePoint(0x267F + diceRoller.value);
         diceCharDiv.style.color = `hsl(${diceRoller.value * 60}, 70%, 50%)`;
         let o = await diceRoller.valueObject();
+        o.checklistActive = true;
+        o.strings = om.strings;
         cardDiv.innerHTML = '';
 
         let template = new ACData.Template(cardTemplate);
-        template = new ACData.Template(editCardTemplate);
-        let card = template.expand({ $root : om });
+        //template = new ACData.Template(editCardTemplate);
+        let card = template.expand({ $root : o });
         let ac = new AdaptiveCards.AdaptiveCard();
         ac.onExecuteAction = (a: any) => { 
             console.log(JSON.stringify(a.data.rows, null, "\t")); 
