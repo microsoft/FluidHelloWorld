@@ -36,7 +36,11 @@ module.exports = env => {
             extensions: [".ts", ".js"],
         },
         devServer: {
-            open: true
-        }
+            open: true,
+            port: 8012
+        } /*, 
+        optimization: {
+            minimize: false
+        }*/
     };
 };
