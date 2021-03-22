@@ -38,3 +38,23 @@ server.post('/api/messages', (req: WebRequest, res: WebResponse) => {
         }
     });
 });
+
+server.post('/dicevalue', async (req: WebRequest, res: WebResponse) => {
+
+            // action payload from the card
+
+            // get the app
+            var fluidContainer = await Fluid.getContainer(service, <string>"1616437348015", [DiceApp]);
+            let diceApp = (await fluidContainer.getDataObject('kvpairId')) as DiceApp;
+            res.status(200);
+            console.log(`
+            
+            
+            
+            
+            
+            `)
+            console.log(diceApp.DiceValue);
+            return res.send(diceApp.DiceValue);
+            
+});
