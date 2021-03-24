@@ -6,6 +6,7 @@
 import { IDiceRoller } from "./dataObject";
 import * as ACData from "adaptivecards-templating";
 import * as AdaptiveCards from "adaptivecards";
+import { createTemporaryObject, create, update } from "./model";
 
 /* AC-TODO:
     formatString like function.
@@ -88,11 +89,12 @@ let cardTemplate = {
             },
             {
                 "type": "Container",
+                "id": "Container",
                 "style": "emphasis",
                 "$when": "${and(equals(checklistActive, true),greater(count(where(items, x,x.status == false)),0))}",
                 "_$when.comment":"When Checklist is active and count of open or ACTIVE items is greater than 0 then, show this container.",
                 "items": [{
-                    "id": "rows",
+                    "id": "1616565651066.body.5.items.0",
                     "type": "Input.ChoiceSet",
                     "style": "expanded",
                     "isMultiSelect": true,
@@ -100,10 +102,16 @@ let cardTemplate = {
                         "$data": "${subArray(sortBy(where(items, x, x.status == false), 'createTime'), 0, min(10, count(where(items, x, x.status == false))))}",
                         "$when": "${equals(status, false)}",
                         "title": "${text}",
-                        "value": '{"id":"${id}","columnValues":{"status":true,"completionTime":"${Timestamp}","completionUser":"$UserId","latestEditTime":"$Timestamp","latestEditUser":"$UserId"}}'
+                        "value": '{"id":"${id}","status":true, "text":"", "completionTime":"${Timestamp}","completionUser":"$UserId"}'
                     }]
                 }]
             },
+            {
+                "type": "Input.Text",
+                "id": "add.text.1616565651066.body.5.items.0",
+                "placeholder": "Add Item",
+                "maxLength": 500
+              },
             /*{
                 "id": "LastModified",
                 "type": "TextBlock",
@@ -119,17 +127,32 @@ let cardTemplate = {
             }*/
         ],
         "actions": [{
-                "id": "RespondButton",
+                "id": "AddItem",
                 "$when": "${and(equals(checklistActive, true),greater(count(where(items, x,x.status == false)),0))}",
-                "_$when.comment": "When Checklist is active and count of ACTIVE or open items is greater than 0 in that case, show the 'Save Changes' button.",
-                "title": "${strings.Submit}",
+                "_$when.comment": "When Checklist is active and count of ACTIVE or open items is greater than 0 in that case, show the 'Add Item' button.",
+                "title": "${strings.AddRow}",
                 //"command": "SubmitCustomActionitems"
                 type: 'Action.Submit'
             },
-            
             {
-                "id": "EditButton",
-                "title": "${if(equals(checklistActive, true),if(greater(count(items),0),strings.EditChecklist,strings.AddItem),strings.Edit)}",
+                "id": "CompleteItem",
+                "$when": "${and(equals(checklistActive, true),greater(count(where(items, x,x.status == false)),0))}",
+                "_$when.comment": "When Checklist is active and count of ACTIVE or open items is greater than 0 in that case, show the 'Complete Item' button.",
+                "title": "Complete Item",
+                //"command": "SubmitCustomActionitems"
+                type: 'Action.Submit'
+            },
+            {
+                "id": "update",
+                "$when": "${and(equals(checklistActive, true),greater(count(where(items, x,x.status == false)),0))}",
+                "_$when.comment": "When Checklist is active and count of ACTIVE or open items is greater than 0 in that case, show the 'Delete Item' button.",
+                "title": "Modify Rows",
+                //"command": "SubmitCustomActionitems"
+                type: 'Action.Submit'
+            },
+            {
+                "id": "create",
+                "title": "Add New Row",
                 "_$title.comment": "If Checklist is active and there are items in it show 'Edit Checklist' button, else show 'Add Item' button if checklist is empty.If checklist is closed, show 'View Checklist' button.",
                 //"command": "LaunchActionPackageView",
                 type: 'Action.Submit',
@@ -567,10 +590,19 @@ export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement) {
 
         let template = new ACData.Template(cardTemplate);
         //template = new ACData.Template(editCardTemplate);
-        let card = template.expand({ $root : o });
+        // createTemporaryObject(o);
+        //  let card = template.expand({ $root : o });
+        createTemporaryObject(om);
+        let card = template.expand({ $root : om });
         let ac = new AdaptiveCards.AdaptiveCard();
         ac.onExecuteAction = (a: any) => { 
-            console.log(JSON.stringify(a.data.rows, null, "\t")); 
+            if(a.id == "create") {
+                card = template.expand({ $root : create(a, cardTemplate) });
+                updateDiceChar();
+            } else if(a.id == "update") {
+                card = template.expand({ $root : update(a, cardTemplate) });
+                updateDiceChar();
+            }
         }
         ac.parse(card);
         let rc = ac.render();
