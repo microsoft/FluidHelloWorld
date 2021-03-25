@@ -2,42 +2,38 @@ import { constants } from "./constants";
 
 
 
-export function createGenericItem(key: string, value: string, cardTemplate: any) {
-    let path: string = getPath(key);
-    let modifiedPath = path + ".choices.0.value";
-    let data = deepFind(cardTemplate, modifiedPath);
-    console.log(data);
-    return createNewItem(data, value, path, getField(key));
+export function createGenericItem(value: any, temporaryObject: any, toBeAddedField: string, basedOnField: string) {
+    return createNewItem(value, temporaryObject[toBeAddedField]);
 }
 
-export function modifyItems(key: string, value: any, temporaryObject: any, cardTemplate: any) {
+export function modifyItems(value: any, temporaryObject: any, toBeModifiedField: string, basedOnField: string) {
     let itemList = JSON.parse('[' + value + ']');
+    for(let i =0; i< itemList.length; i++) {
+        //replace if exists, create otherwise
+        let element = createOrUpdateItem(itemList[i], temporaryObject[basedOnField], temporaryObject[toBeModifiedField]);
+        let valChanged = false;
+        if(deepFind(temporaryObject, toBeModifiedField)) {
+            Object.keys(temporaryObject[toBeModifiedField]).forEach(function(key) { 
+                let currentElement = temporaryObject[toBeModifiedField][key];
+                Object.keys(currentElement).forEach(function(k) { 
+                    if(element[k] == currentElement[k]) {
+                        temporaryObject[toBeModifiedField][key] = element;
+                        valChanged = true;
+                    }
+                });
+            });
 
-    for(let i =0; i< temporaryObject.items.length; i++) {
-        for(let j=0; j< itemList.length; j++) {
-            if(temporaryObject.items[i].id == itemList[j].id) {
-                temporaryObject.items[i]= updateExistingItem(itemList[j], temporaryObject.items[i]);
+            if(!valChanged) {
+                temporaryObject[toBeModifiedField].push(element);
             }
         }
     }
 }
 
-function getPath(key: string): string {
-    let paths = key.split('.');
-   let str: string = "";
-   for(let i =3; i< paths.length; i++) {
-       if(i==3) {
-    str = str + paths[i];
-       } else {
-        str = str + "."+ paths[i];
-       }
-   }
-   return str;
-}
 
-export function getField(key: string) {
+export function getField(key: string, index: number) {
     let paths = key.split('.');
-    return paths[1];
+    return paths[index];
 }
 
 
@@ -53,43 +49,48 @@ function deepFind(obj: any, path: any) {
     return obj;
   }
 
-function createNewItem(rawData: any, value: string, path: string, field: string) {
-    let jsonData = JSON.parse(rawData);
-    let newElement = jsonData;
-    Object.keys(newElement).forEach(function(key){ newElement[key] = createValuesBasedOnKey(key, newElement[key], path, field, value) });
+function createNewItem(value: any, toBeAddedField: any) {
+    if(toBeAddedField[0]) {
+        toBeAddedField = toBeAddedField[0];
+    }
+    let newElement = Object.assign({}, toBeAddedField);
+    Object.keys(toBeAddedField).forEach(function(key){ newElement[key] = createValuesBasedOnKey(key, toBeAddedField[key], value) });
     return newElement;
 }
 
-function updateExistingItem(item: any, originalItem:any) {
-    let newElement = item;
-    Object.keys(newElement).forEach(function(key){ newElement[key] = modifyValuesBasedOnKey(key, newElement[key], originalItem) });
+function createOrUpdateItem(item: any, originalItem:any, toBeChangedItem: any) {
+    if(toBeChangedItem[0]) {
+        toBeChangedItem = toBeChangedItem[0];
+    }
+    let newElement = Object.assign({}, toBeChangedItem);
+    Object.keys(toBeChangedItem).forEach(function(key){ newElement[key] = modifyValuesBasedOnKey(key, toBeChangedItem[key], item, originalItem) });
     return newElement;
 }
 
-function createValuesBasedOnKey(key: string, value: string, path: string, field: string, input: string) {
+function createValuesBasedOnKey(key: string, oldValue: any, value: any) {
     if(key == "userId" || value == "$UserId") {
         return constants.userID;
     }
     else if(key=="timestamp" || value == "${Timestamp}") {
         return generateTimeStamp();
     } else if(key == "id" || value == "${id}") {
-        return generateTimeStamp() + "." + path;
-    } else if(typeof value == "boolean") {
-        return false;
-    } else if(key == field) {
-        return input;
+        return generateTimeStamp();
+    } else if(typeof oldValue == "boolean") {
+        return oldValue;
     }
     return value;
 }
 
-function modifyValuesBasedOnKey(key: string, value: string, originalItem: any) {
+function modifyValuesBasedOnKey(key: string, value: string, changedItem: any, originalItem: any) {
     if(key == "userId" || value == "$UserId") {
         return constants.userID;
     }
-    else if(key=="timestamp" || value == "${Timestamp}") {
+    else if(key=="timestamp" || value == "${timestamp}") {
         return generateTimeStamp();
-    } else if(typeof value == "boolean") {
-        return value;
+    } else if(key=="displayName" || value == "${displayName}") {
+        return constants.displayName;
+    } else if(deepFind(changedItem, key)) {
+        return deepFind(changedItem, key);
     }
     //Returning original values for text fields
     return deepFind(originalItem, key);
