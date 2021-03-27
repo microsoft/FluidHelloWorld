@@ -387,14 +387,23 @@ let ddsDefinition =
 {
 	"type": "SharedMap",
 	"keys": {
-		"title": "string",
+		"title": {
+            type : "string",
+            default : "<< Checklist Title >>"
+        },
 		"items": {
 			type: "SharedObjectSequence",
 			itemType: {
 				"type": "SharedMap",
 				"keys" : {
-					"status" : "boolean",
-					"text" : "string"
+					"status" : { 
+                        type: "boolean",
+                        default: false
+                    },
+					"text" : { 
+                        type: "string",
+                        default: "<< Checklist Item >>"
+                    }
 				}
 			}
 		}		
@@ -500,8 +509,7 @@ let checklistStrings =  {
     "$manifest.views.LaunchView.header": "Create Checklist"
 };
 
-// @ts-ignore
-let ACFluid = {
+export let ACFluid = {
     "DDS" : ddsDefinition,
     "templates" : {
         "default" : "view",

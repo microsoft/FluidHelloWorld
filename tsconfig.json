@@ -2,7 +2,7 @@
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "target": "es6",
-        "noUnusedLocals": true,
+        "noUnusedLocals": false,
         "module": "esnext",
         "moduleResolution": "node",
         "outDir": "built",

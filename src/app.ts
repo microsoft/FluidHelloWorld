@@ -8,7 +8,11 @@ import { getTinyliciousContainer } from "@fluidframework/get-tinylicious-contain
 
 import { DiceRollerContainerRuntimeFactory } from "./containerCode";
 import { IDiceRoller } from "./dataObject";
-import { renderDiceRoller } from "./view";
+import { renderDiceRoller, ACFluid } from "./view";
+import { createGenericDDS_TLC, getGenericDDS_TLC, IGenericDDS }  from "./GenericDDS";
+
+import { aklog, akwarn, akerr, akinfo, aklogj, akdebug } from "./MyLog";
+
 
 // In interacting with the service, we need to be explicit about whether we're creating a new document vs. loading
 // an existing one.  We also need to provide the unique ID for the document we are creating or loading from.
@@ -71,6 +75,125 @@ async function start(): Promise<void> {
     });
 }
 
-start().catch((error) => console.error(error));
+async function start2(): Promise<void> {
+    let w = window as any;
+    w.w = w;
+    let appDefStr = JSON.stringify(ACFluid);
+    w.appDefnStr = appDefStr;
+
+    const modelDefinition = getModelDefinition(location.hash);
+    let genericDDS: IGenericDDS;
+
+    if (modelDefinition.createNew)
+    {
+        aklog("Creating new model for : " + modelDefinition.id);
+        genericDDS = await createGenericDDS_TLC(modelDefinition.id, appDefStr);
+    }
+    else
+    {
+        aklog("Using exisiting model for : " + modelDefinition.id);
+        genericDDS = await getGenericDDS_TLC(modelDefinition.id);
+    }
+
+    const logDDSValue = async () => {
+        let o = await genericDDS?.getValueObject();
+        aklogj("modelChanged", o);
+    };
+
+    genericDDS.on("modelChanged", logDDSValue);
+    logDDSValue();
+
+    w.g = {
+        gfc: genericDDS,
+        l : logDDSValue,
+        c0: {
+            title: "Checklist 0 - empty",
+            items: []
+        },
+        c1: {
+            title: "Checklist 1 - ak",
+            items: 
+            [
+                {
+                    _id: 'i1',
+                    status: false,
+                    text: 'c1 item 0',
+                }
+            ]
+        },
+        c1a: {
+            title: "Checklist 1a - ak",
+            items: 
+            [
+                {
+                    _id: 'i1',
+                    status: true,
+                    text: 'c1a item 0',
+                }
+            ]
+        },
+        c2: {
+            title: "Checklist 2 - amrut",
+            items: 
+            [
+                {
+                    _id: 'i1',
+                    status: false,
+                    text: 'c2 item 1',
+                },
+                {
+                    _id: 'i2',
+                    status: true,
+                    text: 'c2 item 2',
+                }
+
+            ]
+        },
+        c2a: {
+            title: "Checklist 2a - amrut",
+            items: 
+            [
+                {
+                    _id: 'i1',
+                    status: false,
+                    text: 'c2a item 1',
+                },
+                {
+                    _id: 'i2',
+                    status: true,
+                    text: 'c2a item 2',
+                }
+
+            ]
+        },
+    };
+    
+
+
+    /*
+
+    let v = await genericDDS.getValueObject();
+    console.log(JSON.stringify(v, null, "\t"));
+
+    await genericDDS.setValueObject(w.g.c1);
+    v = await genericDDS.getValueObject();
+    aklog(v);
+
+    await genericDDS.setValueObject(w.g.c2);
+    v = await genericDDS.getValueObject();
+    aklog(v);
+
+    await genericDDS.setValueObject(w.g.c1);
+    v = await genericDDS.getValueObject();
+    aklog(v);
+    */
+} 
+
+//start().catch((error) => console.error(error));
+
+start2().catch((error) => {
+    akerr("App.ts top level error:", false, error);
+});
+
 
 // todo: GFCContainerRuntimeFactory (GFC = GenericFluidComponent)
