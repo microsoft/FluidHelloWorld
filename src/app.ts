@@ -192,7 +192,7 @@ async function start2(): Promise<void> {
 //start().catch((error) => console.error(error));
 
 start2().catch((error) => {
-    akerr("App.ts top level error:", false, error);
+    akerr("App.ts top level error:", error);
 });
 
 

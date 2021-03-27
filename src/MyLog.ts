@@ -15,7 +15,7 @@ export function akwarn(...args: any[]) {
 
 export function akerr(...args: any[]) {
     //console.error("akerr", JSON.stringify(args, null, "\t"));
-    console.error("akerr", myargs(args));
+    console.error("akerr", args);
 }
 
 export function akdebug(...args: any[]) {
