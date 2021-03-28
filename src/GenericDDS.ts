@@ -67,8 +67,19 @@ class GenericDDS extends DataObject implements IGenericDDS {
         return new DDSValueSetter(this.runtime).setValue(this._ddsTemplate, this.root.get(rootKey), v);
     }
 
+    private _eventCount = 0;
     protected raiseModelChanged() {
-        this.emit("modelChanged");
+        ++this._eventCount;
+
+        let doraise = () => {
+            --this._eventCount;
+            if (this._eventCount == 0) {
+                this.emit("modelChanged");
+            }
+            if (this._eventCount < 0) this._eventCount = 0;
+        }
+
+        setTimeout(doraise, 0);
     }
 }
 
