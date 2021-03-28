@@ -8,10 +8,12 @@ import { getTinyliciousContainer } from "@fluidframework/get-tinylicious-contain
 
 import { DiceRollerContainerRuntimeFactory } from "./containerCode";
 import { IDiceRoller } from "./dataObject";
-import { renderDiceRoller, ACFluid } from "./view";
+import { renderDiceRoller } from "./view";
+
 import { createGenericDDS_TLC, getGenericDDS_TLC, IGenericDDS }  from "./GenericDDS";
 
 import { aklog, akwarn, akerr, akinfo, aklogj, akdebug } from "./MyLog";
+import { ACFluid, renderAdaptiveCard } from "./CardRenderer";
 
 
 // In interacting with the service, we need to be explicit about whether we're creating a new document vs. loading
@@ -100,8 +102,16 @@ async function start2(): Promise<void> {
         aklogj("modelChanged", o);
     };
 
-    genericDDS.on("modelChanged", logDDSValue);
-    logDDSValue();
+    const div = document.getElementById("content") as HTMLDivElement;
+    renderAdaptiveCard(genericDDS, div);
+
+    // Reload the page on any further hash changes, e.g. in case you want to paste in a different document ID.
+    window.addEventListener("hashchange", () => {
+        location.reload();
+    });
+
+    // genericDDS.on("modelChanged", logDDSValue);
+    // logDDSValue();
 
     w.g = {
         gfc: genericDDS,
