@@ -90,6 +90,15 @@ function generateId() {
     return Date.now().toString();
 }
 
+function getHandleOrValue(h: any) : any {
+    if (h && (typeof h === "object") && 'path' in h) {
+        return `${h.constructor.name}, ${h.path}, ${h.graphAttachState}`;
+    }
+    else {
+        return h;
+    }
+}
+
 class DDSBuilder implements IVisitor {
 
     private runtime: any;
@@ -136,9 +145,9 @@ class DDSBuilder implements IVisitor {
         let sos = SharedObjectSequence.create(this.runtime);
 
         // create one item type
-        let item = r["itemType"];
-        let result = this.build(item);
-        sos.insert(0, [result]);
+        // let item = r["itemType"];
+        // let result = this.build(item);
+        // sos.insert(0, [result]);
 
         return sos.handle;
     }
@@ -191,10 +200,10 @@ class DDSLoader implements IVisitor {
 
         for (let k in sharedMapKeys) {
             let v = sharedMapKeys[k];
-            this.load(v, map.get(k));
+            await this.load(v, map.get(k));
         }
 
-        return map;
+        return map.handle;
     }
 
     async visitShareObjectSequence(r: any, handle: any) {
@@ -220,25 +229,27 @@ class DDSLoader implements IVisitor {
             await this.load(itemType, items[i]);
         }
 
-        return sos;
+        return sos.handle;
     }
 
     public async load(root : any, handle: any) {
         let type = root['type'];
+        aklogj(`DDSLoder::load start, ${type}, ${getHandleOrValue(handle)}`);
 
         if (!type) throw new Error("type not defined in template");
 
         let r : any = null;
 
         switch (type) {
-            case "SharedMap" : r = this.visitSharedMap(root, handle); break;
-            case "SharedObjectSequence" : r = this.visitShareObjectSequence(root, handle); break;
-            case "string" : r = this.visitString(root, handle); break;
-            case "boolean" : r = this.visitBoolean(root, handle); break;
+            case "SharedMap" : r = await this.visitSharedMap(root, handle); break;
+            case "SharedObjectSequence" : r = await this.visitShareObjectSequence(root, handle); break;
+            case "string" : this.visitString(root, handle); break;
+            case "boolean" : this.visitBoolean(root, handle); break;
             default: throw new Error("Unsupported type in template: " + type); break;
         }
 
-        return;
+        aklogj(`DDSLoder::load end, ${type}, result=${getHandleOrValue(r)}`);
+        return r;
     }
 }
 class DDSValueGetter implements IVisitor {

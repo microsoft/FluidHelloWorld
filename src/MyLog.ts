@@ -3,9 +3,9 @@ function myargs(...args: any[]) {
     return JSON.stringify(args, null, "\t");
 }
 
-export function aklog(...args: any[]) {
+export function aklog(arg:any) {
     // console.log("aklog", JSON.stringify(args, null, "\t"));
-    console.log("aklog", myargs(args));
+    console.log(`aklog: ${arg}`);
 }
 
 export function akwarn(...args: any[]) {
@@ -29,7 +29,7 @@ export function akinfo(...args: any[]) {
 
 }
 
-export function aklogj(tag: string, o : any) {
-    console.log("aklogj:%s:%s", tag, JSON.stringify(o, null, "\t"));
+export function aklogj(tag: string, ...o : any[]) {
+    console.log("aklogj:%s:%s", tag, o && o.length ? JSON.stringify(o, null, "\t") : "");
     //console.log("aklog:%s:%s", tag, o);
 }
