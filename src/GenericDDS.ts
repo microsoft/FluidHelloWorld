@@ -87,7 +87,7 @@ class GenericDDS extends DataObject implements IGenericDDS {
 
 //}
 
-//-------- Vistor
+//#region Util
 
 interface IVisitor {
     visitSharedMap(r: any, h?: any, v?: any) : any;
@@ -110,6 +110,7 @@ function getHandleOrValue(h: any) : any {
     }
 }
 
+//#endregion Util
 class DDSBuilder implements IVisitor {
 
     private runtime: any;
@@ -139,7 +140,7 @@ class DDSBuilder implements IVisitor {
         for (let k in sharedMapKeys) {
             let v = sharedMapKeys[k];
             let result;
-            if (k == "_id") {
+            if (k == "id") {
                 result = generateId();
             } else {
                 result = this.build(v);
@@ -245,7 +246,7 @@ class DDSLoader implements IVisitor {
 
     public async load(root : any, handle: any) {
         let type = root['type'];
-        aklogj(`DDSLoder::load start, ${type}, ${getHandleOrValue(handle)}`);
+        //aklogj(`DDSLoder::load start, ${type}, ${getHandleOrValue(handle)}`);
 
         if (!type) throw new Error("type not defined in template");
 
@@ -259,7 +260,7 @@ class DDSLoader implements IVisitor {
             default: throw new Error("Unsupported type in template: " + type); break;
         }
 
-        aklogj(`DDSLoder::load end, ${type}, result=${getHandleOrValue(r)}`);
+        //aklogj(`DDSLoder::load end, ${type}, result=${getHandleOrValue(r)}`);
         return r;
     }
 }
@@ -317,7 +318,7 @@ class DDSValueGetter implements IVisitor {
 
     public async getValue(root : any, handle: any) {
         let type = root['type'];
-        //aklogj("DDSValueGetter::getValue start", type);
+        //aklogj(`DDSValueGetter::getValue start, ${type}, ${getHandleOrValue(handle)}`);
 
         if (!type) throw new Error("type not defined in template");
 
@@ -331,7 +332,7 @@ class DDSValueGetter implements IVisitor {
             default: throw new Error("Unsupported type in template: " + type); break;
         }
 
-        //aklogj("DDSValueGetter::getValue end", r);
+        //aklogj(`DDSValueGetter::getValue end, ${type}, result=${getHandleOrValue(r)}`);
         return r;
     }
 }
