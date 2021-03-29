@@ -36,7 +36,7 @@ module.exports = env => {
             extensions: [".ts", ".js"],
         },
         devServer: {
-            open: false,
+            open: true,
             // open: { 
             //     app : [ "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", '--auto-open-devtools-for-tabs' ]
             // },
