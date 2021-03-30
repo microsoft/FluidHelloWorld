@@ -37,6 +37,9 @@ module.exports = env => {
         },
         devServer: {
             open: true,
+            // open: { 
+            //     app : [ "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", '--auto-open-devtools-for-tabs' ]
+            // },
             port: 8012
         } /*, 
         optimization: {

@@ -270,14 +270,15 @@ export let checklistDdsDefinition =
 {
 	"type": "SharedMap",
 	"keys": {
-		"title": "string",
+		"title": { type : "string", default : "<< Checklist Title >>" },
 		"items": {
 			type: "SharedObjectSequence",
 			itemType: {
 				"type": "SharedMap",
 				"keys" : {
-					"status" : "boolean",
-					"text" : "string"
+                    "id" : { type: "string" },
+					"status" : { type: "boolean", default: false },
+					"text" : { type: "string", default: "<< Checklist Item >>" }
 				}
 			}
 		}		
