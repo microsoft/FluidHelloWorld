@@ -79,7 +79,7 @@ export let checklistCardTemplate = {
                 "$when": "${and(equals(checklistActive, true),greater(count(where(items, x,x.status == false)),0))}",
                 "_$when.comment":"When Checklist is active and count of open or ACTIVE items is greater than 0 then, show this container.",
                 "items": [{
-                    "id": "1616565651066.body.5.items.0",
+                    "id": "checklistId",
                     "type": "Input.ChoiceSet",
                     "style": "expanded",
                     "isMultiSelect": true,
@@ -93,7 +93,7 @@ export let checklistCardTemplate = {
             },
             {
                 "type": "Input.Text",
-                "id": "add.text.1616565651066.body.5.items.0",
+                "id": "checklistInputId",
                 "placeholder": "Add Item",
                 "maxLength": 500
               },
@@ -129,16 +129,16 @@ export let checklistCardTemplate = {
             //     type: 'Action.Submit'
             // },
             {
-                "id": "update.items.basedOn.items",
+                "id": "update.items.basedOn.items.itemType.keys",
                 "$when": "${and(equals(checklistActive, true),greater(count(where(items, x,x.status == false)),0))}",
                 "_$when.comment": "When Checklist is active and count of ACTIVE or open items is greater than 0 in that case, show the 'Delete Item' button.",
-                "title": "Modify Rows",
-                //"command": "SubmitCustomActionitems"
+                "title": "Complete Items",
+                "verb": "update.items.basedOn.items",
                 type: 'Action.Submit'
             },
             {
-                "id": "create.items.basedOn.items",
-                "title": "Add New Row",
+                "id": "create.items.basedOn.items.itemType.keys",
+                "title": "Add Open Items",
                 "_$title.comment": "If Checklist is active and there are items in it show 'Edit Checklist' button, else show 'Add Item' button if checklist is empty.If checklist is closed, show 'View Checklist' button.",
                 //"command": "LaunchActionPackageView",
                 type: 'Action.Submit',

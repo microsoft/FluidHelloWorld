@@ -1,12 +1,13 @@
-import { createGenericItem, getField, modifyItems } from "./utils";
+import { createGenericItem, getField, modifyItems, isEmpty } from "./utils";
 
 let temporaryObject: any;
 
-export function create(a: any) {
-    if(a.data) {
+export function create(a: any, keysToAdd: any) {
+    if(!isEmpty(a.data)) {
         Object.keys(a.data).forEach(function(key) {
-            let item = createGenericItem(a.data[key], temporaryObject, getField(a.id, 1), getField(a.id, 3));
-            temporaryObject[getField(a.id, 1)].push(item);
+            let whereToAdd = getField(a.id, 1);
+            let item = createGenericItem(a.data[key], temporaryObject, whereToAdd, keysToAdd);
+            temporaryObject[whereToAdd].push(item);
             });
     } 
     return temporaryObject;
@@ -14,7 +15,7 @@ export function create(a: any) {
 
 
 export function update(a: any) {
-    if(a.data) {
+    if(!isEmpty(a.data)) {
         Object.keys(a.data).forEach(function(key) {
             modifyItems(a.data[key], temporaryObject, getField(a.id, 1), getField(a.id, 3));     
     });
@@ -26,6 +27,5 @@ export function createTemporaryObject(value: any) {
     temporaryObject = value;
     return temporaryObject;
 }
-
 
 

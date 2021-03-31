@@ -4,6 +4,7 @@ import * as ACData from "adaptivecards-templating";
 import * as AdaptiveCards from "adaptivecards";
 import { createTemporaryObject, create, update } from "./model";
 import { aklogj } from "./MyLog";
+import { getToBeAddedPath, deepFind } from "./utils";
 
 /* AC-TODO:
     formatString like function.
@@ -67,7 +68,7 @@ export function renderAdaptiveCard(dds: IGenericDDS, div: HTMLDivElement) {
         ac.onExecuteAction = (a: any) => { 
             let newObj = null;
             if(a.id.startsWith("create")) {
-                newObj = create(a);
+                newObj = create(a, deepFind(ACFluid.DDS.keys, getToBeAddedPath(a.id)));
                 //card = template.expand({ $root : newObj });
                 //updateAdaptiveCardView();
             } else if(a.id.startsWith("update")) {
