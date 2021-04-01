@@ -3,7 +3,7 @@ import { constants } from "./constants";
 
 
 export function createGenericItem(value: any, temporaryObject: any, toBeAddedField: string, basedOnField: string) {
-    return createNewItem(value, temporaryObject[toBeAddedField]);
+    return createNewItem(value, temporaryObject[toBeAddedField], basedOnField);
 }
 
 export function modifyItems(value: any, temporaryObject: any, toBeModifiedField: string, basedOnField: string) {
@@ -15,12 +15,10 @@ export function modifyItems(value: any, temporaryObject: any, toBeModifiedField:
         if(deepFind(temporaryObject, toBeModifiedField)) {
             Object.keys(temporaryObject[toBeModifiedField]).forEach(function(key) { 
                 let currentElement = temporaryObject[toBeModifiedField][key];
-                Object.keys(currentElement).forEach(function(k) { 
-                    if(element[k] == currentElement[k]) {
+                if(currentElement.id == element.id) {
                         temporaryObject[toBeModifiedField][key] = element;
                         valChanged = true;
-                    }
-                });
+                }
             });
 
             if(!valChanged) {
@@ -30,18 +28,27 @@ export function modifyItems(value: any, temporaryObject: any, toBeModifiedField:
     }
 }
 
+export function isEmpty(obj: any) {
+   return obj // 👈 null and undefined check
+&& Object.keys(obj).length === 0 && obj.constructor === Object;
+}
 
 export function getField(key: string, index: number) {
     let paths = key.split('.');
     return paths[index];
 }
 
+export function getToBeAddedPath(key: string) {
+    return key.substring("create.items.basedOn.".length);
+}
+
+
 
 export function generateTimeStamp() {
     return new Date().getTime().toString();
 }
 
-function deepFind(obj: any, path: any) {
+export function deepFind(obj: any, path: any) {
     let paths=path.split('.')
     for (let i=0, len=paths.length; i<len; i++){
         obj = obj[paths[i]];
@@ -49,12 +56,12 @@ function deepFind(obj: any, path: any) {
     return obj;
   }
 
-function createNewItem(value: any, toBeAddedField: any) {
+function createNewItem(value: any, toBeAddedField: any, basedOnField: any) {
     if(toBeAddedField[0]) {
         toBeAddedField = toBeAddedField[0];
     }
-    let newElement = Object.assign({}, toBeAddedField);
-    Object.keys(toBeAddedField).forEach(function(key){ newElement[key] = createValuesBasedOnKey(key, toBeAddedField[key], value) });
+    let newElement = Object.assign({}, basedOnField);
+    Object.keys(basedOnField).forEach(function(key){ newElement[key] = createValuesBasedOnKey(key, basedOnField[key], value) });
     return newElement;
 }
 
@@ -75,8 +82,8 @@ function createValuesBasedOnKey(key: string, oldValue: any, value: any) {
         return generateTimeStamp();
     } else if(key == "id" || value == "${id}") {
         return generateTimeStamp();
-    } else if(typeof oldValue == "boolean") {
-        return oldValue;
+    } else if(oldValue.type == "boolean" ) {
+        return oldValue.default;
     }
     return value;
 }

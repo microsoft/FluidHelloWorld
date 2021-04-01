@@ -76,72 +76,72 @@ export let pollCardTemplate = {
        // "$when": "${equals(action.dataTables[0].rowsVisibility, 'All')}",
         "type": "Container",
         "items": [
-            // {
-            //     "id": "NoResponder",
-            //     "type": "TextBlock",
-            //     "$when": "${equals(responders.length, 0)}",
-            //     "_$when.comment": "when no one responeded on poll",
-            //     "text": "${strings.BeTheFirstOneToRespond}",
-            //     "size": "small",
-            //     "weight": "bolder",
-            //     "maxLines": 2,
-            //     "wrap": true,
-            //     "spacing": "small"
-            // },
-            // {
-            //     "id": "OneResponded",
-            //     "type": "TextBlock",
-            //     "$when": "${equals(responders.length, 1)}",
-            //     "_$when.comment": "when the count of responder is 1",
-            //     "text": "${formatString(strings.OneResponded, responders[0].displayName)}",
-            //     "size": "small",
-            //     "weight": "bolder",
-            //     "maxLines": 2,
-            //     "wrap": true,
-            //     "spacing": "small"
-            // },
-            // {
-            //     "id": "TwoResponded",
-            //     "type": "TextBlock",
-            //     "$when": "${equals(summary.rowCreatorCount, 2)}",
-            //     "_$when.comment": "when the count of responders is 2",
-            //     "text": "${formatString(strings.TwoResponded, responders[0].displayName, responders[1].displayName)}",
-            //     "size": "small",
-            //     "weight": "bolder",
-            //     "maxLines": 2,
-            //     "wrap": true,
-            //     "spacing": "small"
-            // },
-            // {
-            //     "id": "ThreeResponded",
-            //     "type": "TextBlock",
-            //     "$when": "${equals(summary.rowCreatorCount, 3)}",
-            //     "_$when.comment": "when the count of responders is 3",
-            //     "text": "${formatString(strings.ThreeResponded, responders[0].displayName, responders[1].displayName, responders[2].displayName)}",
-            //     "size": "small",
-            //     "weight": "bolder",
-            //     "maxLines": 2,
-            //     "wrap": true,
-            //     "spacing": "small"
-            // },
-            // {
-            //     "id": "FourResponded",
-            //     "type": "TextBlock",
-            //     "$when": "${equals(summary.rowCreatorCount, 4)}",
-            //     "_$when.comment": "when the count of responders is 4",
-            //     "text": "${formatString(strings.ThreeAndOneOtherResponded, responders[0].displayName, responders[1].displayName, responders[2].displayName)}",
-            //     "size": "small",
-            //     "weight": "bolder",
-            //     "maxLines": 2,
-            //     "wrap": true,
-            //     "spacing": "small"
-            // },
+            {
+                "id": "NoResponder",
+                "type": "TextBlock",
+                "$when": "${equals(count(responders), 0)}",
+                "_$when.comment": "when no one responeded on poll",
+                "text": "${strings.BeTheFirstOneToRespond}",
+                "size": "small",
+                "weight": "bolder",
+                "maxLines": 2,
+                "wrap": true,
+                "spacing": "small"
+            },
+            {
+                "id": "OneResponded",
+                "type": "TextBlock",
+                "$when": "${equals(count(responders), 1)}",
+                "_$when.comment": "when the count of responder is 1",
+                "text": "${replace(strings.OneResponded, '{0}', responders[0].displayName)}",
+                "size": "small",
+                "weight": "bolder",
+                "maxLines": 2,
+                "wrap": true,
+                "spacing": "small"
+            },
+            {
+                "id": "TwoResponded",
+                "type": "TextBlock",
+                "$when": "${equals(count(responders), 2)}",
+                "_$when.comment": "when the count of responders is 2",
+                "text": "${replace(replace(strings.TwoResponded, '{0}', responders[0].displayName), '{1}', responders[1].displayName)}",
+                "size": "small",
+                "weight": "bolder",
+                "maxLines": 2,
+                "wrap": true,
+                "spacing": "small"
+            },
+            {
+                "id": "ThreeResponded",
+                "type": "TextBlock",
+                "$when": "${equals(count(responders), 3)}",
+                "_$when.comment": "when the count of responders is 3",
+                "text": "${replace(replace(replace(strings.ThreeResponded, '{0}', responders[0].displayName), '{1}', responders[1].displayName), '{2}', responders[2].displayName)}",
+                "size": "small",
+                "weight": "bolder",
+                "maxLines": 2,
+                "wrap": true,
+                "spacing": "small"
+            },
+            {
+                "id": "FourResponded",
+                "type": "TextBlock",
+                "$when": "${equals(count(responders), 4)}",
+                "_$when.comment": "when the count of responders is 4",
+                "text": "${replace(replace(replace(strings.ThreeAndOneOtherResponded, '{0}', responders[0].displayName), '{1}', responders[1].displayName), '{2}', responders[2].displayName)}",
+                "size": "small",
+                "weight": "bolder",
+                "maxLines": 2,
+                "wrap": true,
+                "spacing": "small"
+            },
             {
                 "id": "MoreResponded",
                 "type": "TextBlock",
-                //"$when": "${greater(summary.rowCreatorCount, 4)}",
-                //"_$when.comment": "when the count of responder is greater than 4",
-                "text": "Someone responded",
+                "$when": "${greater(count(responders), 4)}",
+                "_$when.comment": "when the count of responder is greater than 4",
+                "text": "${replace(replace(replace(replace(strings.ThreeAndOthersResponded, '{0}', responders[0].displayName), '{1}', responders[1].displayName), '{2}', responders[2].displayName), '{3}', string(sub(count(responders), 3)))}",
                 "size": "small",
                 "weight": "bolder",
                 "maxLines": 2,
@@ -192,7 +192,7 @@ export let pollOm = {
     responders: [
         {
             userId: "$UserId",
-            displayName: "",
+            displayName: "Test_FirstName Test_LastName",
             id: "-1"
         }
     ],
@@ -438,4 +438,3 @@ export let pollDdsDefinition =
 		}		
 	}
 };
-
