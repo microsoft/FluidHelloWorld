@@ -10,21 +10,6 @@ import { createTemporaryObject, create, update } from "./model";
 //import { pollDdsDefinition, pollOm, pollCardTemplate } from "./poll";
 import { checklistDdsDefinition, checklistOm, checklistCardTemplate, editCardTemplate, checklistStrings } from "./checklist";
 
-/* AC-TODO:
-    formatString like function.
-    Localization of static strings.
-*/
-
-// @ts-ignore
-export let ACFluid = {
-    "DDS" : checklistDdsDefinition,
-    "templates" : {
-        "default" : "view",
-        "view": checklistCardTemplate,
-        "edit": editCardTemplate,
-    },
-    "strings" : checklistStrings
-};
 
 /**
  * Render an IDiceRoller into a given div as a text character, with a button to roll it.

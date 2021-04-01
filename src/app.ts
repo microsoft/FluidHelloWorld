@@ -14,6 +14,7 @@ import { createGenericDDS_TLC, getGenericDDS_TLC, IGenericDDS }  from "./Generic
 
 import { aklog, akwarn, akerr, akinfo, aklogj, akdebug } from "./MyLog";
 import { ACFluid, renderAdaptiveCard } from "./CardRenderer";
+import { addCustomFunctions } from "./DDSFunctions";
 
 
 // In interacting with the service, we need to be explicit about whether we're creating a new document vs. loading
@@ -82,6 +83,11 @@ async function start2(): Promise<void> {
     w.w = w;
     let appDefStr = JSON.stringify(ACFluid);
     w.appDefnStr = appDefStr;
+
+    // update node_modules/adaptivecards-templating/lib/template-engine.js - line 198
+    // var parsedExpression = AEL.Expression.parse("`" + interpolatedString + "`", undefined);
+    // pass undefined instead of look up function.
+    addCustomFunctions();
 
     const modelDefinition = getModelDefinition(location.hash);
     let genericDDS: IGenericDDS;
@@ -204,6 +210,5 @@ async function start2(): Promise<void> {
 start2().catch((error) => {
     akerr("App.ts top level error:", error);
 });
-
 
 // todo: GFCContainerRuntimeFactory (GFC = GenericFluidComponent)

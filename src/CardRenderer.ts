@@ -4,11 +4,13 @@ import * as ACData from "adaptivecards-templating";
 import * as AdaptiveCards from "adaptivecards";
 import { createTemporaryObject, create, update } from "./model";
 import { aklogj } from "./MyLog";
+import { executeDDSExpr } from "./DDSFunctions";
 
 /* AC-TODO:
     formatString like function.
     Localization of static strings.
 */
+
 
 // @ts-ignore
 export let ACFluid = {
@@ -22,6 +24,7 @@ export let ACFluid = {
 };
 
 export function renderAdaptiveCard(dds: IGenericDDS, div: HTMLDivElement) {
+
     const wrapperDiv = document.createElement("div");
     // wrapperDiv.style.textAlign = "left";
     // wrapperDiv.style.verticalAlign = "middle";
@@ -67,10 +70,12 @@ export function renderAdaptiveCard(dds: IGenericDDS, div: HTMLDivElement) {
         ac.onExecuteAction = (a: any) => { 
             let newObj = null;
             if(a.id.startsWith("create")) {
+                executeDDSExpr(a.data.command);
                 newObj = create(a);
                 //card = template.expand({ $root : newObj });
                 //updateAdaptiveCardView();
             } else if(a.id.startsWith("update")) {
+                executeDDSExpr(a.data.command);
                 newObj = update(a);
                 // card = template.expand({ $root : update(a) });
                 // updateAdaptiveCardView();

@@ -15,7 +15,7 @@ export let checklistCardTemplate = {
             {
                 "id": "Title",
                 "type": "TextBlock",
-                "text": "${title}",
+                "text": '${myT(title)}',
                 "_$text.comment": "Show Checklist title",
                 "size": "large",
                 "maxLines": 3,
@@ -142,8 +142,9 @@ export let checklistCardTemplate = {
                 "_$title.comment": "If Checklist is active and there are items in it show 'Edit Checklist' button, else show 'Add Item' button if checklist is empty.If checklist is closed, show 'View Checklist' button.",
                 //"command": "LaunchActionPackageView",
                 type: 'Action.Submit',
-                "parameters": {
-                    "viewName": "UpdateView"
+                "data": {
+                    "viewName": "UpdateView",
+                    "command": "myT(\"hello\")",
                 }
 
             }
