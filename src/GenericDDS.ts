@@ -17,6 +17,8 @@ export interface IGenericDDS extends EventEmitter {
     on(event: "modelChanged", listener: () => void): this;
     getValueObject() : Promise<any>;
     setValueObject(v: any) : Promise<void>;
+
+    getAppTemplate() : any;
 }
 
 const appDefnKey = "_appDefn";
@@ -29,6 +31,8 @@ class GenericDDS extends DataObject implements IGenericDDS {
     getAppDefnTemplate() { 
         return (window as any).appDefnStr; 
     }
+
+    getAppTemplate() { return this._appTemplate; }
 
     private _ddsTemplate : any = null;
     private _appTemplate : any = null;
@@ -43,6 +47,11 @@ class GenericDDS extends DataObject implements IGenericDDS {
 
         this.root.set(appDefnKey, templateStr);
         this.root.set(rootKey, r);
+
+        if ('initData' in template)
+        {
+            this.setValueObject(template.initData);
+        }
     }
 
     protected async hasInitialized() {
@@ -137,15 +146,17 @@ class DDSBuilder implements IVisitor {
         // iterate over keys
         let sharedMapKeys = r["keys"];
 
-        for (let k in sharedMapKeys) {
-            let v = sharedMapKeys[k];
-            let result;
-            if (k == "id") {
-                result = generateId();
-            } else {
-                result = this.build(v);
+        if (sharedMapKeys) {
+            for (let k in sharedMapKeys) {
+                let v = sharedMapKeys[k];
+                let result;
+                if (k == "id") {
+                    result = generateId();
+                } else {
+                    result = this.build(v);
+                }
+                map.set(k, result); 
             }
-            map.set(k, result); 
         }
 
         return map.handle;
@@ -210,9 +221,11 @@ class DDSLoader implements IVisitor {
         // iterate over keys
         let sharedMapKeys = r["keys"];
 
-        for (let k in sharedMapKeys) {
-            let v = sharedMapKeys[k];
-            await this.load(v, map.get(k));
+        if (sharedMapKeys) {
+            for (let k in sharedMapKeys) {
+                let v = sharedMapKeys[k];
+                await this.load(v, map.get(k));
+            }
         }
 
         return map.handle;
@@ -286,10 +299,18 @@ class DDSValueGetter implements IVisitor {
         // iterate over keys
         let sharedMapKeys = r["keys"];
 
-        for (let k in sharedMapKeys) {
-            let defn = sharedMapKeys[k];
-            let v = await this.getValue(defn, map.get(k));
-            result[k] = v;
+        if (sharedMapKeys) {
+            for (let k in sharedMapKeys) {
+                let defn = sharedMapKeys[k];
+                let v = await this.getValue(defn, map.get(k));
+                result[k] = v;
+            }
+        }
+        else {
+            for (let k in map.keys()) {
+                result[k] = map.get(k);
+            }
+
         }
 
         //aklogj("DDSValueGetter::visitSharedMap end", result);
@@ -363,14 +384,21 @@ class DDSValueSetter implements IVisitor {
         // iterate over keys
         let sharedMapKeys = r["keys"];
 
-        for (let k in sharedMapKeys) {
-            if (k in v) {
-                let defn = sharedMapKeys[k];
-                let curretValue = map.get(k);
-                let res = await this.setValue(defn, curretValue, v[k]);
-                if (res !== undefined && res != curretValue) {
-                    map.set(k, res);
+        if (sharedMapKeys) {
+            for (let k in sharedMapKeys) {
+                if (k in v) {
+                    let defn = sharedMapKeys[k];
+                    let curretValue = map.get(k);
+                    let res = await this.setValue(defn, curretValue, v[k]);
+                    if (res !== undefined && res != curretValue) {
+                        map.set(k, res);
+                    }
                 }
+            }
+        }
+        else {
+            for (let k in v) {
+                map.set(k, v[k]);
             }
         }
 

@@ -6,6 +6,7 @@ import { createTemporaryObject, create, update } from "./model";
 import { aklogj } from "./MyLog";
 import { executeDDSExpr } from "./DDSFunctions";
 import { getToBeAddedPath, deepFind } from "./utils";
+import { pollCardTemplate, pollDdsDefinition, pollInitData, pollStrings } from "./poll";
 
 /* AC-TODO:
     formatString like function.
@@ -23,6 +24,16 @@ export let ACFluid = {
     },
     "strings" : checklistStrings
 };
+
+export let ACFluidPoll = {
+    "DDS" : pollDdsDefinition,
+    "templates" : {
+        "default" : "view",
+        "view" : pollCardTemplate,        
+    },
+    "strings" : pollStrings,
+    initData : pollInitData
+}
 
 export function renderAdaptiveCard(dds: IGenericDDS, div: HTMLDivElement) {
 
@@ -56,12 +67,15 @@ export function renderAdaptiveCard(dds: IGenericDDS, div: HTMLDivElement) {
         textArea.textContent = JSON.stringify(o, null, "\t");
 
         o.checklistActive = true;
-        o.strings = checklistOm.strings;
 
         cardDiv.innerHTML = '';
         let objectModel = o;
 
-        let template = new ACData.Template(checklistCardTemplate);
+        let appTemplate = dds.getAppTemplate();
+
+        o.strings = appTemplate.strings;
+        let templateJson = appTemplate.templates[ appTemplate.templates.default ];
+        let template = new ACData.Template(templateJson);
         //template = new ACData.Template(editCardTemplate);
         // createTemporaryObject(o);
         //  let card = template.expand({ $root : o });

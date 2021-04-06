@@ -13,7 +13,7 @@ import { renderDiceRoller } from "./view";
 import { createGenericDDS_TLC, getGenericDDS_TLC, IGenericDDS }  from "./GenericDDS";
 
 import { aklog, akwarn, akerr, akinfo, aklogj, akdebug } from "./MyLog";
-import { ACFluid, renderAdaptiveCard } from "./CardRenderer";
+import { ACFluid, ACFluidPoll, renderAdaptiveCard } from "./CardRenderer";
 import { addCustomFunctions } from "./DDSFunctions";
 
 
@@ -25,31 +25,27 @@ import { addCustomFunctions } from "./DDSFunctions";
 // ID to load from, so the URL for a document load will look something like http://localhost:8080/#1596520748752.
 // These policy choices are arbitrary for demo purposes, and can be changed however you'd like.
 
-// @ts-ignore
-let createNew = false;
-if (location.hash.length === 0) {
-    createNew = true;
-    location.hash = 'c1n'; // Date.now().toString();
+
+if (location.search.length === 0) {
+    location.search = "?docId=c1&app=poll&new=false&user=u1"; 
 }
-const documentId = location.hash.substring(1);
-document.title = documentId;
+
+
 
 function getModelDefinition(hash: string) {
-    if (hash.length <= 1) hash = '#c1n';
-    hash = hash.substring(1);
+    let q = new URLSearchParams(hash);
 
-    let createNew = false;
-    if (hash.endsWith('n')) {
-        createNew = true;
-        hash = hash.substring(0, hash.length - 1);
-    }
+    let o = {
+        id : q.get('docId') || "c1",
+        createNew: q.get('new') == "true" || false,
+        user: q.get('user') || 'u1',
+        app: q.get('app') || 'poll'
+    };
 
-    return {
-        id: hash,
-        createNew,
-        modelDefn: 'checklist'
-        // todo: initial data
-    }
+    document.title = o.id
+    aklogj('queryParams', o);
+
+    return o;
 }
 
 // @ts-ignore
@@ -78,50 +74,14 @@ async function start(): Promise<void> {
     });
 }
 
-async function start2(): Promise<void> {
+function setupGlobals() {
     let w = window as any;
     w.w = w;
-    let appDefStr = JSON.stringify(ACFluid);
-    w.appDefnStr = appDefStr;
-
-    // update node_modules/adaptivecards-templating/lib/template-engine.js - line 198
-    // var parsedExpression = AEL.Expression.parse("`" + interpolatedString + "`", undefined);
-    // pass undefined instead of look up function.
-    addCustomFunctions();
-
-    const modelDefinition = getModelDefinition(location.hash);
-    let genericDDS: IGenericDDS;
-
-    if (modelDefinition.createNew)
-    {
-        aklog("Creating new model for : " + modelDefinition.id);
-        genericDDS = await createGenericDDS_TLC(modelDefinition.id, appDefStr);
-    }
-    else
-    {
-        aklog("Using exisiting model for : " + modelDefinition.id);
-        genericDDS = await getGenericDDS_TLC(modelDefinition.id);
-    }
-
-    const logDDSValue = async () => {
-        let o = await genericDDS?.getValueObject();
-        aklogj("modelChanged", o);
-    };
-
-    const div = document.getElementById("content") as HTMLDivElement;
-    renderAdaptiveCard(genericDDS, div);
-
-    // Reload the page on any further hash changes, e.g. in case you want to paste in a different document ID.
-    window.addEventListener("hashchange", () => {
-        location.reload();
-    });
-
-    // genericDDS.on("modelChanged", logDDSValue);
-    // logDDSValue();
 
     w.g = {
-        gfc: genericDDS,
-        l : logDDSValue,
+        context: null,
+        gfc: null,
+        l : null,
         c0: {
             title: "Checklist 0 - empty",
             items: []
@@ -183,6 +143,56 @@ async function start2(): Promise<void> {
             ]
         },
     };
+
+}
+
+async function start2(): Promise<void> {
+
+    setupGlobals();
+    const modelDefinition = getModelDefinition(location.search);
+    let appDefStr = modelDefinition.app == "poll" ? JSON.stringify(ACFluidPoll) : JSON.stringify(ACFluid);
+
+    let w = window as any;
+    w.appDefnStr = appDefStr;
+    w.g.context = modelDefinition;
+
+
+    // update node_modules/adaptivecards-templating/lib/template-engine.js - line 198
+    // var parsedExpression = AEL.Expression.parse("`" + interpolatedString + "`", undefined);
+    // pass undefined instead of look up function.
+    addCustomFunctions();
+
+    let genericDDS: IGenericDDS;
+    if (modelDefinition.createNew)
+    {
+        aklog("Creating new model for : " + modelDefinition.id);
+        genericDDS = await createGenericDDS_TLC(modelDefinition.id, appDefStr);
+    }
+    else
+    {
+        aklog("Using exisiting model for : " + modelDefinition.id);
+        genericDDS = await getGenericDDS_TLC(modelDefinition.id);
+    }
+
+    const logDDSValue = async () => {
+        let o = await genericDDS?.getValueObject();
+        aklogj("modelChanged", o);
+    };
+
+    w.g.gfc = genericDDS;
+    w.g.l = logDDSValue;
+
+    const div = document.getElementById("content") as HTMLDivElement;
+    renderAdaptiveCard(genericDDS, div);
+
+    // Reload the page on any further hash changes, e.g. in case you want to paste in a different document ID.
+    window.addEventListener("hashchange", () => {
+        location.reload();
+    });
+
+    // genericDDS.on("modelChanged", logDDSValue);
+    // logDDSValue();
+
     
 
 

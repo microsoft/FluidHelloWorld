@@ -2,16 +2,17 @@ export let pollCardTemplate = {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
-    "body": [{
-        "id": "active",
-        "type": "TextBlock",
-        "$when":"${equals(status, 'Active')}",
-        "text": "${formatString(strings.dueByDate, ('' + dateString(action.expiryTime, 'SHORT') + ' ' + timeString(action.expiryTime)))}",
-        "_text.comment": "due date if poll is active",
-        "color": "default",
-        "size": "small",
-        "wrap": true
-    },
+    "body": [
+    // {
+    //     "id": "active",
+    //     "type": "TextBlock",
+    //     "$when":"${equals(status, 'Active')}",
+    //     "text": "${formatString(strings.dueByDate, ('' + dateString(action.expiryTime, 'SHORT') + ' ' + timeString(action.expiryTime)))}",
+    //     "_text.comment": "due date if poll is active",
+    //     "color": "default",
+    //     "size": "small",
+    //     "wrap": true
+    // },
     {
         "id": "close",
         "type": "TextBlock",
@@ -162,41 +163,17 @@ export let pollCardTemplate = {
     {
         "id": "Result",
         "title": "${strings.Results}",
-         type: 'Action.Submit',
-       // "command": "LaunchActionPackageView",
-        "parameters": {
-            "viewName": "DetailView"
-        }
+        type: 'Action.Submit',
+        // "command": "LaunchActionPackageView",
+        //"parameters": {
+        //    "viewName": "DetailView"
+        //}
     }
 ]
 };
 
 
-export let pollOm = {
-    title: 'My first Poll',
-    status: "ACTIVE",
-    options : [ 
-        {
-            id: "0",
-            displayName: 'Choice One',
-        }, 
-        {
-            id: "1",
-            displayName: 'I am the second choice'   
-        },
-        {
-            id: "2",
-            displayName: 'I am the third choice'    
-        }
-    ],
-    responders: [
-        {
-            userId: "$UserId",
-            displayName: "Test_FirstName Test_LastName",
-            id: "-1"
-        }
-    ],
-    "strings" : {
+export let pollStrings =  {
     "_Choice.comment": "{0} represent a number of choice",
     "ResultsVisibilitySettingsSummaryEveryone": "Results visible to everyone",
     "_ResultsVisibilitySettingsSummaryEveryone.comment": "Label to show when results visibilty is set to everyone",
@@ -410,31 +387,71 @@ export let pollOm = {
     "_$manifest.msTeamsProps.description.short.comment": "{MaxLength=80}",
     "$manifest.msTeamsProps.description.full": "Get your team's opinion by creating a poll in a chat or channel.​ Find the app in '…' under the message compose box​. Enter your question and choices and you're good to go. Stay on top of participation by tracking responses. Download poll result to share with your co-workers.",
     "_$manifest.msTeamsProps.description.full.comment": "{MaxLength=4000}"  
-    }
 };
+
+export let pollOm = {
+    title: 'My first Poll',
+    status: "ACTIVE",
+    options : [ 
+        {
+            id: "0",
+            displayName: 'Choice One',
+        }, 
+        {
+            id: "1",
+            displayName: 'I am the second choice'   
+        },
+        {
+            id: "2",
+            displayName: 'I am the third choice'    
+        }
+    ],
+    responders: [
+        {
+            userId: "$UserId",
+            displayName: "Test_FirstName Test_LastName",
+            id: "-1"
+        }
+    ],
+    "strings" : pollStrings
+}
 
 export let pollDdsDefinition = 
 {
 	"type": "SharedMap",
 	"keys": {
-		"title": "string",
-		"items": {
+		"title": { type: "string", default: "Enter poll question" },
+        status: { type: "string", default: "Active" },
+		"options": {
 			type: "SharedObjectSequence",
 			itemType: {
 				"type": "SharedMap",
 				"keys" : {
-					"id" : "number",
-                    "displayName": "string"
+					"id" : { type: "string" },
+                    "displayName": { type: "string", default: "<<choice>>" },
 				}
 			},
-            responders: {
-				"type": "SharedMap",
-				"keys" : {
-					"userId" : "string",
-                    "displayName": "string",
-                    "id": "number"
-				}
-			}
-		}		
+        },
+        responders:  {
+            type: "SharedMap"         
+        } 		
 	}
+};
+
+export let pollInitData = {
+    title: "Please choose your ice-cream flavour.",
+    options: [ 
+        {
+            id: "1",
+            displayName: "Vanilla"
+        },
+        {
+            id: "2",
+            displayName: "Chocolate"
+        },
+        {
+            id: "3",
+            displayName: "Butterscotch"
+        },
+    ]
 };
