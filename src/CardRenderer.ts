@@ -85,12 +85,20 @@ export function renderAdaptiveCard(dds: IGenericDDS, div: HTMLDivElement) {
         ac.onExecuteAction = (a: any) => { 
             let newObj = null;
             if(a.id.startsWith("create")) {
-                executeDDSExpr(a.data.command);
-                newObj = create(a, deepFind(ACFluid.DDS.keys, getToBeAddedPath(a.id)));
+                if ('command' in a.data) {
+                    executeDDSExpr(a.data.command);
+                    return;
+                }
+                else {
+                    newObj = create(a, deepFind(ACFluid.DDS.keys, getToBeAddedPath(a.id)));
+                }
                 //card = template.expand({ $root : newObj });
                 //updateAdaptiveCardView();
             } else if(a.id.startsWith("update")) {
-                executeDDSExpr(a.data.command);
+                if ('command' in a.data) {
+                    executeDDSExpr(a.data.command);
+                    return;
+                }
                 newObj = update(a);
                 // card = template.expand({ $root : update(a) });
                 // updateAdaptiveCardView();
