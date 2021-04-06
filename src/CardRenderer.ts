@@ -5,7 +5,7 @@ import * as AdaptiveCards from "adaptivecards";
 import { createTemporaryObject, create, update } from "./model";
 import { aklogj } from "./MyLog";
 import { executeDDSExpr } from "./DDSFunctions";
-import { getToBeAddedPath, deepFind } from "./utils";
+import { getToBeAddedPath, deepFind, getField } from "./utils";
 import { pollCardTemplate, pollDdsDefinition, pollInitData, pollStrings } from "./poll";
 
 /* AC-TODO:
@@ -99,7 +99,7 @@ export function renderAdaptiveCard(dds: IGenericDDS, div: HTMLDivElement) {
                     executeDDSExpr(a.data.command);
                     return;
                 }
-                newObj = update(a);
+                newObj = update(a, deepFind(ACFluid.DDS.keys, getToBeAddedPath(a.id)));
                 // card = template.expand({ $root : update(a) });
                 // updateAdaptiveCardView();
             }

@@ -66,7 +66,7 @@ export let pollCardTemplate = {
                     {
                         "$data": "${options}",
                        "title": "${displayName}",
-                       "value": '{"id":"${id}", "displayName": "${displayName}"}'
+                       "value": '{"optionsId":"${optionsId}", "displayName": "${displayName}"}'
                     }
                 ]
             }
@@ -154,7 +154,7 @@ export let pollCardTemplate = {
 ],
 "actions": [
     {
-        "id": "update.responders.basedOn.options",
+        "id": "update.responders.itemType.keys.basedOn.options",
        // "$when": "${equals(status, 'Active')}",
         "title": "${strings.Submit}",
         type: 'Action.Submit'
@@ -394,15 +394,15 @@ export let pollOm = {
     status: "ACTIVE",
     options : [ 
         {
-            id: "0",
+            optionsId: "0",
             displayName: 'Choice One',
         }, 
         {
-            id: "1",
+            optionsId: "1",
             displayName: 'I am the second choice'   
         },
         {
-            id: "2",
+            optionsId: "2",
             displayName: 'I am the third choice'    
         }
     ],
@@ -410,7 +410,7 @@ export let pollOm = {
         {
             userId: "$UserId",
             displayName: "Test_FirstName Test_LastName",
-            id: "-1"
+            optionsId: "-1"
         }
     ],
     "strings" : pollStrings
@@ -427,13 +427,21 @@ export let pollDdsDefinition =
 			itemType: {
 				"type": "SharedMap",
 				"keys" : {
-					"id" : { type: "string" },
+					"optionsId" : { type: "string" },
                     "displayName": { type: "string", default: "<<choice>>" },
 				}
 			},
         },
-        responders:  {
-            type: "SharedMap"         
+        "responders":  {
+            type: "SharedObjectSequence",
+			itemType: {
+            "type": "SharedMap",
+            "keys" : {
+                "userId" : { type: "string" },
+                "displayName": { type: "string" },
+                "optionsId": { type: "string" }
+            }   
+        }
         } 		
 	}
 };
@@ -442,16 +450,17 @@ export let pollInitData = {
     title: "Please choose your ice-cream flavour.",
     options: [ 
         {
-            id: "1",
+            optionsId: "1",
             displayName: "Vanilla"
         },
         {
-            id: "2",
+            optionsId: "2",
             displayName: "Chocolate"
         },
         {
-            id: "3",
+            optionsId: "3",
             displayName: "Butterscotch"
         },
-    ]
+    ],
+    responders: []
 };

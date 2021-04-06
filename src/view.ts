@@ -10,7 +10,7 @@ import { createTemporaryObject, create, update } from "./model";
 //import { pollDdsDefinition, pollOm, pollCardTemplate } from "./poll";
 import { checklistDdsDefinition, checklistOm, checklistCardTemplate, editCardTemplate, checklistStrings } from "./checklist";
 import { getToBeAddedPath, deepFind } from "./utils";
-import { ACFluid } from "./CardRenderer";
+import { ACFluid, ACFluidPoll } from "./CardRenderer";
 
 
 
@@ -80,7 +80,7 @@ export function renderDiceRoller(diceRoller: IDiceRoller, div: HTMLDivElement) {
                 card = template.expand({ $root : create(a, deepFind(ACFluid.DDS.keys, getToBeAddedPath(a.id))) });
                 updateDiceChar();
             } else if(a.id.startsWith("update")) {
-                card = template.expand({ $root : update(a) });
+                card = template.expand({ $root : update(a, deepFind(ACFluidPoll.DDS.keys, getToBeAddedPath(a.id))) });
                 updateDiceChar();
             }
         }

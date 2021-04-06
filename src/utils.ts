@@ -6,11 +6,11 @@ export function createGenericItem(value: any, temporaryObject: any, toBeAddedFie
     return createNewItem(value, temporaryObject[toBeAddedField], basedOnField);
 }
 
-export function modifyItems(value: any, temporaryObject: any, toBeModifiedField: string, basedOnField: string) {
+export function modifyItems(value: any, temporaryObject: any, toBeModifiedField: string, basedOnField: string, structure: any) {
     let itemList = JSON.parse('[' + value + ']');
     for(let i =0; i< itemList.length; i++) {
         //replace if exists, create otherwise
-        let element = createOrUpdateItem(itemList[i], temporaryObject[basedOnField], temporaryObject[toBeModifiedField]);
+        let element = createOrUpdateItem(itemList[i], temporaryObject[basedOnField], structure);
         let valChanged = false;
         if(deepFind(temporaryObject, toBeModifiedField)) {
             Object.keys(temporaryObject[toBeModifiedField]).forEach(function(key) { 
@@ -38,11 +38,18 @@ export function getField(key: string, index: number) {
     return paths[index];
 }
 
+// export function getToBeAddedPath(key: string) {
+//     return key.substring("create.items.basedOn.".length);
+// }
+
 export function getToBeAddedPath(key: string) {
-    return key.substring("create.items.basedOn.".length);
+    let paths = key.split('.');
+    let result = paths[1];
+    for(let i =2; i< 4; i++) {
+    result = result + "." + paths[i];
+    }
+    return result;
 }
-
-
 
 export function generateTimeStamp() {
     return new Date().getTime().toString();

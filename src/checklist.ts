@@ -129,7 +129,7 @@ export let checklistCardTemplate = {
             //     type: 'Action.Submit'
             // },
             {
-                "id": "update.items.basedOn.items.itemType.keys",
+                "id": "update.items.itemType.keys.basedOn.items",
                 "$when": "${and(equals(checklistActive, true),greater(count(where(items, x,x.status == false)),0))}",
                 "_$when.comment": "When Checklist is active and count of ACTIVE or open items is greater than 0 in that case, show the 'Delete Item' button.",
                 "title": "Complete Items",
@@ -137,7 +137,7 @@ export let checklistCardTemplate = {
                 type: 'Action.Submit'
             },
             {
-                "id": "create.items.basedOn.items.itemType.keys",
+                "id": "create.items.itemType.keys.basedOn.items",
                 "title": "Add Open Items",
                 "_$title.comment": "If Checklist is active and there are items in it show 'Edit Checklist' button, else show 'Add Item' button if checklist is empty.If checklist is closed, show 'View Checklist' button.",
                 //"command": "LaunchActionPackageView",

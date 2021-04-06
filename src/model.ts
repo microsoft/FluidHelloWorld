@@ -14,10 +14,10 @@ export function create(a: any, keysToAdd: any) {
 }
 
 
-export function update(a: any) {
+export function update(a: any, keysToAdd: any) {
     if(!isEmpty(a.data)) {
         Object.keys(a.data).forEach(function(key) {
-            modifyItems(a.data[key], temporaryObject, getField(a.id, 1), getField(a.id, 3));     
+            modifyItems(a.data[key], temporaryObject, getField(a.id, 1), getField(a.id, 5), keysToAdd);     
     });
 } 
     return temporaryObject;
