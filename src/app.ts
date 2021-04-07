@@ -14,7 +14,7 @@ import { createGenericDDS_TLC, getGenericDDS_TLC, IGenericDDS }  from "./Generic
 
 import { aklog, akwarn, akerr, akinfo, aklogj, akdebug } from "./MyLog";
 import { ACFluid, ACFluidPoll, renderAdaptiveCard } from "./CardRenderer";
-import { addCustomFunctions } from "./DDSFunctions";
+import { addCustomFunctions, fx_pivot } from "./DDSFunctions";
 
 
 // In interacting with the service, we need to be explicit about whether we're creating a new document vs. loading
@@ -143,6 +143,31 @@ function setupGlobals() {
             ]
         },
     };
+
+    w.g.tbl = [
+		{
+			"userId": "u2",
+			"displayName": "Butterscotch",
+			"optionsId": "3"
+		},
+        {
+			"userId": "u1",
+			"displayName": "Chocolate",
+			"optionsId": "2"
+		},
+        {
+			"userId": "u3",
+			"displayName": "Chocolate",
+			"optionsId": "2"
+		},
+	];
+
+    fx_pivot(w.g.tbl, "displayName", 
+            {
+                "aggregateFunction" : "count",
+                "aggregateColumn" : "userId"
+            },
+            );
 
 }
 

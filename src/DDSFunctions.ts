@@ -10,7 +10,7 @@ interface Aggregator {
     aggregateColumn: string;
 }
 
-function fx_pivot(args: any[]) : any {
+export function fx_pivot(...args: any[]) : any {
 
     let table: any[] = args[0];
     let pivotColumn : string = args[1];
@@ -43,10 +43,18 @@ function fx_pivot(args: any[]) : any {
     return result;
 }
 
+function addCustomFunction(name: string, fn : any) {
+    let w : any = window;
+    if (!(fn in w.g)) { w.g.fn = {}; }
+    w.g.fn[name] = fn;
+
+    AdaptiveExpressions.Expression.functions.add(name, fn);
+}
+
 export function addCustomFunctions()
 {
-    AdaptiveExpressions.Expression.functions.add(myT.name, myT);
-    AdaptiveExpressions.Expression.functions.add(fx_pivot.name, fx_pivot);
+    addCustomFunction(myT.name, myT);
+    addCustomFunction(fx_pivot.name, fx_pivot);
 }
 
 export function executeDDSExpr(ddsExpr: string) {
