@@ -162,12 +162,12 @@ function setupGlobals() {
 		},
 	];
 
-    fx_pivot(w.g.tbl, "displayName", 
-            {
-                "aggregateFunction" : "count",
-                "aggregateColumn" : "userId"
-            },
-            );
+    // fx_pivot(w.g.tbl, "displayName", 
+    //         {
+    //             "aggregateFunction" : "count",
+    //             "aggregateColumn" : "userId"
+    //         },
+    //         );
 
 }
 

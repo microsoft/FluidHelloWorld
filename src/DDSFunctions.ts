@@ -12,9 +12,15 @@ interface Aggregator {
 
 export function fx_pivot(...args: any[]) : any {
 
-    let table: any[] = args[0];
+    let table: any[] = args[0][0];
     let pivotColumn : string = args[1];
     let agg: Aggregator = args[2];
+
+    pivotColumn = "displayName";
+    agg = {
+        "aggregateFunction" : "count",
+        "aggregateColumn" : "userId"
+    };
 
     let o : any = {};
     
@@ -38,9 +44,10 @@ export function fx_pivot(...args: any[]) : any {
         result.push({ k: k, v: o[k]});
     }
 
-    result = result.sort((a, b) => { return b.v - a.v; } );
+    let result2 = null;
+    result2 = result.sort((a, b) => { return b.v - a.v; } );
 
-    return result;
+    return result2;
 }
 
 function addCustomFunction(name: string, fn : any) {

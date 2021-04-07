@@ -171,11 +171,14 @@ export let pollCardTemplate = {
                 {
                     "type": "Container",
                     "id": "resultsView",
+                    "$data" : "${fx_pivot(responders)}",
+                    //"label": "The poll results are here!!",
                     "items": [
                         {
-                            "$data": "${nameCard.fields}",
+                            //"$data": "${nameCard.fields}",
                             "type": "Input.Text",
-                            "label": "The poll results are here!!"
+                            "value" : "${k} ${v}"
+                            //"label": "The poll results are here!!"
                         }
                     ]
                 }
@@ -367,7 +370,7 @@ export let pollStrings =  {
     "ResultEveryone": "Responses are visible to everyone",
     "ResultCreator": "Responses are visible to creator only",
     "Submit": "Submit Vote",
-    "Results": "View Result",
+    "Results": "Toggle Result",
     "BeTheFirstOneToRespond": "Be the first one to take the poll",
     "_BeTheFirstOneToRespond.comment": "This string is shown if no one has responded.",
     "OneResponded": "{0} responded",
