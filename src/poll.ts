@@ -163,11 +163,24 @@ export let pollCardTemplate = {
     {
         "id": "Result",
         "title": "${strings.Results}",
-        type: 'Action.Submit',
-        // "command": "LaunchActionPackageView",
-        //"parameters": {
-        //    "viewName": "DetailView"
-        //}
+        type: 'Action.ShowCard',
+        "card": {
+            "type": "AdaptiveCard",
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "body": [
+                {
+                    "type": "Container",
+                    "id": "resultsView",
+                    "items": [
+                        {
+                            "$data": "${nameCard.fields}",
+                            "type": "Input.Text",
+                            "label": "The poll results are here!!"
+                        }
+                    ]
+                }
+            ],
+        }
     }
 ]
 };
