@@ -90,7 +90,7 @@ export function renderAdaptiveCard(dds: IGenericDDS, div: HTMLDivElement) {
                     return;
                 }
                 else {
-                    newObj = create(a, deepFind(ACFluid.DDS.keys, getToBeAddedPath(a.id)));
+                    newObj = create(a, deepFind(appTemplate.DDS.keys, getToBeAddedPath(a.id)));
                 }
                 //card = template.expand({ $root : newObj });
                 //updateAdaptiveCardView();
@@ -99,7 +99,7 @@ export function renderAdaptiveCard(dds: IGenericDDS, div: HTMLDivElement) {
                     executeDDSExpr(a.data.command);
                     return;
                 }
-                newObj = update(a, deepFind(ACFluid.DDS.keys, getToBeAddedPath(a.id)));
+                newObj = update(a, deepFind(appTemplate.DDS.keys, getToBeAddedPath(a.id)));
                 // card = template.expand({ $root : update(a) });
                 // updateAdaptiveCardView();
             }
