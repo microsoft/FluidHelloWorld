@@ -1,6 +1,3 @@
-import { constants } from "./constants";
-
-
 
 export function createGenericItem(value: any, temporaryObject: any, toBeAddedField: string, basedOnField: string) {
     return createNewItem(value, temporaryObject[toBeAddedField], basedOnField);
@@ -15,7 +12,7 @@ export function modifyItems(value: any, temporaryObject: any, toBeModifiedField:
         if(deepFind(temporaryObject, toBeModifiedField)) {
             Object.keys(temporaryObject[toBeModifiedField]).forEach(function(key) { 
                 let currentElement = temporaryObject[toBeModifiedField][key];
-                if(currentElement.id == element.id) {
+                if((currentElement.id && currentElement.id == element.id) || (currentElement.userId && currentElement.userId == element.userId)) {
                         temporaryObject[toBeModifiedField][key] = element;
                         valChanged = true;
                 }
@@ -83,7 +80,7 @@ function createOrUpdateItem(item: any, originalItem:any, toBeChangedItem: any) {
 
 function createValuesBasedOnKey(key: string, oldValue: any, value: any) {
     if(key == "userId" || value == "$UserId") {
-        return constants.userID;
+        return (window as any).g.context.user;
     }
     else if(key=="timestamp" || value == "${Timestamp}") {
         return generateTimeStamp();
@@ -97,12 +94,12 @@ function createValuesBasedOnKey(key: string, oldValue: any, value: any) {
 
 function modifyValuesBasedOnKey(key: string, value: string, changedItem: any, originalItem: any) {
     if(key == "userId" || value == "$UserId") {
-        return constants.userID;
+        return (window as any).g.context.user;
     }
     else if(key=="timestamp" || value == "${timestamp}") {
         return generateTimeStamp();
-    } else if(key=="displayName" || value == "${displayName}") {
-        return constants.displayName;
+    // } else if(key=="displayName" || value == "${displayName}") {
+    //     return constants.displayName;
     } else if(deepFind(changedItem, key)) {
         return deepFind(changedItem, key);
     }
