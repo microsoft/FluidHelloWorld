@@ -155,10 +155,8 @@ export let pollCardTemplate = {
 "actions": [
     {
         "id": "update.responders.itemType.keys.basedOn.options",
-       // "$when": "${equals(status, 'Active')}",
         "title": "${strings.Submit}",
         type: 'Action.Submit'
-       // "command": "SubmitActionDataRow"
     },
     {
         "id": "Result",
@@ -169,18 +167,15 @@ export let pollCardTemplate = {
             "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
             "body": [
                 {
-                    "type": "Container",
+                    "type": "TextBlock",
+                    "text" : "Poll results:",
+                    "color" : "accent",
+                    "size" : "large"
+                },
+                {
+                    "type": "FactSet",
                     "id": "resultsView",
-                    "$data" : "${fx_pivot(responders)}",
-                    //"label": "The poll results are here!!",
-                    "items": [
-                        {
-                            //"$data": "${nameCard.fields}",
-                            "type": "Input.Text",
-                            "value" : "${k} ${v}"
-                            //"label": "The poll results are here!!"
-                        }
-                    ]
+                    "facts": '${fx_pivot(responders, "displayName", "count", "userId")}'
                 }
             ],
         }

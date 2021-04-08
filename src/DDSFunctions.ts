@@ -10,17 +10,12 @@ interface Aggregator {
     aggregateColumn: string;
 }
 
-export function fx_pivot(...args: any[]) : any {
+export function fx_pivot(args: any[]) : any {
 
-    let table: any[] = args[0][0];
+    let table: any[] = args[0];
     let pivotColumn : string = args[1];
-    let agg: Aggregator = args[2];
-
-    pivotColumn = "displayName";
-    agg = {
-        "aggregateFunction" : "count",
-        "aggregateColumn" : "userId"
-    };
+    let aggFunc = args[2];
+    let aggCol = args[3];
 
     let o : any = {};
     
@@ -30,10 +25,10 @@ export function fx_pivot(...args: any[]) : any {
             let v = (row[pivotColumn]).toString();
             if (!(v in o)) { o[v] = 0 }
             
-            if (!(agg.aggregateColumn in row)) continue;
-            switch (agg.aggregateFunction) {
+            if (!(aggCol in row)) continue;
+            switch (aggFunc) {
                 case "count" : o[v]++; break;
-                case "sum"   : o[v] += row[agg.aggregateColumn]; break;
+                case "sum"   : o[v] += row[aggCol]; break;
                 default: break;
             }
         }
@@ -41,11 +36,11 @@ export function fx_pivot(...args: any[]) : any {
 
     let result: any[] = [];
     for (let k in o) {
-        result.push({ k: k, v: o[k]});
+        result.push({ title: k, value: o[k].toString() });
     }
 
     let result2 = null;
-    result2 = result.sort((a, b) => { return b.v - a.v; } );
+    result2 = result.sort((a, b) => { return b.value - a.value; } );
 
     return result2;
 }
