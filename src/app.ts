@@ -3,37 +3,31 @@
  * Licensed under the MIT License.
  */
 
-import {
-    IKeyValueDataObject,
-    KeyValueInstantiationFactory,
-} from '@fluid-experimental/data-objects';
-import { Fluid } from '@fluid-experimental/fluid-static';
+import TinyliciousClient from '@fluid-experimental/tinylicious-client';
+import { ISharedMap, SharedMap } from "@fluidframework/map";
 import { getContainerId } from './utils';
-import { jsRenderView as renderView } from './view';
+import { vueRenderView as renderView } from './view';
 
-const { containerId, isNew } = getContainerId();
+TinyliciousClient.init();
+
+const { id, isNew } = getContainerId();
 
 async function start(): Promise<void> {
-    let keyValueDataObject: IKeyValueDataObject;
 
-    if (isNew) {
-        const fluidDocument = await Fluid.createDocument(
-            containerId,
-            [KeyValueInstantiationFactory.registryEntry]
-        );
-        keyValueDataObject = await fluidDocument.createDataObject(
-            KeyValueInstantiationFactory.type,
-            'dice'
-        );
-    } else {
-        const fluidDocument = await Fluid.getDocument(
-            containerId,
-            [KeyValueInstantiationFactory.registryEntry]
-        );
-        keyValueDataObject = await fluidDocument.getDataObject('dice');
-    }
+    const containerSchema = {
+        name: 'hello-world-demo-container',
+        initialObjects: { dice: SharedMap }
+    };
 
-    renderView(keyValueDataObject, document.getElementById('content') as HTMLDivElement);
+    const fluidContainer = isNew
+        ? await TinyliciousClient.createContainer({ id }, containerSchema)
+        : await TinyliciousClient.getContainer({ id }, containerSchema);
+
+
+    renderView(
+        fluidContainer.initialObjects.dice as ISharedMap, 
+        document.getElementById('content') as HTMLDivElement
+    );
 }
 
 start().catch((error) => console.error(error));

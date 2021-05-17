@@ -5,36 +5,30 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { IKeyValueDataObject } from '@fluid-experimental/data-objects';
+import { ISharedMap } from "@fluidframework/map";
+import { IRenderView } from '../types';
 
-/**
- * Render Dice into a given HTMLElement as a text character, with a button to roll it.
- * @param dataObject - The Data Object to be rendered
- * @param div - The HTMLElement to render into
- */
-export function reactRenderView(dataObject: IKeyValueDataObject, div: HTMLDivElement) {
-    ReactDOM.render(<ReactView dataObject={dataObject} />, div);
+export const reactRenderView: IRenderView = (data, div) => {
+    ReactDOM.render(<ReactView data={data} />, div);
 }
 
-interface IReactViewProps {
-    dataObject: IKeyValueDataObject
+interface ReactViewProps {
+    data: ISharedMap
 }
 
-const ReactView = (props: IReactViewProps) => {
-    const { dataObject } = props;
+const ReactView = (props: ReactViewProps) => {
+    const { data } = props;
     const [diceValue, setDiceValue] = React.useState(1);
 
     const diceCharacter = String.fromCodePoint(0x267F + diceValue);
-    const rollDice = () => dataObject.set("dice", Math.floor(Math.random() * 6) + 1);
-    const syncLocalAndFluidState = () => setDiceValue(dataObject.get("dice"));
+    const rollDice = () => data.set("dice", Math.floor(Math.random() * 6) + 1);
 
     React.useEffect(() => {
-        if (dataObject.get("dice")) {
-            syncLocalAndFluidState();
-        }
-        dataObject.on("changed", syncLocalAndFluidState);
+        const syncLocalAndFluidState = () => setDiceValue(data.get("dice") || 1);
+        syncLocalAndFluidState();
+        data.on("valueChanged", syncLocalAndFluidState);
         return () => {
-            dataObject.off("changed", syncLocalAndFluidState);
+            data.off("valueChanged", syncLocalAndFluidState);
         };
     });
     return (
