@@ -4,14 +4,13 @@
  */
 
 import { createApp } from 'vue';
-import { IKeyValueDataObject } from '@fluid-experimental/data-objects';
-
+import { IRenderView } from "../types";
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.
  * @param dataObject - The Data Object to be rendered
  * @param div - The HTMLElement to render into
  */
-export function vueRenderView(dataObject: IKeyValueDataObject, div: HTMLDivElement) {
+export const  vueRenderView: IRenderView = (data, div) => {
     const app = createApp({
         template: `
         <div style="text-align: center" >
@@ -33,17 +32,17 @@ export function vueRenderView(dataObject: IKeyValueDataObject, div: HTMLDivEleme
         },
         methods: {
             rollDice() {
-                dataObject.set('dice', Math.floor(Math.random() * 6) + 1);
+                data.set('dice', Math.floor(Math.random() * 6) + 1);
             },
             syncLocalAndFluidState() {
-                this.diceValue = dataObject.get('dice');
+                this.diceValue = data.get('dice');
             },
         },
         mounted() {
-            dataObject.on('changed', this.syncLocalAndFluidState);
+            data.on('valueChanged', this.syncLocalAndFluidState);
         },
         unmounted() {
-            dataObject.off('changed', this.syncLocalAndFluidState);
+            data.off('valueChanged', this.syncLocalAndFluidState);
         },
     });
 

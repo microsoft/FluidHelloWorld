@@ -13,12 +13,12 @@
  * hash value as the ID.
  */
 
-export const getContainerId = (): { containerId: string; isNew: boolean } => {
+export const getContainerId = (): { id: string; isNew: boolean } => {
     let isNew = false;
     if (location.hash.length === 0) {
         isNew = true;
         location.hash = Date.now().toString();
     }
-    const containerId = location.hash.substring(1);
-    return { containerId, isNew };
+    const id = location.hash.substring(1);
+    return { id, isNew };
 };
