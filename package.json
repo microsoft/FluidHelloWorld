@@ -7,14 +7,15 @@
     "author": "Microsoft",
     "scripts": {
         "build": "webpack --env prod --env clean",
-        "build:dev": "webpack --env.clean",
+        "build:dev": "webpack --env clean",
         "start": "concurrently \"npm:start:server\" \"npm:start:client\"",
         "start:client": "webpack serve",
         "start:server": "tinylicious"
     },
     "dependencies": {
-        "@fluid-experimental/tinylicious-client": "^0.39.3",
-        "@fluidframework/map": "^0.39.3",
+        "@fluid-experimental/fluid-framework": "^0.41.0",
+        "@fluid-experimental/fluid-static": "^0.41.0",
+        "@fluid-experimental/tinylicious-client": "^0.41.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "vue": "^3.0.5"
