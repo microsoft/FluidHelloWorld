@@ -61,14 +61,14 @@ myMap.set('MyDataKey', 'some new data'); // logs { key: 'MyDataKey', path: '/', 
 ### Creating a Fluid Container
 
 [Fluid containers](https://fluidframework.com/docs/glossary/#container) are your application's entry point to the Fluid
-Framework. Containers can be initialized with a set of `initialObjects` that 
+Framework.
 
 In order to create or load a Fluid container we need to know its ID. Typically applications will use a service or user
 interaction to create and retrieve these IDs, similar to a file picker or loading a saved game instance.
 
 For demo purposes the `getContainerId` function simplifies ID creation by generating and returning a hash of the current
 timestamp as the new container ID. If the URL already has a hash, it assumes that a container with that ID has already
-been created and returns that hash value as the ID. The function also returns `isNew`, a boolean value indicating
+been created and returns that hash value as the ID. The function also returns `isNew`, a Boolean value indicating
 whether the container is to be created or loaded.
 
 `TinyliciousClient` is the service client we will use to connect to a local Fluid server. It also provides methods to
@@ -84,7 +84,7 @@ configuration and container schema.
 - `serviceConfig` is will vary depending on the service. `TinyliciousClient` only requires an `id` for the container.
 - `containerSchema` defines the name of the container and a set of `initialObjects`. `initialObjects` is a map that
   defines Fluid objects that will be created when the container is first created. The key provided can be used to access
-  the initialObject from the container like so: `myContainerInstance.initialObjects.myKey`.
+  the initialObject from the container like so: `fluidContainer.initialObjects.myKey`.
 
 ```ts
 const { id, isNew } = getContainerId();
