@@ -39,10 +39,11 @@ groupings as well as provide an API surface to your data.
 In subsequent demos we will look at building custom DataObjects, but for many use cases (including this dice roller) the
 built in distributed data structures will work perfectly.
 
+#### Using SharedMap Distributed Data Structure
+
 The SharedMap distributed data structure provides the basic functionality to set and get data of any JSON-serializable
 type on a given key, and inform your application when the data in that key changes.
 
-#### Using SharedMap Distributed Data Structure
 
 ```ts
 // Set the string 'some data' to the key 'MyDataKey'
