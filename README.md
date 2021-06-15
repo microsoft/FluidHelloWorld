@@ -42,7 +42,7 @@ built in distributed data structures will work perfectly.
 The SharedMap distributed data structure provides the basic functionality to set and get data of any JSON-serializable
 type on a given key, and inform your application when the data in that key changes.
 
-#### Using KeyValuePair DataObject
+#### Using SharedMap Distributed Data Structure
 
 ```ts
 // Set the string 'some data' to the key 'MyDataKey'
