@@ -13,8 +13,8 @@
         "start:server": "tinylicious"
     },
     "dependencies": {
-        "@fluid-experimental/tinylicious-client": "^0.39.3",
-        "@fluidframework/map": "^0.39.3",
+        "@fluid-experimental/tinylicious-client": "^0.41.0",
+        "@fluidframework/map": "^0.41.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "vue": "^3.0.5"

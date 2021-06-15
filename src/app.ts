@@ -19,10 +19,9 @@ async function start(): Promise<void> {
         initialObjects: { dice: SharedMap }
     };
 
-    const fluidContainer = isNew
+    const [fluidContainer] = isNew
         ? await TinyliciousClient.createContainer({ id }, containerSchema)
         : await TinyliciousClient.getContainer({ id }, containerSchema);
-
 
     renderView(
         fluidContainer.initialObjects.dice as ISharedMap, 
