@@ -3,12 +3,27 @@
  * Licensed under the MIT License.
  */
 
+import { FrsConnectionConfig, FrsClient } from '@fluid-experimental/frs-client';
 import TinyliciousClient from '@fluid-experimental/tinylicious-client';
 import { ISharedMap, SharedMap } from "@fluidframework/map";
 import { getContainerId } from './utils';
 import { vueRenderView as renderView } from './view';
 
-TinyliciousClient.init();
+// Define the server we will be using and initialize Fluid
+const useFrs = true;
+
+const connectionConfig: FrsConnectionConfig = {
+  type: "key",
+  tenantId: "",
+  key: "",
+  orderer: "",
+  storage: "",
+};
+if (useFrs) {
+  FrsClient.init(connectionConfig);
+} else {
+  TinyliciousClient.init();
+}
 
 const { id, isNew } = getContainerId();
 
@@ -19,9 +34,10 @@ async function start(): Promise<void> {
         initialObjects: { dice: SharedMap }
     };
 
-    const fluidContainer = isNew
-        ? await TinyliciousClient.createContainer({ id }, containerSchema)
-        : await TinyliciousClient.getContainer({ id }, containerSchema);
+    const client = useFrs ? FrsClient : TinyliciousClient;
+    const [fluidContainer] = isNew
+        ? (await client.createContainer({ id }, containerSchema))
+        : (await client.getContainer({ id }, containerSchema));
 
 
     renderView(
