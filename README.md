@@ -82,7 +82,7 @@ such as default port.
 Before we can access any Fluid data, we need to make a call to the `TinyliciousClient` with necessary service
 configuration and container schema.
 
-- `serviceConfig` is will vary depending on the service. `TinyliciousClient` only requires an `id` for the container.
+- `serviceConfig` will vary depending on the service. `TinyliciousClient` only requires an `id` for the container.
 - `containerSchema` defines the name of the container and a set of `initialObjects`. `initialObjects` is a map that
   defines Fluid objects that will be created when the container is first created. The key provided can be used to access
   the initialObject from the container like so: `fluidContainer.initialObjects.myKey`.
