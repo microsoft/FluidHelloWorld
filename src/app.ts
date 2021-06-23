@@ -3,8 +3,9 @@
  * Licensed under the MIT License.
  */
 
+import { ISharedMap, SharedMap } from "@fluid-experimental/fluid-framework";
+import type { ContainerSchema } from '@fluid-experimental/fluid-static';
 import TinyliciousClient from '@fluid-experimental/tinylicious-client';
-import { ISharedMap, SharedMap } from "@fluidframework/map";
 import { getContainerId } from './utils';
 import { vueRenderView as renderView } from './view';
 
@@ -12,19 +13,20 @@ TinyliciousClient.init();
 
 const { id, isNew } = getContainerId();
 
-async function start(): Promise<void> {
+async function start() {
+    const serviceConfig = { id };
 
-    const containerSchema = {
+    const containerSchema: ContainerSchema = {
         name: 'hello-world-demo-container',
         initialObjects: { dice: SharedMap }
     };
 
     const [fluidContainer] = isNew
-        ? await TinyliciousClient.createContainer({ id }, containerSchema)
-        : await TinyliciousClient.getContainer({ id }, containerSchema);
+        ? await TinyliciousClient.createContainer(serviceConfig, containerSchema)
+        : await TinyliciousClient.getContainer(serviceConfig, containerSchema);
 
     renderView(
-        fluidContainer.initialObjects.dice as ISharedMap, 
+        fluidContainer.initialObjects.dice as ISharedMap,
         document.getElementById('content') as HTMLDivElement
     );
 }

@@ -1,7 +1,7 @@
 # @fluid-example/hello-world
 
-This repository contains a simple app that enables all connected clients to roll a dice and view the result.
-For a walkthrough of this example and how it works, check out the [tutorial documentation](https://aka.ms/fluid/tutorial).
+This repository contains a simple app that enables all connected clients to roll a dice and view the result. For a
+walkthrough of this example and how it works, check out the [tutorial documentation](https://aka.ms/fluid/tutorial).
 
 ## Requirements
 
@@ -18,44 +18,91 @@ npm start
 
 ## Tutorial
 
-In this walkthrough, we’ll learn about using the Fluid Framework by building a simple DiceRoller application together. To get started, make sure you have cloned this repo and followed the steps above.
+In this walkthrough, we’ll learn about using the Fluid Framework by building a simple DiceRoller application together.
+To get started, make sure you have cloned this repo and followed the steps above.
 
-In our DiceRoller app we’ll show users a die with a button to roll it. When the die is rolled, we’ll use Fluid Framework to sync the data across clients so everyone sees the same result. We’ll do this using the following steps.
+In our DiceRoller app we’ll show users a die with a button to roll it. When the die is rolled, we’ll use Fluid Framework
+to sync the data across clients so everyone sees the same result. We’ll do this using the following steps.
 
-1. Choose a DataObject to store our Fluid state
-2. Create a container to hold an instance of that Fluid state
-3. Write a view to render and modify that Fluid state
+1. Choose a Fluid data structure to store our Fluid state.
+2. Create a container to hold an instance of that Fluid state.
+3. Write a view to render and modify that Fluid state.
 
-### Choosing a DataObject
+### Choosing a Data Structure
 
-A Fluid [DataObject](https://fluidframework.com/docs/glossary/#dataobject) is "designed to organize distributed data structures into semantically meaningful groupings for your scenario, as well as, providing an API surface to your data".
+Fluid's distributed data structures underpin all Fluid apps. While distributed data structures are low-level data
+structures, they provide familiar APIs and consistent merge behavior, and can serve a number of needs directly.
 
-In subsequent demos we will look at building custom DataObjects, but for many use cases (including this dice roller) the built in KeyValuePair DataObject will work perfectly.
+Fluid also provides DataObjects, which are designed to organize distributed data structures into semantically meaningful
+groupings as well as provide an API surface to your data.
 
-The KVPair DataObject provides the basic functionality to set and get data of any type on a given key, and inform your application when the data in that key changes.
+In subsequent demos we will look at building custom DataObjects, but for many use cases (including this dice roller) the
+built in distributed data structures will work perfectly.
 
-#### Using KeyValuePair DataObject
+#### Using SharedMap Distributed Data Structure
+
+The SharedMap distributed data structure provides the basic functionality to set and get data of any JSON-serializable
+type on a given key, and inform your application when the data in that key changes.
+
 
 ```ts
 // Set the string 'some data' to the key 'MyDataKey'
-kvpair.set('MyDataKey', 'some data');
+myMap.set('MyDataKey', 'some data');
 
 // Retrieve the string stored in 'MyDataKey'
-kvpair.get('MyDataKey'); // returns string 'some data'
+myMap.get('MyDataKey'); // returns string 'some data'
 
 // Set a 'changed' event that logs the event when any data changes
-kvpair.on('changed', (event) => console.log(event));
+myMap.on('changed', (event) => console.log(event));
 
 // Changed callback is called each time a key's value is changed
-kvpair.set('MyDataKey', 'some new data'); // logs { key: 'MyDataKey', path: '/', previousValue: 'some data' }
+myMap.set('MyDataKey', 'some new data'); // logs { key: 'MyDataKey', path: '/', previousValue: 'some data' }
 ```
 
 ### Creating a Fluid Container
 
-Fluid [Containers](https://fluidframework.com/docs/glossary/#container) are your applications entry point to the Fluid Framework.
+[Fluid containers](https://fluidframework.com/docs/glossary/#container) are your application's entry point to the Fluid
+Framework.
 
-To create our container we combine a unique ID (pulled from a hash in the URL) with the container factory that includes DataObject we want to use. Since these containers are created on the client, the client needs to determine if the document is existing or new, so in the absence of that URL hash, we'll pass in `true` for the 3rd parameter, `createNew`.
+In order to create or load a Fluid container we need to know its ID. Typically applications will use a service or user
+interaction to create and retrieve these IDs, similar to a file picker or loading a saved game instance.
+
+For demo purposes the `getContainerId` function simplifies ID creation by generating and returning a hash of the current
+timestamp as the new container ID. If the URL already has a hash, it assumes that a container with that ID has already
+been created and returns that hash value as the ID. The function also returns `isNew`, a Boolean value indicating
+whether the container is to be created or loaded.
+
+`TinyliciousClient` is the service client we will use to connect to a local Fluid server. It also provides methods to
+create a Fluid container with a set of initial DataObjects or DDSes that are defined in the `containerSchema`.
+`TinyliciousClient` needs to be initialized before use and can take an optional configuration object to changes settings
+such as default port.
+
+### Accessing Fluid Data
+
+Before we can access any Fluid data, we need to make a call to the `TinyliciousClient` with necessary service
+configuration and container schema.
+
+- `serviceConfig` will vary depending on the service. `TinyliciousClient` only requires an `id` for the container.
+- `containerSchema` defines the name of the container and a set of `initialObjects`. `initialObjects` is a map that
+  defines Fluid objects that will be created when the container is first created. The key provided can be used to access
+  the initialObject from the container like so: `fluidContainer.initialObjects.myKey`.
 
 ```ts
-const container = await getTinyliciousContainer(docId, containerFactory, createNew);
+const { id, isNew } = getContainerId();
+
+const serviceConfig = { id };
+
+const containerSchema: ContainerSchema = {
+    name: 'hello-world-demo-container',
+    initialObjects: { dice: SharedMap }
+};
+
+const [fluidContainer] = isNew
+    ? await TinyliciousClient.createContainer(serviceConfig, containerSchema)
+    : await TinyliciousClient.getContainer(serviceConfig, containerSchema);
+
+renderView(
+    fluidContainer.initialObjects.dice as ISharedMap,
+    document.getElementById('content') as HTMLDivElement
+);
 ```

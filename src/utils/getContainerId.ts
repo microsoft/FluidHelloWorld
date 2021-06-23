@@ -12,7 +12,6 @@
  * we assume that a document with that ID has already been created and we return that
  * hash value as the ID.
  */
-
 export const getContainerId = (): { id: string; isNew: boolean } => {
     let isNew = false;
     if (location.hash.length === 0) {
