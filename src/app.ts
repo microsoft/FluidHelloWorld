@@ -29,9 +29,6 @@ async function start() {
         fluidContainer.initialObjects.dice as ISharedMap,
         document.getElementById('content') as HTMLDivElement
     );
-
-    // returned initialObjects are live Fluid data structures
-    return fluidContainer.initialObjects;
 }
 
 start().catch((error) => console.error(error));
