@@ -8,21 +8,31 @@ import { FrsClient, FrsConnectionConfig, FrsContainerConfig, InsecureTokenProvid
 import { getContainerId } from "./utils";
 import { vueRenderView as renderView } from "./view";
 
-const { id, isNew } = getContainerId();
-
-const config: FrsConnectionConfig = {
-    tenantId: "local",
-    tokenProvider: new InsecureTokenProvider("tenantId", { id: "userId" }),
-    orderer: "http://localhost:7070",
-    storage: "http://localhost:7070",
-};
-
-const client = new FrsClient(config);
-
 async function start() {
 
-    const containerConfig: FrsContainerConfig = { id };
+    const { id, isNew } = getContainerId();
 
+    // This configures the FrsClient to use a local in-memory service called Tinylicious.
+    // You can run Tinylicious locally using 'npx tinylicious'.
+    const localConfig: FrsConnectionConfig = {
+        tenantId: "local",
+        tokenProvider: new InsecureTokenProvider("tenantId", { id: "userId" }),
+        // if you're running Tinylicious on a non-default port, you'll need change these URLs
+        orderer: "http://localhost:7070",
+        storage: "http://localhost:7070",
+    };
+
+    // This configures the FrsClient to use a remote Azure Fluid Service instance.
+    // const productionConfig: FrsConnectionConfig = {
+    //     tenantId: "myFrsTenantId",
+    //     tokenProvider: new MySecureTokenProvider(/* ... */),
+    //     orderer: "https://myFrsOrdererUrl",
+    //     storage: "https://myFrsStorageUrl",
+    // }
+
+    const client = new FrsClient(localConfig);
+
+    const containerConfig: FrsContainerConfig = { id };
     const containerSchema: ContainerSchema = {
         name: "hello-world-demo-container",
         initialObjects: { dice: SharedMap }
