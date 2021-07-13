@@ -3,31 +3,38 @@
  * Licensed under the MIT License.
  */
 
-import { ISharedMap, SharedMap } from "@fluid-experimental/fluid-framework";
-import type { ContainerSchema } from '@fluid-experimental/fluid-static';
-import TinyliciousClient from '@fluid-experimental/tinylicious-client';
-import { getContainerId } from './utils';
-import { vueRenderView as renderView } from './view';
-
-TinyliciousClient.init();
+import { ContainerSchema, ISharedMap, SharedMap } from "@fluid-experimental/fluid-framework";
+import { FrsClient, FrsConnectionConfig, FrsContainerConfig, InsecureTokenProvider } from "@fluid-experimental/frs-client";
+import { getContainerId } from "./utils";
+import { vueRenderView as renderView } from "./view";
 
 const { id, isNew } = getContainerId();
 
+const config: FrsConnectionConfig = {
+    tenantId: "local",
+    tokenProvider: new InsecureTokenProvider("tenantId", { id: "userId" }),
+    orderer: "http://localhost:7070",
+    storage: "http://localhost:7070",
+};
+
+const client = new FrsClient(config);
+
 async function start() {
-    const serviceConfig = { id };
+
+    const containerConfig: FrsContainerConfig = { id };
 
     const containerSchema: ContainerSchema = {
-        name: 'hello-world-demo-container',
+        name: "hello-world-demo-container",
         initialObjects: { dice: SharedMap }
     };
 
-    const [fluidContainer] = isNew
-        ? await TinyliciousClient.createContainer(serviceConfig, containerSchema)
-        : await TinyliciousClient.getContainer(serviceConfig, containerSchema);
+    const { fluidContainer } = isNew
+        ? await client.createContainer(containerConfig, containerSchema)
+        : await client.getContainer(containerConfig, containerSchema);
 
     renderView(
         fluidContainer.initialObjects.dice as ISharedMap,
-        document.getElementById('content') as HTMLDivElement
+        document.getElementById("content") as HTMLDivElement
     );
 }
 
