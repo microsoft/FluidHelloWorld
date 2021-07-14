@@ -16,7 +16,7 @@ async function start() {
     // You can run Tinylicious locally using 'npx tinylicious'.
     const localConfig: FrsConnectionConfig = {
         tenantId: "local",
-        tokenProvider: new InsecureTokenProvider("tenantId", { id: "userId" }),
+        tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
         // if you're running Tinylicious on a non-default port, you'll need change these URLs
         orderer: "http://localhost:7070",
         storage: "http://localhost:7070",
