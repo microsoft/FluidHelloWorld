@@ -18,17 +18,17 @@ npm start
 
 ## Tutorial
 
-In this walkthrough, we’ll learn about using the Fluid Framework by building a simple DiceRoller application together.
+In this walkthrough, you'll learn about using the Fluid Framework by building a simple DiceRoller application together.
 To get started, make sure you have cloned this repo and followed the steps above.
 
-In our DiceRoller app we’ll show users a die with a button to roll it. When the die is rolled, we’ll use Fluid Framework
-to sync the data across clients so everyone sees the same result. We’ll do this using the following steps.
+In our DiceRoller app you'll show users a die with a button to roll it. When the die is rolled, you'll use Fluid Framework
+to sync the data across clients so everyone sees the same result. you'll do this using the following steps.
 
 1. Choose a Fluid data structure to store our Fluid state.
 2. Create a container to hold an instance of that Fluid state.
 3. Write a view to render and modify that Fluid state.
 
-### Choosing a Data Structure
+### Choosing a data structure
 
 Fluid's distributed data structures underpin all Fluid apps. While distributed data structures are low-level data
 structures, they provide familiar APIs and consistent merge behavior, and can serve a number of needs directly.
@@ -36,14 +36,13 @@ structures, they provide familiar APIs and consistent merge behavior, and can se
 Fluid also provides DataObjects, which are designed to organize distributed data structures into semantically meaningful
 groupings as well as provide an API surface to your data.
 
-In subsequent demos we will look at building custom DataObjects, but for many use cases (including this dice roller) the
+In subsequent demos you will look at building custom DataObjects, but for many use cases (including this dice roller) the
 built in distributed data structures will work perfectly.
 
-#### Using SharedMap Distributed Data Structure
+#### Using SharedMap distributed data structure
 
 The SharedMap distributed data structure provides the basic functionality to set and get data of any JSON-serializable
 type on a given key, and inform your application when the data in that key changes.
-
 
 ```ts
 // Set the string 'some data' to the key 'MyDataKey'
@@ -59,12 +58,12 @@ myMap.on('changed', (event) => console.log(event));
 myMap.set('MyDataKey', 'some new data'); // logs { key: 'MyDataKey', path: '/', previousValue: 'some data' }
 ```
 
-### Creating a Fluid Container
+### Creating and loading a Fluid container
 
 [Fluid containers](https://fluidframework.com/docs/glossary/#container) are your application's entry point to the Fluid
 Framework.
 
-In order to create or load a Fluid container we need to know its ID. Typically applications will use a service or user
+In order to create or load a Fluid container you need to know its ID. Typically applications will use a service or user
 interaction to create and retrieve these IDs, similar to a file picker or loading a saved game instance.
 
 For demo purposes the `getContainerId` function simplifies ID creation by generating and returning a hash of the current
@@ -72,34 +71,46 @@ timestamp as the new container ID. If the URL already has a hash, it assumes tha
 been created and returns that hash value as the ID. The function also returns `isNew`, a Boolean value indicating
 whether the container is to be created or loaded.
 
-`TinyliciousClient` is the service client we will use to connect to a local Fluid server. It also provides methods to
-create a Fluid container with a set of initial DataObjects or DDSes that are defined in the `containerSchema`.
-`TinyliciousClient` needs to be initialized before use and can take an optional configuration object to changes settings
-such as default port.
+### Accessing Fluid data
 
-### Accessing Fluid Data
+Fluid requires a backing service to enable collaborative communication. Before you can access any Fluid data, you need
+to make a call to the service to retrieve or create a container.
 
-Before we can access any Fluid data, we need to make a call to the `TinyliciousClient` with necessary service
-configuration and container schema.
+`FrsClient` is the service client used in this example. `FrsClient` supports deployed Azure Fluid Relay service
+instances for production purposes, as well as a local, in-memory service instance, called Tinylicious, for development
+purposes. It also provides methods to create a Fluid container with a set of initial distributed data structures or
+DataObjects that are defined in the `containerSchema`.
 
-- `serviceConfig` will vary depending on the service. `TinyliciousClient` only requires an `id` for the container.
-- `containerSchema` defines the name of the container and a set of `initialObjects`. `initialObjects` is a map that
-  defines Fluid objects that will be created when the container is first created. The key provided can be used to access
-  the initialObject from the container like so: `fluidContainer.initialObjects.myKey`.
+The service connection and container configurations will vary depending on the service. `FrsClient` requires only an ID
+for a container, but other service clients may have different requirements.
+
+The `containerSchema` defines the name of the container and a set of `initialObjects`. `initialObjects` is a map that
+defines Fluid objects that will be created when the container is first created. The key provided can be used to access
+the initialObject from the container like so: `fluidContainer.initialObjects.myKey`.
 
 ```ts
 const { id, isNew } = getContainerId();
 
-const serviceConfig = { id };
+// This configures the FrsClient to use a local in-memory service called Tinylicious.
+// You can run Tinylicious locally using 'npx tinylicious'.
+const localConfig: FrsConnectionConfig = {
+    tenantId: "local",
+    tokenProvider: new InsecureTokenProvider("tenantId", { id: "userId" }),
+    // if you're running Tinylicious on a non-default port, you'll need change these URLs
+    orderer: "http://localhost:7070",
+    storage: "http://localhost:7070",
+};
+const client = new FrsClient(localConfig);
 
+const containerConfig: FrsContainerConfig = { id };
 const containerSchema: ContainerSchema = {
-    name: 'hello-world-demo-container',
+    name: "hello-world-demo-container",
     initialObjects: { dice: SharedMap }
 };
 
-const [fluidContainer] = isNew
-    ? await TinyliciousClient.createContainer(serviceConfig, containerSchema)
-    : await TinyliciousClient.getContainer(serviceConfig, containerSchema);
+const { fluidContainer } = isNew
+    ? await client.createContainer(containerConfig, containerSchema)
+    : await client.getContainer(containerConfig, containerSchema);
 
 renderView(
     fluidContainer.initialObjects.dice as ISharedMap,
