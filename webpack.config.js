@@ -33,7 +33,10 @@ module.exports = env => {
         },
         plugins,
         resolve: {
-            extensions: [".ts", ".js"],
+            extensions: [".ts", ".tsx", ".js"],
+            alias: {
+                vue$: "vue/dist/vue.esm-bundler.js",
+            },
         },
         devServer: {
             open: true
