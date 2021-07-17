@@ -7,7 +7,7 @@ import { createApp } from 'vue';
 import { IRenderView } from "../types";
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.
- * @param dataObject - The Data Object to be rendered
+ * @param data - The Data Object to be rendered
  * @param div - The HTMLElement to render into
  */
 export const  vueRenderView: IRenderView = (data, div) => {
