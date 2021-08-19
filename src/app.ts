@@ -4,7 +4,7 @@
  */
 
 import { ContainerSchema, ISharedMap, SharedMap } from "@fluid-experimental/fluid-framework";
-import { FrsAzFunctionTokenProvider, FrsClient, FrsConnectionConfig, FrsContainerConfig } from "@fluid-experimental/frs-client";
+import { FrsClient, FrsConnectionConfig, FrsContainerConfig, InsecureTokenProvider } from "@fluid-experimental/frs-client";
 import { getContainerId } from "./utils";
 import { vueRenderView as renderView } from "./view";
 
@@ -14,35 +14,27 @@ async function start() {
 
     // This configures the FrsClient to use a local in-memory service called Tinylicious.
     // You can run Tinylicious locally using 'npx tinylicious'.
-    // const localConfig: FrsConnectionConfig = {
-    //     tenantId: "local",
-    //     tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
-    //     // if you're running Tinylicious on a non-default port, you'll need change these URLs
-    //     orderer: "http://localhost:7070",
-    //     storage: "http://localhost:7070",
-    // };
-
-    const frsAzUser = {
-        userId: "Test User",
-        userName: "test-user"
-    }
-
-    const config: FrsConnectionConfig = {
-        tenantId: "frs-client-tenant",
-	    tokenProvider: new FrsAzFunctionTokenProvider("", frsAzUser),
-	    orderer: "",
-        storage: "",
+    const localConfig: FrsConnectionConfig = {
+        tenantId: "local",
+        tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
+        // if you're running Tinylicious on a non-default port, you'll need change these URLs
+        orderer: "http://localhost:7070",
+        storage: "http://localhost:7070",
     };
 
-    // This configures the FrsClient to use a remote Azure Fluid Service instance.
-    // const productionConfig: FrsConnectionConfig = {
-    //     tenantId: "myFrsTenantId",
-    //     tokenProvider: new MySecureTokenProvider(/* ... */),
-    //     orderer: "https://myFrsOrdererUrl",
-    //     storage: "https://myFrsStorageUrl",
+    // const frsAzUser = {
+    //     userId: "Test User",
+    //     userName: "test-user"
     // }
 
-    const client = new FrsClient(config);
+    // const prodConfig: FrsConnectionConfig = {
+    //     tenantId: "",
+	//     tokenProvider: new FrsAzFunctionTokenProvider("", frsAzUser),
+	//     orderer: "",
+    //     storage: "",
+    // };
+
+    const client = new FrsClient(localConfig);
 
     const containerConfig: FrsContainerConfig = { id };
     const containerSchema: ContainerSchema = {
