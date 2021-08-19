@@ -4,7 +4,7 @@
  */
 
 import { ContainerSchema, ISharedMap, SharedMap } from "@fluid-experimental/fluid-framework";
-import { FrsClient, FrsConnectionConfig, FrsContainerConfig, InsecureTokenProvider } from "@fluid-experimental/frs-client";
+import { FrsAzFunctionTokenProvider, FrsClient, FrsConnectionConfig, FrsContainerConfig } from "@fluid-experimental/frs-client";
 import { getContainerId } from "./utils";
 import { vueRenderView as renderView } from "./view";
 
@@ -14,12 +14,24 @@ async function start() {
 
     // This configures the FrsClient to use a local in-memory service called Tinylicious.
     // You can run Tinylicious locally using 'npx tinylicious'.
-    const localConfig: FrsConnectionConfig = {
-        tenantId: "local",
-        tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
-        // if you're running Tinylicious on a non-default port, you'll need change these URLs
-        orderer: "http://localhost:7070",
-        storage: "http://localhost:7070",
+    // const localConfig: FrsConnectionConfig = {
+    //     tenantId: "local",
+    //     tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
+    //     // if you're running Tinylicious on a non-default port, you'll need change these URLs
+    //     orderer: "http://localhost:7070",
+    //     storage: "http://localhost:7070",
+    // };
+
+    const frsAzUser = {
+        userId: "Test User",
+        userName: "test-user"
+    }
+
+    const config: FrsConnectionConfig = {
+        tenantId: "frs-client-tenant",
+	    tokenProvider: new FrsAzFunctionTokenProvider("", frsAzUser),
+	    orderer: "",
+        storage: "",
     };
 
     // This configures the FrsClient to use a remote Azure Fluid Service instance.
@@ -30,7 +42,7 @@ async function start() {
     //     storage: "https://myFrsStorageUrl",
     // }
 
-    const client = new FrsClient(localConfig);
+    const client = new FrsClient(config);
 
     const containerConfig: FrsContainerConfig = { id };
     const containerSchema: ContainerSchema = {
@@ -40,7 +52,7 @@ async function start() {
 
     const { fluidContainer } = isNew
         ? await client.createContainer(containerConfig, containerSchema)
-        : await client.getContainer(containerConfig, containerSchema);
+        : await client.getContainer(containerConfig, containerSchema)
 
     renderView(
         fluidContainer.initialObjects.dice as ISharedMap,
