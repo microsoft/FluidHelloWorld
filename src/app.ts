@@ -45,7 +45,7 @@ async function start() {
 
     const { fluidContainer } = isNew
         ? await client.createContainer(containerConfig, containerSchema)
-        : await client.getContainer(containerConfig, containerSchema)
+        : await client.getContainer(containerConfig, containerSchema);
 
     renderView(
         fluidContainer.initialObjects.dice as ISharedMap,
