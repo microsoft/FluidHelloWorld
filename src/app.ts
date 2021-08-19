@@ -22,6 +22,7 @@ async function start() {
         storage: "http://localhost:7070",
     };
 
+    // This configures the FrsClient to use a remote Azure Fluid Service instance.
     // const frsAzUser = {
     //     userId: "Test User",
     //     userName: "test-user"
@@ -29,8 +30,8 @@ async function start() {
 
     // const prodConfig: FrsConnectionConfig = {
     //     tenantId: "",
-	//     tokenProvider: new FrsAzFunctionTokenProvider("", frsAzUser),
-	//     orderer: "",
+    //     tokenProvider: new FrsAzFunctionTokenProvider("", frsAzUser),
+    //     orderer: "",
     //     storage: "",
     // };
 
