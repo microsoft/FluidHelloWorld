@@ -5,18 +5,12 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { ISharedMap } from "@fluidframework/map";
-import { IRenderView } from '../types';
 
-export const reactRenderView: IRenderView = (data, div) => {
-    ReactDOM.render(<ReactView data={data} />, div);
+export const reactRenderView = (data, elem) => {
+    ReactDOM.render(<ReactView data={data} />, elem);
 }
 
-interface ReactViewProps {
-    data: ISharedMap
-}
-
-const ReactView = (props: ReactViewProps) => {
+const ReactView = (props) => {
     const { data } = props;
     const [diceValue, setDiceValue] = React.useState(1);
 

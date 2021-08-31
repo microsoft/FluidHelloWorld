@@ -3,54 +3,62 @@
  * Licensed under the MIT License.
  */
 
-import { ContainerSchema, ISharedMap, SharedMap } from "@fluid-experimental/fluid-framework";
-import { FrsClient, FrsConnectionConfig, FrsContainerConfig, InsecureTokenProvider } from "@fluid-experimental/frs-client";
-import { getContainerId } from "./utils";
-import { vueRenderView as renderView } from "./view";
+import { SharedMap } from "@fluid-experimental/fluid-framework";
+import { AzureClient, InsecureTokenProvider } from "@fluidframework/azure-client";
+import { vueRenderView as renderDiceRoller } from "./view";
+
+// This configures the AzureClient to use a local in-memory service called Tinylicious.
+// You can run Tinylicious locally using 'npx tinylicious'.
+const localConfig = {
+    tenantId: "local",
+    tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
+    // if you're running Tinylicious on a non-default port, you'll need change these URLs
+    orderer: "http://localhost:7070",
+    storage: "http://localhost:7070",
+};
+
+// This configures the AzureClient to use a remote Azure Fluid Service instance.
+// const azureUser = {
+//     userId: "Test User",
+//     userName: "test-user"
+// }
+
+// const prodConfig: AzureConnectionConfig = {
+//     tenantId: "",
+//     tokenProvider: new AzureFunctionTokenProvider("", azureUser),
+//     orderer: "",
+//     storage: "",
+// };
+
+const client = new AzureClient(localConfig);
+const containerConfig = {
+    initialObjects: { dice: SharedMap }
+};
+const root = document.getElementById("content");
+
+const createNewDice = async () => {
+    const { container } = await client.createContainer(containerConfig);
+    // Set default data
+    container.initialObjects.diceMap.set("value", 1);
+    // Attach container to service and return assigned ID
+    const id = container.attach();
+    // load the dice roller
+    renderDiceRoller(container.initialObjects.diceMap, root);
+    return id;
+}
+
+const loadExistingDice = async (id) => {
+    const { container } = await client.getContainer(id, containerConfig);
+    renderDiceRoller(container.initialObjects.diceMap, root);
+}
 
 async function start() {
-
-    const { id, isNew } = getContainerId();
-
-    // This configures the FrsClient to use a local in-memory service called Tinylicious.
-    // You can run Tinylicious locally using 'npx tinylicious'.
-    const localConfig: FrsConnectionConfig = {
-        tenantId: "local",
-        tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
-        // if you're running Tinylicious on a non-default port, you'll need change these URLs
-        orderer: "http://localhost:7070",
-        storage: "http://localhost:7070",
-    };
-
-    // This configures the FrsClient to use a remote Azure Fluid Service instance.
-    // const frsAzUser = {
-    //     userId: "Test User",
-    //     userName: "test-user"
-    // }
-
-    // const prodConfig: FrsConnectionConfig = {
-    //     tenantId: "",
-    //     tokenProvider: new FrsAzFunctionTokenProvider("", frsAzUser),
-    //     orderer: "",
-    //     storage: "",
-    // };
-
-    const client = new FrsClient(localConfig);
-
-    const containerConfig: FrsContainerConfig = { id };
-    const containerSchema: ContainerSchema = {
-        name: "hello-world-demo-container",
-        initialObjects: { dice: SharedMap }
-    };
-
-    const { fluidContainer } = isNew
-        ? await client.createContainer(containerConfig, containerSchema)
-        : await client.getContainer(containerConfig, containerSchema);
-
-    renderView(
-        fluidContainer.initialObjects.dice as ISharedMap,
-        document.getElementById("content") as HTMLDivElement
-    );
+    if (location.hash) {
+        await loadExistingDice(location.hash.substring[1])
+    } else {
+        const id = await createNewDice();
+        location.hash = id;
+    }
 }
 
 start().catch((error) => console.error(error));

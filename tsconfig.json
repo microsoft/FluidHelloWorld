@@ -8,7 +8,7 @@
         "outDir": "built",
         "sourceMap": true,
         "inlineSources": true,
-        "strict": true,
+        "strict": false,
         "jsx": "react"
     },
     "include": ["src/**/*"]
