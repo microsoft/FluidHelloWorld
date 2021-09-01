@@ -6,10 +6,10 @@
 import { createApp } from 'vue';
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.
- * @param data - The DDS to be rendered
+ * @param dice - The DDS to be rendered
  * @param elem - The HTMLElement to render into
  */
-export const  vueRenderView = (data, elem) => {
+export const  vueRenderView = (dice, elem) => {
     const app = createApp({
         template: `
         <div style="text-align: center" >
@@ -20,10 +20,10 @@ export const  vueRenderView = (data, elem) => {
                 Roll
             </button>
         </div>`,
-        data: () => ({ diceValue: 1 }),
+        data: () => ({ diceValue: dice.get("value") }),
         computed: {
             diceCharacter() {
-                return String.fromCodePoint(0x267f + (this.diceValue as number));
+                return String.fromCodePoint(0x267f + (this.diceValue));
             },
             diceColor() {
                 return `hsl(${this.diceValue * 60}, 70%, 50%)`;
@@ -31,17 +31,17 @@ export const  vueRenderView = (data, elem) => {
         },
         methods: {
             rollDice() {
-                data.set('dice', Math.floor(Math.random() * 6) + 1);
+                dice.set('value', Math.floor(Math.random() * 6)+1);
             },
             syncLocalAndFluidState() {
-                this.diceValue = data.get('dice');
+                this.diceValue = dice.get('value');
             },
         },
         mounted() {
-            data.on('valueChanged', this.syncLocalAndFluidState);
+            dice.on('valueChanged', this.syncLocalAndFluidState);            
         },
         unmounted() {
-            data.off('valueChanged', this.syncLocalAndFluidState);
+            dice.off('valueChanged', this.syncLocalAndFluidState);
         },
     });
 

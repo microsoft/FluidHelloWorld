@@ -19,21 +19,29 @@ module.exports = env => {
     return {
         devtool: "inline-source-map",
         entry: {
-            app: "./src/app.ts",
+            app: "./src/app.js",
         },
         mode,
-        module: {
-            rules: [{
-                test: /\.tsx?$/,
-                loader: "ts-loader"
-            }]
-        },
         output: {
             filename: "[name].[contenthash].js",
         },
+        module: {
+            rules: [
+                {
+                    test: /\.jsx/,
+                    exclude: /(node_modules)/,
+                    use: {
+                        loader: "babel-loader",
+                        options: {
+                            presets: ["@babel/preset-env", "@babel/preset-react"]
+                        }
+                    }
+                }
+            ]
+        },
         plugins,
         resolve: {
-            extensions: [".ts", ".tsx", ".js"],
+            extensions: [".jsx", ".js"],
             alias: {
                 vue$: "vue/dist/vue.esm-bundler.js",
             },

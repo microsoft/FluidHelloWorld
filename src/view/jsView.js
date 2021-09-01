@@ -4,7 +4,7 @@
  */
 
 export const jsRenderView = (diceMap, elem) => {
-    const dataKey = 'dataKey';
+    const dataKey = 'value';
 
     const wrapperDiv = document.createElement('div');
     wrapperDiv.style.textAlign = 'center';
@@ -16,16 +16,17 @@ export const jsRenderView = (diceMap, elem) => {
     const rollButton = document.createElement('button');
     rollButton.style.fontSize = '50px';
     rollButton.textContent = 'Roll';
-    // Set the value at our dataKey with a random number between 0 and 5.
-    rollButton.onclick = () => diceMap.set("value", Math.floor(Math.random() * 6));
+    // Set the value at our dataKey with a random number between 1 and 6.
+    rollButton.onclick = () => diceMap.set("value", Math.floor(Math.random() * 6)+1);
 
     wrapperDiv.append(dice, rollButton);
 
     // Get the current value of the shared data to update the view whenever it changes.
     const updateDice = () => {
         const diceValue = diceMap.get(dataKey);
+        console.log(diceValue)
         // Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-        dice.textContent = String.fromCodePoint(0x2680 + (diceValue));
+        dice.textContent = String.fromCodePoint(0x267f + diceValue);
         dice.style.color = `hsl(${diceValue * 60}, 70%, 50%)`;
     };
     updateDice();

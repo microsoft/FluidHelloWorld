@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 
-import { SharedMap } from "@fluid-experimental/fluid-framework";
+import { SharedMap } from "fluid-framework";
 import { AzureClient, InsecureTokenProvider } from "@fluidframework/azure-client";
 import { vueRenderView as renderDiceRoller } from "./view";
 
@@ -38,11 +38,8 @@ const root = document.getElementById("content");
 
 const createNewDice = async () => {
     const { container } = await client.createContainer(containerConfig);
-    // Set default data
     container.initialObjects.diceMap.set("value", 1);
-    // Attach container to service and return assigned ID
     const id = container.attach();
-    // load the dice roller
     renderDiceRoller(container.initialObjects.diceMap, root);
     return id;
 }

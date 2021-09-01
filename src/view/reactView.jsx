@@ -6,29 +6,28 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-export const reactRenderView = (data, elem) => {
-    ReactDOM.render(<ReactView data={data} />, elem);
+export const reactRenderView = (dice, elem) => {
+    ReactDOM.render(<ReactView dice={dice} />, elem);
 }
 
 const ReactView = (props) => {
-    const { data } = props;
+    const { dice } = props;
     const [diceValue, setDiceValue] = React.useState(1);
 
-    const diceCharacter = String.fromCodePoint(0x267F + diceValue);
-    const rollDice = () => data.set("dice", Math.floor(Math.random() * 6) + 1);
+    const rollDice = () => dice.set("value", Math.floor(Math.random() * 6)+1);
 
     React.useEffect(() => {
-        const syncLocalAndFluidState = () => setDiceValue(data.get("dice") || 1);
+        const syncLocalAndFluidState = () => setDiceValue(dice.get("value"));
         syncLocalAndFluidState();
-        data.on("valueChanged", syncLocalAndFluidState);
+        dice.on("valueChanged", syncLocalAndFluidState);
         return () => {
-            data.off("valueChanged", syncLocalAndFluidState);
+            dice.off("valueChanged", syncLocalAndFluidState);
         };
     });
     return (
         <div style={{ textAlign: "center" }}>
             <div style={{ fontSize: 200, color: `hsl(${diceValue * 60}, 70%, 50%)` }}>
-                {diceCharacter}
+                {String.fromCodePoint(0x267F + diceValue)}
             </div>
             <button style={{ fontSize: 50 }} onClick={rollDice}>
                 Roll
