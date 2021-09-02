@@ -5,7 +5,7 @@
 
 import { SharedMap } from "fluid-framework";
 import { AzureClient, InsecureTokenProvider } from "@fluidframework/azure-client";
-import { vueRenderView as renderDiceRoller } from "./view";
+import { jsRenderView as renderDiceRoller } from "./view";
 
 // This configures the AzureClient to use a local in-memory service called Tinylicious.
 // You can run Tinylicious locally using 'npx tinylicious'.
