@@ -3,14 +3,15 @@
  * Licensed under the MIT License.
  */
 
-import { createApp } from 'vue';
-import { IRenderView } from "../types";
+import { createApp } from "vue";
+import { diceValueKey } from "../app";
+
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.
- * @param dataObject - The Data Object to be rendered
- * @param div - The HTMLElement to render into
+ * @param dice - The SharedMap holding the collaborative data
+ * @param elem - The HTMLElement to render into
  */
-export const  vueRenderView: IRenderView = (data, div) => {
+export const  vueRenderView = (dice, elem) => {
     const app = createApp({
         template: `
         <div style="text-align: center" >
@@ -21,10 +22,10 @@ export const  vueRenderView: IRenderView = (data, div) => {
                 Roll
             </button>
         </div>`,
-        data: () => ({ diceValue: 1 }),
+        data: () => ({ diceValue: dice.get(diceValueKey) }),
         computed: {
             diceCharacter() {
-                return String.fromCodePoint(0x267f + (this.diceValue as number));
+                return String.fromCodePoint(0x267f + (this.diceValue));
             },
             diceColor() {
                 return `hsl(${this.diceValue * 60}, 70%, 50%)`;
@@ -32,19 +33,19 @@ export const  vueRenderView: IRenderView = (data, div) => {
         },
         methods: {
             rollDice() {
-                data.set('dice', Math.floor(Math.random() * 6) + 1);
+                dice.set(diceValueKey, Math.floor(Math.random() * 6)+1);
             },
             syncLocalAndFluidState() {
-                this.diceValue = data.get('dice');
+                this.diceValue = dice.get(diceValueKey);
             },
         },
         mounted() {
-            data.on('valueChanged', this.syncLocalAndFluidState);
+            dice.on("valueChanged", this.syncLocalAndFluidState);            
         },
         unmounted() {
-            data.off('valueChanged', this.syncLocalAndFluidState);
+            dice.off("valueChanged", this.syncLocalAndFluidState);
         },
     });
 
-    app.mount(div);
+    app.mount(elem);
 }
