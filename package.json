@@ -19,7 +19,7 @@
         "fluid-framework": "^0.47.0-35961",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "vue": "^3.2.6"
+        "vue": "^3.2.8"
     },
     "devDependencies": {
         "@babel/core": "^7.15.0",
