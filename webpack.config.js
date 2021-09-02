@@ -19,7 +19,7 @@ module.exports = env => {
     return {
         devtool: "inline-source-map",
         entry: {
-            app: "./src/app-azure.js",
+            app: "./src/app.js",
         },
         mode,
         output: {
