@@ -24,7 +24,6 @@ export const jsRenderView = (diceMap, elem) => {
     // Get the current value of the shared data to update the view whenever it changes.
     const updateDice = () => {
         const diceValue = diceMap.get(dataKey);
-        console.log(diceValue)
         // Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
         dice.textContent = String.fromCodePoint(0x267f + diceValue);
         dice.style.color = `hsl(${diceValue * 60}, 70%, 50%)`;

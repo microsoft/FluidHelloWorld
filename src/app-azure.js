@@ -51,7 +51,7 @@ const loadExistingDice = async (id) => {
 
 async function start() {
     if (location.hash) {
-        await loadExistingDice(location.hash.substring[1])
+        await loadExistingDice(location.hash.substring(1))
     } else {
         const id = await createNewDice();
         location.hash = id;
