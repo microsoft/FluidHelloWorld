@@ -6,6 +6,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import { diceValueKey } from "../app";
+
 export const reactRenderView = (dice, elem) => {
     ReactDOM.render(<ReactView dice={dice} />, elem);
 }
@@ -14,10 +16,10 @@ const ReactView = (props) => {
     const { dice } = props;
     const [diceValue, setDiceValue] = React.useState(1);
 
-    const rollDice = () => dice.set("value", Math.floor(Math.random() * 6)+1);
+    const rollDice = () => dice.set(diceValueKey, Math.floor(Math.random() * 6)+1);
 
     React.useEffect(() => {
-        const syncLocalAndFluidState = () => setDiceValue(dice.get("value"));
+        const syncLocalAndFluidState = () => setDiceValue(dice.get(diceValueKey));
         syncLocalAndFluidState();
         dice.on("valueChanged", syncLocalAndFluidState);
         return () => {

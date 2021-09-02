@@ -3,7 +3,9 @@
  * Licensed under the MIT License.
  */
 
-import { createApp } from 'vue';
+import { createApp } from "vue";
+import { diceValueKey } from "../app";
+
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.
  * @param dice - The DDS to be rendered
@@ -20,7 +22,7 @@ export const  vueRenderView = (dice, elem) => {
                 Roll
             </button>
         </div>`,
-        data: () => ({ diceValue: dice.get("value") }),
+        data: () => ({ diceValue: dice.get(diceValueKey) }),
         computed: {
             diceCharacter() {
                 return String.fromCodePoint(0x267f + (this.diceValue));
@@ -31,17 +33,17 @@ export const  vueRenderView = (dice, elem) => {
         },
         methods: {
             rollDice() {
-                dice.set('value', Math.floor(Math.random() * 6)+1);
+                dice.set(diceValueKey, Math.floor(Math.random() * 6)+1);
             },
             syncLocalAndFluidState() {
-                this.diceValue = dice.get('value');
+                this.diceValue = dice.get(diceValueKey);
             },
         },
         mounted() {
-            dice.on('valueChanged', this.syncLocalAndFluidState);            
+            dice.on("valueChanged", this.syncLocalAndFluidState);            
         },
         unmounted() {
-            dice.off('valueChanged', this.syncLocalAndFluidState);
+            dice.off("valueChanged", this.syncLocalAndFluidState);
         },
     });
 

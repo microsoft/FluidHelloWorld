@@ -3,27 +3,28 @@
  * Licensed under the MIT License.
  */
 
-export const jsRenderView = (diceMap, elem) => {
-    const dataKey = 'value';
+import { diceValueKey } from "../app";
 
-    const wrapperDiv = document.createElement('div');
-    wrapperDiv.style.textAlign = 'center';
+export const jsRenderView = (diceMap, elem) => {
+
+    const wrapperDiv = document.createElement("div");
+    wrapperDiv.style.textAlign = "center";
     elem.append(wrapperDiv);
 
-    const dice = document.createElement('div');
-    dice.style.fontSize = '200px';
+    const dice = document.createElement("div");
+    dice.style.fontSize = "200px";
 
-    const rollButton = document.createElement('button');
-    rollButton.style.fontSize = '50px';
-    rollButton.textContent = 'Roll';
+    const rollButton = document.createElement("button");
+    rollButton.style.fontSize = "50px";
+    rollButton.textContent = "Roll";
     // Set the value at our dataKey with a random number between 1 and 6.
-    rollButton.onclick = () => diceMap.set("value", Math.floor(Math.random() * 6)+1);
+    rollButton.onclick = () => diceMap.set(diceValueKey, Math.floor(Math.random() * 6) + 1);
 
     wrapperDiv.append(dice, rollButton);
 
     // Get the current value of the shared data to update the view whenever it changes.
     const updateDice = () => {
-        const diceValue = diceMap.get(dataKey);
+        const diceValue = diceMap.get(diceValueKey);
         // Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
         dice.textContent = String.fromCodePoint(0x267f + diceValue);
         dice.style.color = `hsl(${diceValue * 60}, 70%, 50%)`;
@@ -31,5 +32,5 @@ export const jsRenderView = (diceMap, elem) => {
     updateDice();
 
     // Use the changed event to trigger the rerender whenever the value changes.
-    diceMap.on('valueChanged', updateDice);
+    diceMap.on("valueChanged", updateDice);
 }

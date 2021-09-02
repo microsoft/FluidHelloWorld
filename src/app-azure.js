@@ -7,12 +7,14 @@ import { SharedMap } from "fluid-framework";
 import { AzureClient, InsecureTokenProvider } from "@fluidframework/azure-client";
 import { jsRenderView as renderDiceRoller } from "./view";
 
+export const diceValueKey = "dice-value-key";
+
 // This configures the AzureClient to use a local in-memory service called Tinylicious.
-// You can run Tinylicious locally using 'npx tinylicious'.
+// You can run Tinylicious locally using "npx tinylicious".
 const localConfig = {
     tenantId: "local",
     tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
-    // if you're running Tinylicious on a non-default port, you'll need change these URLs
+    // if you"re running Tinylicious on a non-default port, you"ll need change these URLs
     orderer: "http://localhost:7070",
     storage: "http://localhost:7070",
 };
@@ -38,7 +40,7 @@ const root = document.getElementById("content");
 
 const createNewDice = async () => {
     const { container } = await client.createContainer(containerConfig);
-    container.initialObjects.diceMap.set("value", 1);
+    container.initialObjects.diceMap.set(diceValueKey, 1);
     const id = container.attach();
     renderDiceRoller(container.initialObjects.diceMap, root);
     return id;

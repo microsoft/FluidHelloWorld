@@ -7,7 +7,9 @@ import { SharedMap } from "fluid-framework";
 import { TinyliciousClient } from "@fluidframework/tinylicious-client";
 import { jsRenderView as renderDiceRoller } from "./view";
 
-// You can run Tinylicious locally using 'npx tinylicious'.
+export const diceValueKey = "dice-value-key";
+
+// You can run Tinylicious locally using "npx tinylicious".
 
 const client = new TinyliciousClient();
 const containerSchema = {
@@ -17,7 +19,7 @@ const root = document.getElementById("content");
 
 const createNewDice = async () => {
     const { container } = await client.createContainer(containerSchema);
-    container.initialObjects.diceMap.set("value", 1);
+    container.initialObjects.diceMap.set(diceValueKey, 1);
     const id = container.attach();
     renderDiceRoller(container.initialObjects.diceMap, root);
     return id;
