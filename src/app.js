@@ -9,8 +9,6 @@ import { jsRenderView as renderDiceRoller } from "./view";
 
 export const diceValueKey = "dice-value-key";
 
-// You can run Tinylicious locally using "npx tinylicious".
-
 const client = new TinyliciousClient();
 const containerSchema = {
     initialObjects: { diceMap: SharedMap }
