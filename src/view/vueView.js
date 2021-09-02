@@ -6,7 +6,7 @@
 import { createApp } from 'vue';
 /**
  * Render Dice into a given HTMLElement as a text character, with a button to roll it.
- * @param dice - The DDS to be rendered
+ * @param dice - The SharedMap holding the collaborative data
  * @param elem - The HTMLElement to render into
  */
 export const  vueRenderView = (dice, elem) => {
