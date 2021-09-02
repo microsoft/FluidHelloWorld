@@ -32,7 +32,7 @@ const localConfig = {
 
 const client = new AzureClient(localConfig);
 const containerConfig = {
-    initialObjects: { dice: SharedMap }
+    initialObjects: { diceMap: SharedMap }
 };
 const root = document.getElementById("content");
 
