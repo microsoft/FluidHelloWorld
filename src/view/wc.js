@@ -45,13 +45,9 @@ class Dice extends HTMLElement {
 }
 
 export const wcRenderView = (diceMap, elem) => {
-
   customElements.define("wc-dice", Dice);
-
   const dice = document.createElement("wc-dice");
-
   dice.onRoll = number => diceMap.set(diceValueKey, number);
-
   const updateDice = () => dice.setAttribute("value", diceMap.get(diceValueKey));
   updateDice();
   diceMap.on("valueChanged", updateDice)
