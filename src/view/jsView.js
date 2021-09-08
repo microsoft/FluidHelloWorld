@@ -5,22 +5,28 @@
 
 import { diceValueKey } from "../app";
 
+const template = document.createElement("template");
+
+template.innerHTML = `
+  <style>
+    .wrapper { text-align: center }
+    .dice { font-size: 200px }
+    .roll { font-size: 50px;}
+  </style>
+  <div class="wrapper">
+    <div class="dice"></div>
+    <button class="roll"> Roll </button>
+  </div>
+`
+
 export const jsRenderView = (diceMap, elem) => {
+    elem.appendChild(template.content.cloneNode(true));
 
-    const wrapperDiv = document.createElement("div");
-    wrapperDiv.style.textAlign = "center";
-    elem.append(wrapperDiv);
+    const rollButton = elem.querySelector(".roll");
+    const dice = elem.querySelector(".dice");
 
-    const dice = document.createElement("div");
-    dice.style.fontSize = "200px";
-
-    const rollButton = document.createElement("button");
-    rollButton.style.fontSize = "50px";
-    rollButton.textContent = "Roll";
     // Set the value at our dataKey with a random number between 1 and 6.
     rollButton.onclick = () => diceMap.set(diceValueKey, Math.floor(Math.random() * 6) + 1);
-
-    wrapperDiv.append(dice, rollButton);
 
     // Get the current value of the shared data to update the view whenever it changes.
     const updateDice = () => {
