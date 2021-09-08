@@ -6,4 +6,4 @@
 export * from "./jsView";
 export * from "./reactView";
 export * from "./vueView";
-export * from "./wc";
+export * from "./wcView";
