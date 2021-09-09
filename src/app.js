@@ -5,7 +5,7 @@
 
 import { SharedMap } from "fluid-framework";
 import { TinyliciousClient } from "@fluidframework/tinylicious-client";
-import { jsRenderView as renderDiceRoller } from "./view";
+import { wcRenderView as renderDiceRoller } from "./view";
 
 export const diceValueKey = "dice-value-key";
 
