@@ -47,7 +47,6 @@ const renderDiceRoller = (diceMap, elem) => {
     diceMap.on("valueChanged", updateDice);
 }
 
-
 // Load container and render view
 
 const client = new TinyliciousClient();
