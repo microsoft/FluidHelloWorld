@@ -9,13 +9,13 @@ const template = document.createElement("template");
 
 template.innerHTML = `
   <style>
-    #wrapper { text-align: center }
-    #dice { font-size: 200px }
-    #roll { font-size: 50px;}
+    .wrapper { text-align: center }
+    .dice { font-size: 200px }
+    .roll { font-size: 50px;}
   </style>
-  <div id="wrapper">
-    <div id="dice"></div>
-    <button id="roll"> Roll </button>
+  <div class="wrapper">
+    <div class="dice"></div>
+    <button class="roll"> Roll </button>
   </div>
 `
 
@@ -25,9 +25,9 @@ class Dice extends HTMLElement {
 
     const shadow = this.attachShadow({ mode: "open" });
     shadow.appendChild(template.content.cloneNode(true));
-    this.diceValue = shadow.querySelector("#dice");
+    this.diceValue = shadow.querySelector(".dice");
 
-    shadow.querySelector("#roll").onclick = () => this.onRoll(Math.floor(Math.random() * 6) + 1);
+    shadow.querySelector(".roll").onclick = () => this.onRoll(Math.floor(Math.random() * 6) + 1);
   }
 
   static get observedAttributes() {

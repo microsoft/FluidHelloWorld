@@ -9,21 +9,21 @@ const template = document.createElement("template");
 
 template.innerHTML = `
   <style>
-    #wrapper { text-align: center }
-    #dice { font-size: 200px }
-    #roll { font-size: 50px;}
+    .wrapper { text-align: center }
+    .dice { font-size: 200px }
+    .roll { font-size: 50px;}
   </style>
-  <div id="wrapper">
-    <div id="dice"></div>
-    <button id="roll"> Roll </button>
+  <div class="wrapper">
+    <div class="dice"></div>
+    <button class="roll"> Roll </button>
   </div>
 `
 
 export const jsRenderView = (diceMap, elem) => {
     elem.appendChild(template.content.cloneNode(true));
 
-    const rollButton = elem.querySelector("#roll");
-    const dice = elem.querySelector("#dice");
+    const rollButton = elem.querySelector(".roll");
+    const dice = elem.querySelector(".dice");
 
     // Set the value at our dataKey with a random number between 1 and 6.
     rollButton.onclick = () => diceMap.set(diceValueKey, Math.floor(Math.random() * 6) + 1);
