@@ -4,10 +4,9 @@
  */
 
 import { SharedMap } from "fluid-framework";
-import { TinyliciousClient } from "@fluidframework/tinylicious-client";
+import { AzureClient, InsecureTokenProvider } from "@fluidframework/azure-client";
 
-export const diceValueKey = "dice-value-key";
-
+const diceValueKey = "dice-value-key";
 
 // Create the view
 
@@ -47,9 +46,31 @@ const renderDiceRoller = (diceMap, elem) => {
     diceMap.on("valueChanged", updateDice);
 }
 
-// Load container and render view
+// This configures the AzureClient to use a local in-memory service called Tinylicious.
+// You can run Tinylicious locally using "npx tinylicious".
+const localConfig = {
+    tenantId: "local",
+    tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
+    // if you"re running Tinylicious on a non-default port, you"ll need change these URLs
+    orderer: "http://localhost:7070",
+    storage: "http://localhost:7070",
+};
 
-const client = new TinyliciousClient();
+// This configures the AzureClient to use a remote Azure Fluid Service instance.
+// const azureUser = {
+//     userId: "Test User",
+//     userName: "test-user"
+// }
+
+// const prodConfig: AzureConnectionConfig = {
+//     tenantId: "",
+//     tokenProvider: new AzureFunctionTokenProvider("", azureUser),
+//     orderer: "",
+//     storage: "",
+// };
+
+const client = new AzureClient(localConfig);
+
 const containerSchema = {
     initialObjects: { diceMap: SharedMap }
 };
@@ -78,5 +99,3 @@ async function start() {
 }
 
 start().catch((error) => console.error(error));
-
-
