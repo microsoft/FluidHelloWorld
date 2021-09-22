@@ -14,8 +14,8 @@
     },
     "dependencies": {
         "@babel/preset-react": "^7.14.5",
-        "@fluidframework/azure-client": "^0.47.0",
-        "fluid-framework": "^0.47.0"
+        "@fluidframework/azure-client": "^0.48.0",
+        "fluid-framework": "^0.48.0"
     },
     "devDependencies": {
         "@babel/core": "^7.15.5",
