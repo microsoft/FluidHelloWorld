@@ -4,8 +4,8 @@
  */
 
 import { SharedMap } from "fluid-framework";
-import { AzureClient, AzureClientProps } from "@fluidframework/azure-client";
-import { InsecureTokenProvider } from "@fluidframework/test-client-utils"
+import { AzureClient } from "@fluidframework/azure-client";
+import { InsecureTokenProvider } from "@fluidframework/test-client-utils";
 
 const diceValueKey = "dice-value-key";
 
@@ -67,10 +67,10 @@ const localConfig = {
 
 // const prodConfig = {
 //     connection: {
-//         tenantId: "",
+//         tenantId: "[REPLACE WITH YOUR TENANT GUID]",
 //         tokenProvider: new AzureFunctionTokenProvider("", azureUser),
-//         orderer: "",
-//         storage: "",
+//         orderer: "[REPLACE WITH YOUR ORDERER URL]",
+//         storage: "[REPLACE WITH YOUR STORAGE URL]",
 //     }
 // };
 
