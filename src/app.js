@@ -4,7 +4,8 @@
  */
 
 import { SharedMap } from "fluid-framework";
-import { AzureClient, InsecureTokenProvider } from "@fluidframework/azure-client";
+import { AzureClient, AzureClientProps } from "@fluidframework/azure-client";
+import { InsecureTokenProvider } from "@fluidframework/test-client-utils"
 
 const diceValueKey = "dice-value-key";
 
@@ -49,11 +50,13 @@ const renderDiceRoller = (diceMap, elem) => {
 // This configures the AzureClient to use a local in-memory service called Tinylicious.
 // You can run Tinylicious locally using "npx tinylicious".
 const localConfig = {
-    tenantId: "local",
-    tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
-    // if you"re running Tinylicious on a non-default port, you"ll need change these URLs
-    orderer: "http://localhost:7070",
-    storage: "http://localhost:7070",
+    connection: {
+        tenantId: "local",
+        tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
+        // if you"re running Tinylicious on a non-default port, you"ll need change these URLs
+        orderer: "http://localhost:7070",
+        storage: "http://localhost:7070",
+    }
 };
 
 // This configures the AzureClient to use a remote Azure Fluid Service instance.
@@ -62,11 +65,13 @@ const localConfig = {
 //     userName: "test-user"
 // }
 
-// const prodConfig: AzureConnectionConfig = {
-//     tenantId: "",
-//     tokenProvider: new AzureFunctionTokenProvider("", azureUser),
-//     orderer: "",
-//     storage: "",
+// const prodConfig = {
+//     connection: {
+//         tenantId: "",
+//         tokenProvider: new AzureFunctionTokenProvider("", azureUser),
+//         orderer: "",
+//         storage: "",
+//     }
 // };
 
 const client = new AzureClient(localConfig);
