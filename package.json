@@ -14,10 +14,9 @@
     },
     "dependencies": {
         "@babel/preset-react": "^7.14.5",
-        "@fluidframework/azure-client": "^0.48.0",
-        "@fluidframework/test-client-utils": "^0.48.0",
-        "@fluidframework/test-runtime-utils": "^0.48.0",
-        "fluid-framework": "^0.48.0"
+        "@fluidframework/azure-client": "^0.48.1",
+        "@fluidframework/test-client-utils": "^0.48.1",
+        "fluid-framework": "^0.48.1"
     },
     "devDependencies": {
         "@babel/core": "^7.15.5",

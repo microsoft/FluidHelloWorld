@@ -4,13 +4,23 @@
  */
 
 import { SharedMap } from "fluid-framework";
-import { AzureClient, AzureClientProps } from "@fluidframework/azure-client";
+import { AzureClient, LOCAL_MODE_TENANT_ID } from "@fluidframework/azure-client";
 import { InsecureTokenProvider } from "@fluidframework/test-client-utils"
 
+// The config is set to run against a local service by default. Run `npx tinylicious` to run locally
+// Update the corresponding properties below with your tenant specific information to run against your tenant.
+const serviceConfig = {
+    connection: {
+        tenantId: LOCAL_MODE_TENANT_ID, // REPLACE WITH YOUR TENANT ID
+        tokenProvider: new InsecureTokenProvider("" /* REPLACE WITH YOUR PRIMARY KEY */, { id: "userId" }),
+        orderer: "http://localhost:7070", // REPLACE WITH YOUR ORDERER ENDPOINT
+        storage: "http://localhost:7070", // REPLACE WITH YOUR STORAGE ENDPOINT
+    }
+};
+
+const client = new AzureClient(serviceConfig);
+
 const diceValueKey = "dice-value-key";
-
-// Create the view
-
 const template = document.createElement("template");
 
 template.innerHTML = `
@@ -46,35 +56,6 @@ const renderDiceRoller = (diceMap, elem) => {
     // Use the changed event to trigger the rerender whenever the value changes.
     diceMap.on("valueChanged", updateDice);
 }
-
-// This configures the AzureClient to use a local in-memory service called Tinylicious.
-// You can run Tinylicious locally using "npx tinylicious".
-const localConfig = {
-    connection: {
-        tenantId: "local",
-        tokenProvider: new InsecureTokenProvider("anyValue", { id: "userId" }),
-        // if you"re running Tinylicious on a non-default port, you"ll need change these URLs
-        orderer: "http://localhost:7070",
-        storage: "http://localhost:7070",
-    }
-};
-
-// This configures the AzureClient to use a remote Azure Fluid Service instance.
-// const azureUser = {
-//     userId: "Test User",
-//     userName: "test-user"
-// }
-
-// const prodConfig = {
-//     connection: {
-//         tenantId: "",
-//         tokenProvider: new AzureFunctionTokenProvider("", azureUser),
-//         orderer: "",
-//         storage: "",
-//     }
-// };
-
-const client = new AzureClient(localConfig);
 
 const containerSchema = {
     initialObjects: { diceMap: SharedMap }
