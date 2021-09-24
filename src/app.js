@@ -58,7 +58,7 @@ const root = document.getElementById("content");
 const createNewDice = async () => {
     const { container } = await client.createContainer(containerSchema);
     container.initialObjects.diceMap.set(diceValueKey, 1);
-    const id = container.attach();
+    const id = await container.attach();
     renderDiceRoller(container.initialObjects.diceMap, root);
     return id;
 }
