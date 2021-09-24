@@ -10,7 +10,7 @@
         "build:dev": "webpack --env clean",
         "start": "concurrently \"npm:start:server\" \"npm:start:client\"",
         "start:client": "webpack serve",
-        "start:server": "npx tinylicious"
+        "start:server": "npx tinylicious@latest"
     },
     "dependencies": {
         "@fluidframework/azure-client": "^0.48.1",
