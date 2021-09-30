@@ -21,6 +21,39 @@ const serviceConfig = {
 const client = new AzureClient(serviceConfig);
 
 const diceValueKey = "dice-value-key";
+
+
+const containerSchema = {
+    initialObjects: { diceMap: SharedMap }
+};
+const root = document.getElementById("content");
+
+const createNewDice = async () => {
+    const { container } = await client.createContainer(containerSchema);
+    container.initialObjects.diceMap.set(diceValueKey, 1);
+    const id = await container.attach();
+    renderDiceRoller(container.initialObjects.diceMap, root);
+    return id;
+}
+
+const loadExistingDice = async (id) => {
+    const { container } = await client.getContainer(id, containerSchema);
+    renderDiceRoller(container.initialObjects.diceMap, root);
+}
+
+async function start() {
+    if (location.hash) {
+        await loadExistingDice(location.hash.substring(1))
+    } else {
+        const id = await createNewDice();
+        location.hash = id;
+    }
+}
+
+start().catch((error) => console.error(error));
+
+// Define the view
+
 const template = document.createElement("template");
 
 template.innerHTML = `
@@ -56,32 +89,3 @@ const renderDiceRoller = (diceMap, elem) => {
     // Use the changed event to trigger the rerender whenever the value changes.
     diceMap.on("valueChanged", updateDice);
 }
-
-const containerSchema = {
-    initialObjects: { diceMap: SharedMap }
-};
-const root = document.getElementById("content");
-
-const createNewDice = async () => {
-    const { container } = await client.createContainer(containerSchema);
-    container.initialObjects.diceMap.set(diceValueKey, 1);
-    const id = await container.attach();
-    renderDiceRoller(container.initialObjects.diceMap, root);
-    return id;
-}
-
-const loadExistingDice = async (id) => {
-    const { container } = await client.getContainer(id, containerSchema);
-    renderDiceRoller(container.initialObjects.diceMap, root);
-}
-
-async function start() {
-    if (location.hash) {
-        await loadExistingDice(location.hash.substring(1))
-    } else {
-        const id = await createNewDice();
-        location.hash = id;
-    }
-}
-
-start().catch((error) => console.error(error));
