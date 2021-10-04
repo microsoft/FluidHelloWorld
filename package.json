@@ -13,7 +13,7 @@
         "start:server": "npx tinylicious@latest"
     },
     "dependencies": {
-        "@fluidframework/tinylicious-client": "^0.48.1",
+        "@fluidframework/tinylicious-client": "^0.48.4",
         "fluid-framework": "^0.48.1"
     },
     "devDependencies": {
