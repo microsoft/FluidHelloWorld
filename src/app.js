@@ -8,8 +8,40 @@ import { TinyliciousClient } from "@fluidframework/tinylicious-client";
 
 export const diceValueKey = "dice-value-key";
 
+// Load container and render the app
 
-// Create the view
+const client = new TinyliciousClient();
+const containerSchema = {
+    initialObjects: { diceMap: SharedMap }
+};
+const root = document.getElementById("content");
+
+const createNewDice = async () => {
+    const { container } = await client.createContainer(containerSchema);
+    container.initialObjects.diceMap.set(diceValueKey, 1);
+    const id = await container.attach();
+    renderDiceRoller(container.initialObjects.diceMap, root);
+    return id;
+}
+
+const loadExistingDice = async (id) => {
+    const { container } = await client.getContainer(id, containerSchema);
+    renderDiceRoller(container.initialObjects.diceMap, root);
+}
+
+async function start() {
+    if (location.hash) {
+        await loadExistingDice(location.hash.substring(1))
+    } else {
+        const id = await createNewDice();
+        location.hash = id;
+    }
+}
+
+start().catch((error) => console.error(error));
+
+
+// Define the view
 
 const template = document.createElement("template");
 
@@ -46,37 +78,3 @@ const renderDiceRoller = (diceMap, elem) => {
     // Use the changed event to trigger the rerender whenever the value changes.
     diceMap.on("valueChanged", updateDice);
 }
-
-// Load container and render view
-
-const client = new TinyliciousClient();
-const containerSchema = {
-    initialObjects: { diceMap: SharedMap }
-};
-const root = document.getElementById("content");
-
-const createNewDice = async () => {
-    const { container } = await client.createContainer(containerSchema);
-    container.initialObjects.diceMap.set(diceValueKey, 1);
-    const id = await container.attach();
-    renderDiceRoller(container.initialObjects.diceMap, root);
-    return id;
-}
-
-const loadExistingDice = async (id) => {
-    const { container } = await client.getContainer(id, containerSchema);
-    renderDiceRoller(container.initialObjects.diceMap, root);
-}
-
-async function start() {
-    if (location.hash) {
-        await loadExistingDice(location.hash.substring(1))
-    } else {
-        const id = await createNewDice();
-        location.hash = id;
-    }
-}
-
-start().catch((error) => console.error(error));
-
-
