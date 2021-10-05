@@ -82,7 +82,7 @@ const renderDiceRoller = (diceMap, elem) => {
         const diceValue = diceMap.get(diceValueKey);
         // Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
         dice.textContent = String.fromCodePoint(0x267f + diceValue);
-        dice.style.color = `hsl(${diceValue * 60}, 70%, 50%)`;
+        dice.style.color = `hsl(${diceValue * 60}, 70%, 30%)`;
     };
     updateDice();
 
