@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 
-import { SharedMap } from "fluid-framework";
+import { SharedMap, SharedNumberSequence } from "fluid-framework";
 import { AzureClient, LOCAL_MODE_TENANT_ID } from "@fluidframework/azure-client";
 import { InsecureTokenProvider } from "@fluidframework/test-client-utils";
 
@@ -28,14 +28,22 @@ const diceValuesKey = "dice-values-key";
 const containerSchema = {
     initialObjects: {
         diceMap: SharedMap,
+        diceSequence: SharedNumberSequence,
     },
 };
 
 // Log message as HTML to 'log' div element
 const log = (message) => {
+    if (!message) {
+        message = "NULL";
+    }
     const root = document.getElementById("content");
     const logElement = root.querySelector(".log");
-    logElement.innerHTML += "<br/>" + message;
+    if (logElement) {
+      const currentTime = (new Date()).toLocaleTimeString();
+      logElement.innerHTML += `<br/>${currentTime}: ${message}`;
+      logElement.scrollTop = logElement.scrollHeight; // scroll to bottom
+    }
 };
 
 // Log message as HTML to 'log' div element
@@ -47,7 +55,10 @@ const clearLog = () => {
 
 // Record the dice value both as single latest value, and in the sequence of values
 const recordDiceValue = (container, value) => {
+    // The latest dice value
     container.initialObjects.diceMap.set(diceValueKey, value);
+
+    // Update simplistic array of dice values
     let diceValues = container.initialObjects.diceMap.get(diceValuesKey);
     if (!diceValues) {
         diceValues = [value];
@@ -55,11 +66,32 @@ const recordDiceValue = (container, value) => {
         diceValues.push(value);
     }
     container.initialObjects.diceMap.set(diceValuesKey, diceValues);
+
+    // Update sequence of dice values
+    if (!container.initialObjects.diceSequence) {
+        log("Initial creation of dice sequence");
+        try {
+          container.initialObjects.diceSequence = SharedNumberSequence.create(
+              container.runtime,
+              "dice-sequence"
+          );
+        } catch (e) {
+            log(`Error creating dice sequence: ${e}`);
+        }
+    }
+    const diceValuesCount = container.initialObjects.diceSequence.getItemCount();
+    container.initialObjects.diceSequence.insert(diceValuesCount, [value]);
+    //log(`Dice value ${value} recorded in sequence`);
 };
 
 // Clear the recorded sequence of dice values
 const clearDiceValues = (container) => {
+    // Clear the array of dice values
     container.initialObjects.diceMap.set(diceValuesKey, []);
+
+    // Clear the dice sequence
+    const diceValuesCount = container.initialObjects.diceSequence.getItemCount();
+    container.initialObjects.diceSequence.remove(0, diceValuesCount);
 };
 
 const getDiceValue = (container) => {
@@ -76,11 +108,32 @@ const getDiceValuesAsText = (container) => {
     }
 };
 
+const getDiceValuesSequenceAsText = (container) => {
+  const diceSequence = container.initialObjects.diceSequence;
+  if (!diceSequence) {
+    return "diceSequence does not exist";
+  }
+
+  const diceValuesCount = container.initialObjects.diceSequence.getItemCount();
+  if (diceValuesCount === 0) {
+    return "0 dice values in sequence";
+  }
+
+  const diceValues = container.initialObjects.diceSequence.getItems(0, diceValuesCount);
+  if (!diceValues) {
+      return "dice values can't be retrieved";
+  } else {
+      const diceValuesAsText = diceValues.map((value) => value.toString()).join(" ");
+      return diceValuesAsText;
+  }
+};
+
 const root = document.getElementById("content");
 
 const createNewDice = async () => {
     const { container } = await client.createContainer(containerSchema);
-    recordDiceValue(container, 1);
+        log(`You initially rolled a 1`);
+        recordDiceValue(container, 1);
     const id = await container.attach();
     renderDiceRoller(container, root);
 
@@ -115,16 +168,22 @@ template.innerHTML = `
     .dicevaluesContainer { font-size: 24px; border: 3px solid black; padding: 10px; margin: 10px; }
     .roll { font-size: 50px;}
     .clear { font-size: 50px;}
-    .logContainer { font-size: 24px; border: 3px solid black; padding: 10px; margin: 10px }
+    .redraw { font-size: 50px;}
+    .logContainer { font-size: 24px; border: 3px solid black; padding: 10px; margin: 10px; text-align: left; height: 400px; overflow: scroll; }
   </style>
   <div class="wrapper">
     <div class="dice"></div>
     <div class="dicevaluesContainer">
-      <strong>DICE VALUES</strong><hr/>
+      <strong>DICE VALUES SIMPLISTIC</strong><hr/>
       <div class="dicevalues"></div>
+    </div>
+    <div class="dicevaluesContainer">
+      <strong>DICE VALUES SEQUENCE</strong><hr/>
+      <div class="dicevaluesSequence"></div>
     </div>
     <button class="roll"> Roll </button>
     <button class="clear"> Clear dice values </button>
+    <button class="redraw"> Redraw UI </button>
     <div class="logContainer">
       <strong>LOCAL LOG OUTPUT</strong><hr/>
       <div class="log"></div>
@@ -137,14 +196,17 @@ const renderDiceRoller = (container, elem) => {
 
     const rollButton = elem.querySelector(".roll");
     const clearButton = elem.querySelector(".clear");
+    const redrawButton = elem.querySelector(".redraw");
+
     const dice = elem.querySelector(".dice");
     const dicevaluesElement = elem.querySelector(".dicevalues");
+    const dicevaluesSequenceElement = elem.querySelector(".dicevaluesSequence");
 
     // Set the value at our dataKey with a random number between 1 and 6.
     rollButton.onclick = () => {
         const value = Math.floor(Math.random() * 6) + 1;
-        recordDiceValue(container, value);
         log(`You rolled a ${value}`);
+        recordDiceValue(container, value);
     };
 
     // Clear the recorded values
@@ -153,19 +215,46 @@ const renderDiceRoller = (container, elem) => {
         clearLog();
     };
 
+    redrawButton.onclick = () => {
+      updateDice();
+    };
+
     // Get the current value of the shared data to update the view whenever it changes.
     const updateDice = () => {
         const diceValue = getDiceValue(container);
         const diceValuesAsText = getDiceValuesAsText(container);
+        const diceValuesSequenceAsText = getDiceValuesSequenceAsText(container);
 
         // Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
         dice.textContent = String.fromCodePoint(0x267f + diceValue);
         dice.style.color = `hsl(${diceValue * 60}, 70%, 30%)`;
 
         dicevaluesElement.textContent = diceValuesAsText;
+        dicevaluesSequenceElement.textContent = diceValuesSequenceAsText;
     };
     updateDice();
 
     // Use the changed event to trigger the rerender whenever the value changes.
-    container.initialObjects.diceMap.on("valueChanged", updateDice);
+    container.initialObjects.diceMap.on("valueChanged", () => {
+      // log("diceMap: valueChanged");
+      updateDice(); 
+    });
+
+    // valueChanged events occur on SharedMap
+    container.initialObjects.diceSequence.on("valueChanged", (e) => {
+      // log("diceSequence: valueChanged: " + JSON.stringify(e));
+      updateDice();
+    });
+
+    // sequenceDelta events occur on SharedSequence
+    container.initialObjects.diceSequence.on("sequenceDelta", (e) => {
+      // log("diceSequence: sequenceDelta: " + JSON.stringify(e));
+      updateDice();
+    });
+
+    // op event occurs on SharedSequence as well
+    // container.initialObjects.diceSequence.on("op", (e) => {
+    //   // log("diceSequence: op: " + JSON.stringify(e));
+    //   updateDice();
+    // });
 };
