@@ -5,7 +5,7 @@ walkthrough of this example and how it works, check out the [tutorial documentat
 
 ## Requirements
 
-Node 12.17+
+Node 14.19+
 
 ## Getting Started
 
