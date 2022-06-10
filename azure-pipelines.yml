@@ -6,7 +6,7 @@
 pr:
 - main
 
-pool: 'Lite'
+pool: 'Small'
 
 steps:
 - task: ComponentGovernanceComponentDetection@0
