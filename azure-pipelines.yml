@@ -5,6 +5,7 @@
 
 pr:
 - main
+- main-azure
 
 pool: 'Small'
 
