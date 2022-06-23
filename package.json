@@ -13,9 +13,9 @@
         "start:server": "npx @fluidframework/azure-local-service@latest"
     },
     "dependencies": {
-        "@fluidframework/azure-client": "^0.48.1",
-        "@fluidframework/test-client-utils": "^0.48.1",
-        "fluid-framework": "^0.48.1"
+        "@fluidframework/azure-client": "^1.0.1",
+        "@fluidframework/test-client-utils": "^1.0.1",
+        "fluid-framework": "^1.0.1"
     },
     "devDependencies": {
         "@babel/core": "^7.15.5",

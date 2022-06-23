@@ -4,19 +4,31 @@
  */
 
 import { SharedMap } from "fluid-framework";
-import { AzureClient, LOCAL_MODE_TENANT_ID } from "@fluidframework/azure-client";
+import { AzureClient } from "@fluidframework/azure-client";
 import { InsecureTokenProvider } from "@fluidframework/test-client-utils"
 
-// The config is set to run against a local service by default. Run `npx tinylicious` to run locally
-// Update the corresponding properties below with your tenant specific information to run against your tenant.
+// The config is set to run against a local service by default.
 const serviceConfig = {
     connection: {
-        tenantId: LOCAL_MODE_TENANT_ID, // REPLACE WITH YOUR TENANT ID
-        tokenProvider: new InsecureTokenProvider("" /* REPLACE WITH YOUR PRIMARY KEY */, { id: "userId" }),
-        orderer: "http://localhost:7070", // REPLACE WITH YOUR ORDERER ENDPOINT
-        storage: "http://localhost:7070", // REPLACE WITH YOUR STORAGE ENDPOINT
+        type: "local",
+        tokenProvider: new InsecureTokenProvider("" , { id: "userId" }),
+        endpoint: "http://localhost:7070",
     }
 };
+
+
+/** 
+ * To connect to an Azure Fluid Relay tenant comment out the local serviceConfig above and uncomment the serviceConfig below.
+ * Update the corresponding properties below with your tenant specific information to run against your tenant.
+ */ 
+// const serviceConfig = {
+//     connection: {
+//         tenantId: LOCAL_MODE_TENANT_ID, // REPLACE WITH YOUR TENANT ID
+//         tokenProvider: new InsecureTokenProvider("" /* REPLACE WITH YOUR PRIMARY KEY */, { id: "userId" }),
+//         orderer: "http://localhost:7070", // REPLACE WITH YOUR ORDERER ENDPOINT
+//         storage: "http://localhost:7070", // REPLACE WITH YOUR STORAGE ENDPOINT
+//     }
+// };
 
 const client = new AzureClient(serviceConfig);
 
