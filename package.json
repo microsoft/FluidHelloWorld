@@ -13,8 +13,8 @@
         "start:server": "npx tinylicious@latest"
     },
     "dependencies": {
-        "@fluidframework/tinylicious-client": "^0.56.5",
-        "fluid-framework": "^0.56.5"
+        "@fluidframework/tinylicious-client": "^1.2.5",
+        "fluid-framework": "^1.2.5"
     },
     "devDependencies": {
         "clean-webpack-plugin": "^3.0.0",
