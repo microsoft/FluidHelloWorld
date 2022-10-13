@@ -27,7 +27,7 @@ module.exports = env => {
         },
         plugins,
         devServer: {
-            open: true
+            open: false
         }
     };
 };
