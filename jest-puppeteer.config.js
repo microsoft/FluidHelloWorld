@@ -5,7 +5,7 @@
 
 module.exports = {
   server: {
-      command: `npm run start`,
+      command: `npm run start:server`,
       launchTimeout: 500000
   },
   launch: {
