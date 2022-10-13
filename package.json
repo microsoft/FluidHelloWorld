@@ -26,7 +26,6 @@
         "webpack-cli": "^4.8.0",
         "webpack-dev-server": "^3.11.0",
         "jest": "^26.6.3",
-        "jest-junit": "^10.0.0",
         "jest-puppeteer": "^4.3.0",
         "puppeteer": "^1.20.0"
     },
@@ -36,9 +35,5 @@
         "semi": true,
         "singleQuote": false,
         "printWidth": 100
-    },
-    "jest-junit": {
-        "outputDirectory": "nyc",
-        "outputName": "jest-junit-report.xml"
     }
 }
