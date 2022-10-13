@@ -10,7 +10,8 @@
         "build:dev": "webpack --env clean",
         "start": "start-server-and-test start:server 7070 start:client",
         "start:client": "webpack serve",
-        "start:server": "npx tinylicious@latest"
+        "start:server": "npx tinylicious@latest",
+        "test": "jest"
     },
     "dependencies": {
         "@fluidframework/tinylicious-client": "^1.2.5",
@@ -23,7 +24,10 @@
         "start-server-and-test": "^1.11.6",
         "webpack": "^4.46.0",
         "webpack-cli": "^4.8.0",
-        "webpack-dev-server": "^3.11.0"
+        "webpack-dev-server": "^3.11.0",
+        "jest": "^26.6.3",
+        "jest-puppeteer": "^4.3.0",
+        "puppeteer": "^1.20.0"
     },
     "prettier": {
         "trailingComma": "es5",
