@@ -16,12 +16,12 @@ describe("fluid-hello-world", () => {
         await page.waitFor(() => window["fluidStarted"]);
         url = await page.url();
     });
-      
-      it('Reload the page', async () => {
-        console.log("URL----", url);
-      });
 
       it('Load the container', async () => {
-        await page.goto(url);
+        await page.goto(url, { waitUntil: "domcontentloaded" });
       });
+
+      it('Roll the dice', async () => {
+        await expect(page).toClick("button", { text: "Roll" });
+      })
 });
