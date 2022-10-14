@@ -30,7 +30,19 @@ steps:
     command: 'custom'
     customCommand: 'run build'
 - task: Npm@1
+  displayName: Lint
+  inputs:
+    command: 'custom'
+    customCommand: 'run lint' 
+- task: Npm@1
   displayName: Test
   inputs:
     command: 'custom'
     customCommand: 'run test'
+- task: PublishTestResults@2
+  displayName: Publish Test Results
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/*junit-report.xml'
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+  condition: succeededOrFailed()
