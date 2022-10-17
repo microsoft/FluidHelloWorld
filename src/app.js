@@ -7,13 +7,13 @@ import { SharedMap } from "fluid-framework";
 import { TinyliciousClient } from "@fluidframework/tinylicious-client";
 
 export const diceValueKey = "dice-value-key";
-
 // Load container and render the app
 
 const client = new TinyliciousClient();
 const containerSchema = {
-    initialObjects: { diceMap: SharedMap }
+    initialObjects: { diceMap: SharedMap },
 };
+
 const root = document.getElementById("content");
 
 const createNewDice = async () => {
@@ -22,16 +22,16 @@ const createNewDice = async () => {
     const id = await container.attach();
     renderDiceRoller(container.initialObjects.diceMap, root);
     return id;
-}
+};
 
 const loadExistingDice = async (id) => {
     const { container } = await client.getContainer(id, containerSchema);
     renderDiceRoller(container.initialObjects.diceMap, root);
-}
+};
 
 async function start() {
     if (location.hash) {
-        await loadExistingDice(location.hash.substring(1))
+        await loadExistingDice(location.hash.substring(1));
     } else {
         const id = await createNewDice();
         location.hash = id;
@@ -40,9 +40,7 @@ async function start() {
 
 start().catch((error) => console.error(error));
 
-
 // Define the view
-
 const template = document.createElement("template");
 
 template.innerHTML = `
@@ -55,7 +53,7 @@ template.innerHTML = `
     <div class="dice"></div>
     <button class="roll"> Roll </button>
   </div>
-`
+`;
 
 const renderDiceRoller = (diceMap, elem) => {
     elem.appendChild(template.content.cloneNode(true));
@@ -77,4 +75,4 @@ const renderDiceRoller = (diceMap, elem) => {
 
     // Use the changed event to trigger the rerender whenever the value changes.
     diceMap.on("valueChanged", updateDice);
-}
+};
