@@ -75,4 +75,6 @@ const renderDiceRoller = (diceMap, elem) => {
 
     // Use the changed event to trigger the rerender whenever the value changes.
     diceMap.on("valueChanged", updateDice);
+    // Setting "fluidStarted" is just for our test automation
+    window["fluidStarted"] = true;
 };

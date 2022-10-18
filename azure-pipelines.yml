@@ -16,9 +16,9 @@ steps:
           verbosity: "Verbose"
           alertWarningLevel: "High"
     - task: UseNode@1
-      displayName: Use Node 12.x
+      displayName: Use Node 14.x
       inputs:
-          version: 12.x
+          version: 14.x
     - task: Npm@1
       displayName: Install
       inputs:
@@ -34,3 +34,15 @@ steps:
       inputs:
           command: "custom"
           customCommand: "run lint"
+    - task: Npm@1
+      displayName: Test
+      inputs:
+          command: "custom"
+          customCommand: "run test"
+    - task: PublishTestResults@2
+      displayName: Publish Test Results
+      inputs:
+          testResultsFormat: "JUnit"
+          testResultsFiles: "**/*junit-report.xml"
+          searchFolder: "$(System.DefaultWorkingDirectory)"
+      condition: succeededOrFailed()
