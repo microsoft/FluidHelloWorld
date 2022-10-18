@@ -1,40 +1,39 @@
 {
-    "name": "@fluid-example/hello-world",
-    "version": "0.1.0",
-    "description": "Minimal Fluid Container & Data Object sample to implement a collaborative dice roller as a standalone app.",
-    "repository": "microsoft/FluidHelloWorld",
-    "license": "MIT",
-    "author": "Microsoft",
-    "scripts": {
-        "build": "webpack --env prod --env clean",
-        "build:dev": "webpack --env clean",
-        "start": "start-server-and-test start:server 7070 start:client",
-        "start:client": "webpack serve",
-        "start:server": "npx tinylicious@latest",
-        "test": "start-server-and-test start:server 7070 jest",
-        "lint": "echo No lint for this example"
-    },
-    "dependencies": {
-        "@fluidframework/tinylicious-client": "^1.2.5",
-        "fluid-framework": "^1.2.5"
-    },
-    "devDependencies": {
-        "clean-webpack-plugin": "^3.0.0",
-        "concurrently": "^5.3.0",
-        "html-webpack-plugin": "^4.3.0",
-        "start-server-and-test": "^1.11.6",
-        "webpack": "^4.46.0",
-        "webpack-cli": "^4.8.0",
-        "webpack-dev-server": "^3.11.0",
-        "jest": "^26.6.3",
-        "jest-puppeteer": "^4.3.0",
-        "puppeteer": "^1.20.0"
-    },
-    "prettier": {
-        "trailingComma": "es5",
-        "tabWidth": 4,
-        "semi": true,
-        "singleQuote": false,
-        "printWidth": 100
-    }
+  "name": "@fluid-example/hello-world",
+  "version": "0.1.0",
+  "description": "Minimal Fluid Container & Data Object sample to implement a collaborative dice roller as a standalone app.",
+  "repository": "microsoft/FluidHelloWorld",
+  "license": "MIT",
+  "author": "Microsoft",
+  "scripts": {
+    "build": "webpack --env prod --env clean",
+    "build:dev": "webpack --env clean",
+    "start": "start-server-and-test start:server 7070 start:client",
+    "start:client": "webpack serve",
+    "start:server": "npx tinylicious@latest",
+    "format": "npm run prettier:fix",
+    "lint": "npm run prettier",
+    "lint:fix": "npm run prettier:fix",
+    "prettier": "prettier --check . --ignore-path ./.prettierignore",
+    "prettier:fix": "prettier --write . --ignore-path ./.prettierignore",
+    "test": "start-server-and-test start:server 7070 jest"
+  },
+  "dependencies": {
+    "@fluidframework/tinylicious-client": "^1.2.5",
+    "fluid-framework": "^1.2.5"
+  },
+  "devDependencies": {
+    "@fluidframework/build-common": "^1.0.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "concurrently": "^5.3.0",
+    "html-webpack-plugin": "^4.3.0",
+    "prettier": "^2.7.1",
+    "start-server-and-test": "^1.11.6",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^3.11.0",
+    "jest": "^26.6.3",
+    "jest-puppeteer": "^4.3.0",
+    "puppeteer": "^1.20.0"
+  }
 }
