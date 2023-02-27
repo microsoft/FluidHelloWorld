@@ -5,6 +5,9 @@
   "repository": "microsoft/FluidHelloWorld",
   "license": "MIT",
   "author": "Microsoft",
+  "engines": {
+    "node": ">=14.19.0 <18.0.0"
+  },
   "scripts": {
     "build": "webpack --env prod --env clean",
     "build:dev": "webpack --env clean",
