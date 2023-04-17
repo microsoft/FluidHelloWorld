@@ -4,12 +4,27 @@
  */
 
 import { SharedMap } from "fluid-framework";
-import { TinyliciousClient } from "@fluidframework/tinylicious-client";
+import { AzureClient } from "@fluidframework/azure-client";
+import { InsecureTokenProvider } from "@fluidframework/test-client-utils";
 
 export const diceValueKey = "dice-value-key";
 // Load container and render the app
 
-const client = new TinyliciousClient();
+const clientProps = {
+    connection: {
+        type: "remote",
+        tenantId: "f81a9c54-1f41-42d4-a485-e4361f7604d4", // REPLACE WITH YOUR TENANT ID
+        tokenProvider: new InsecureTokenProvider("f61a309bd40c91a3bbad5a286dfa427b", {
+            // REPLACE WITH YOUR PRIMARY KEY
+            userId: "userId",
+            userName: "Test User",
+        }),
+        endpoint: "https://us.fluidrelay.azure.com", // REPLACE WITH YOUR AZURE ENDPOINT
+    },
+};
+
+const client = new AzureClient(clientProps);
+
 const containerSchema = {
     initialObjects: { diceMap: SharedMap },
 };
