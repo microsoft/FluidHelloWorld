@@ -10,7 +10,6 @@ export const diceValueKey = "dice-value-key";
 // Load container and render the app
 
 const client = new TinyliciousClient();
-
 const containerSchema = {
     initialObjects: { diceMap: SharedMap },
 };
