@@ -5,13 +5,25 @@
 
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { EnvironmentPlugin } = require("webpack");
 
 module.exports = (env) => {
     const htmlTemplate = "./src/index.html";
     const plugins =
         env && env.clean
-            ? [new CleanWebpackPlugin(), new HtmlWebpackPlugin({ template: htmlTemplate })]
-            : [new HtmlWebpackPlugin({ template: htmlTemplate })];
+            ? [
+                  new CleanWebpackPlugin(),
+                  new HtmlWebpackPlugin({ template: htmlTemplate }),
+                  new EnvironmentPlugin({
+                      FLUID_CLIENT: "tinylicious",
+                  }),
+              ]
+            : [
+                  new HtmlWebpackPlugin({ template: htmlTemplate }),
+                  new EnvironmentPlugin({
+                      FLUID_CLIENT: "tinylicious",
+                  }),
+              ];
 
     const mode = env && env.prod ? "production" : "development";
 
