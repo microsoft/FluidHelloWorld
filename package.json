@@ -9,7 +9,6 @@
     "build": "webpack --env prod --env clean",
     "build:dev": "webpack --env clean",
     "start": "start-server-and-test start:server 7070 start:client",
-    "start:azure": "cross-env FLUID_CLIENT=\"azure\" npm run start:client",
     "start:client": "webpack serve",
     "start:server": "tinylicious",
     "format": "npm run prettier:fix",
@@ -20,10 +19,7 @@
     "test": "start-server-and-test start:server 7070 jest"
   },
   "dependencies": {
-    "@fluidframework/azure-client": "^2.0.0-internal.4.1.0",
-    "@fluidframework/test-client-utils": "^2.0.0-internal.4.1.0",
     "@fluidframework/tinylicious-client": "^2.0.0-internal.4.1.0",
-    "cross-env": "^7.0.3",
     "fluid-framework": "^2.0.0-internal.4.0.5"
   },
   "devDependencies": {
