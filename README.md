@@ -15,3 +15,5 @@ After cloning the repository, install dependencies and start the application
 npm install
 npm start
 ```
+
+Navigate to `localhost:8080` in the browser to view the app.
