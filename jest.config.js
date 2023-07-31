@@ -8,5 +8,6 @@ module.exports = {
     globals: {
         PATH: `http://localhost:8080`,
     },
+    reporters: ["jest-junit"],
     verbose: true,
 };

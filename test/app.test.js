@@ -45,7 +45,7 @@ describe("fluid-hello-world", () => {
             val1 = value1.codePointAt(0) - 0x267f;
         };
 
-        // roll dice until value is not change is not equal to 1
+        // roll dice until value has changed in a way we can easily confirm (i.e. when it is no longer equal to 1)
         do {
             await rollDice();
         } while (val1 === 1);

@@ -38,7 +38,7 @@ steps:
       displayName: Test
       inputs:
           command: "custom"
-          customCommand: "run test"
+          customCommand: "run ci:test"
     - task: PublishTestResults@2
       displayName: Publish Test Results
       inputs:
