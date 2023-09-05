@@ -16,7 +16,7 @@ describe("fluid-hello-world", () => {
 
     beforeEach(async () => {
         await page.goto(config.globals.PATH, { waitUntil: "load" });
-        await page.waitFor(() => window["fluidStarted"]);
+        await page.waitForFunction(() => window["fluidStarted"]);
         url = await page.url();
     });
 
