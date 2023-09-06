@@ -6,8 +6,8 @@
 module.exports = {
 	preset: "jest-puppeteer",
 	globals: {
-		PATH: `http://localhost:8080`,
+		PATH: `http://localhost:7575`,
 	},
-	reporters: ["jest-junit"],
+	reporters: ["default", "jest-junit"],
 	verbose: true,
 };
