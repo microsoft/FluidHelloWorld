@@ -16,29 +16,26 @@ steps:
       verbosity: "Verbose"
       alertWarningLevel: "High"
   - task: UseNode@1
-    displayName: Use Node 14.x
+    displayName: Use Node 18.x
     inputs:
-      version: 14.x
+      version: 18.x
   - task: Npm@1
     displayName: Install
     inputs:
       command: "custom"
-      customCommand: "install"
-  - task: Npm@1
+      customCommand: "ci"
+  - task: CmdLine@2
     displayName: Build
     inputs:
-      command: "custom"
-      customCommand: "run build"
-  - task: Npm@1
+      script: "npm run build"
+  - task: CmdLine@2
     displayName: Lint
     inputs:
-      command: "custom"
-      customCommand: "run lint"
-  - task: Npm@1
+      script: "npm run lint"
+  - task: CmdLine@2
     displayName: Test
     inputs:
-      command: "custom"
-      customCommand: "run ci:test"
+      script: "npm run ci:test"
   - task: PublishTestResults@2
     displayName: Publish Test Results
     inputs:
