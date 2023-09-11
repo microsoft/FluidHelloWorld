@@ -4,45 +4,42 @@
 # FluidHelloWorld build for CI
 
 pr:
-    - main
-    - main-azure
+  - main
+  - main-azure
 
 pool: "Small"
 
 steps:
-    - task: ComponentGovernanceComponentDetection@0
-      inputs:
-          scanType: "Register"
-          verbosity: "Verbose"
-          alertWarningLevel: "High"
-    - task: UseNode@1
-      displayName: Use Node 14.x
-      inputs:
-          version: 14.x
-    - task: Npm@1
-      displayName: Install
-      inputs:
-          command: "custom"
-          customCommand: "install"
-    - task: Npm@1
-      displayName: Build
-      inputs:
-          command: "custom"
-          customCommand: "run build"
-    - task: Npm@1
-      displayName: Lint
-      inputs:
-          command: "custom"
-          customCommand: "run lint"
-    - task: Npm@1
-      displayName: Test
-      inputs:
-          command: "custom"
-          customCommand: "run ci:test"
-    - task: PublishTestResults@2
-      displayName: Publish Test Results
-      inputs:
-          testResultsFormat: "JUnit"
-          testResultsFiles: "**/*junit-report.xml"
-          searchFolder: "$(System.DefaultWorkingDirectory)"
-      condition: succeededOrFailed()
+  - task: ComponentGovernanceComponentDetection@0
+    inputs:
+      scanType: "Register"
+      verbosity: "Verbose"
+      alertWarningLevel: "High"
+  - task: UseNode@1
+    displayName: Use Node 18.x
+    inputs:
+      version: 18.x
+  - task: Npm@1
+    displayName: Install
+    inputs:
+      command: "custom"
+      customCommand: "ci"
+  - task: CmdLine@2
+    displayName: Build
+    inputs:
+      script: "npm run build"
+  - task: CmdLine@2
+    displayName: Lint
+    inputs:
+      script: "npm run lint"
+  - task: CmdLine@2
+    displayName: Test
+    inputs:
+      script: "npm run ci:test"
+  - task: PublishTestResults@2
+    displayName: Publish Test Results
+    inputs:
+      testResultsFormat: "JUnit"
+      testResultsFiles: "**/*junit-report.xml"
+      searchFolder: "$(System.DefaultWorkingDirectory)"
+    condition: succeededOrFailed()

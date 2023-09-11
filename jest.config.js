@@ -4,10 +4,10 @@
  */
 
 module.exports = {
-    preset: "jest-puppeteer",
-    globals: {
-        PATH: `http://localhost:8080`,
-    },
-    reporters: ["jest-junit"],
-    verbose: true,
+	preset: "jest-puppeteer",
+	globals: {
+		PATH: `http://localhost:7575`,
+	},
+	reporters: ["default", "jest-junit"],
+	verbose: true,
 };
