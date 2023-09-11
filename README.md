@@ -16,4 +16,4 @@ npm install
 npm start
 ```
 
-Navigate to `localhost:8080` in the browser to view the app.
+Navigate to [http://localhost:8080/](http://localhost:8080/) in the browser to view the app.
