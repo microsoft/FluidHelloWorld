@@ -10,7 +10,7 @@
     "build:dev": "webpack --env clean",
     "start": "start-server-and-test start:server 7070 start:client",
     "start:client": "webpack serve",
-    "start:server": "tinylicious",
+    "start:server": "npx tinylicious",
     "format": "npm run prettier:fix",
     "lint": "npm run prettier",
     "lint:fix": "npm run prettier:fix",
@@ -32,7 +32,6 @@
     "prettier": "^2.7.1",
     "puppeteer": "^1.20.0",
     "start-server-and-test": "^1.11.6",
-    "tinylicious": "^0.4.0",
     "webpack": "^5.82.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.6.0"
