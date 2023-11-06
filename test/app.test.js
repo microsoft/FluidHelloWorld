@@ -5,19 +5,18 @@
 
 const config = require("../jest.config");
 
-let url;
-
 describe("fluid-hello-world", () => {
+	const url = config.globals.PATH;
+
 	beforeAll(async () => {
 		// Wait for the page to load first before running any tests
 		// so this time isn't attributed to the first test
-		await page.goto(config.globals.PATH, { waitUntil: "load", timeout: 0 });
+		await page.goto(url, { waitUntil: "load", timeout: 0 });
 	}, 45000);
 
 	beforeEach(async () => {
-		await page.goto(config.globals.PATH, { waitUntil: "load" });
-		await page.waitFor(() => window["fluidStarted"]);
-		url = await page.url();
+		await page.goto(url, { waitUntil: "load" });
+		await page.waitForFunction(() => window["fluidStarted"]);
 	});
 
 	it("Load the container", async () => {
@@ -45,7 +44,7 @@ describe("fluid-hello-world", () => {
 			val1 = value1.codePointAt(0) - 0x267f;
 		};
 
-		// roll dice until value is not change is not equal to 1
+		// roll dice until value is not equal to 1
 		do {
 			await rollDice();
 		} while (val1 === 1);
