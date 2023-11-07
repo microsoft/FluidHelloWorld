@@ -7,6 +7,8 @@ module.exports = {
 	server: {
 		command: `npm run start:client`,
 		launchTimeout: 10000,
+		port: 8080,
+		usedPortAction: "error",
 	},
 	launch: {
 		slowMo: 30, // slows down process for easier viewing
