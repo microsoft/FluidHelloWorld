@@ -23,40 +23,46 @@ describe("fluid-hello-world", () => {
 		await page.goto(url, { waitUntil: "domcontentloaded" });
 	});
 
+	function getDieValueFromTextContent(textContent) {
+		// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
+		return value1String.codePointAt(0) - 0x267f;
+	}
+
 	/**
 	 * create a container, update the dice value locally, reload url, validate value persisted
 	 */
 	it("roll and load the dice", async () => {
+		await page.goto(url, { waitUntil: "domcontentloaded" });
+
 		// get the dice value after first roll
 		await page.waitForSelector(".dice");
 		let element1 = await page.$(".dice");
-		const initialValue = await page.evaluate((el) => el.textContent, element1);
-		const initialVal = initialValue.codePointAt(0) - 0x267f;
-		// Validate if the initial dice value is equal to 1
-		expect(initialVal).toEqual(1);
+		const initialValueString = await page.evaluate((el) => el.textContent, element1);
+		const initialValue = getDieValueFromTextContent(initialValueString);
 
-		let val1;
+		// Validate if the initial dice value is equal to 1
+		expect(initialValue).toEqual(1);
+
+		let value1;
 		const rollDice = async () => {
 			// Validate there is a button that can be clicked
 			await expect(page).toClick("button", { text: "Roll" });
-			const value1 = await page.evaluate((el) => el.textContent, element1);
-			// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-			val1 = value1.codePointAt(0) - 0x267f;
+			const value1String = await page.evaluate((el) => el.textContent, element1);
+			value1 = getDieValueFromTextContent(value1String);
 		};
 
 		// roll dice until value is not equal to 1
 		do {
 			await rollDice();
-		} while (val1 === 1);
+		} while (value1 === 1);
 
 		// load the page again and check if the value matches with the first rolled value
 		await page.goto(url, { waitUntil: "domcontentloaded" });
 		await page.waitForSelector(".dice");
 		let element2 = await page.$(".dice");
-		const value2 = await page.evaluate((e2) => e2.textContent, element2);
-		// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-		const val2 = value2.codePointAt(0) - 0x267f;
+		const value2String = await page.evaluate((e2) => e2.textContent, element2);
+		const value2 = getDieValueFromTextContent(value2String);
 
-		expect(val1).toEqual(val2);
+		expect(value1).toEqual(value2);
 	});
 });
