@@ -25,14 +25,14 @@ describe("fluid-hello-world", () => {
 	});
 
 	it("Load the container", async () => {
-		await page.goto(url, { waitUntil: "domcontentloaded" });
+		await page.waitForFunction(() => window["fluidStarted"]);
 	});
 
 	/**
 	 * create a container, update the dice value locally, reload url, validate value persisted
 	 */
 	it("roll and load the dice", async () => {
-		await page.goto(url, { waitUntil: "domcontentloaded" });
+		await page.waitForFunction(() => window["fluidStarted"]);
 
 		// get the dice value after first roll
 		await page.waitForSelector(".dice");
@@ -57,7 +57,7 @@ describe("fluid-hello-world", () => {
 		} while (value1 === 1);
 
 		// load the page again and check if the value matches with the first rolled value
-		await page.goto(url, { waitUntil: "domcontentloaded" });
+		await page.waitForFunction(() => window["fluidStarted"]);
 		await page.waitForSelector(".dice");
 		let element2 = await page.$(".dice");
 		const value2String = await page.evaluate((e2) => e2.textContent, element2);
