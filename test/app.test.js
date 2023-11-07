@@ -5,6 +5,11 @@
 
 const config = require("../jest.config");
 
+function getDieValueFromTextContent(textContent) {
+	// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
+	return textContent.codePointAt(0) - 0x267f;
+}
+
 describe("fluid-hello-world", () => {
 	let url;
 	beforeAll(async () => {
@@ -23,11 +28,6 @@ describe("fluid-hello-world", () => {
 		await page.goto(url, { waitUntil: "domcontentloaded" });
 	});
 
-	function getDieValueFromTextContent(textContent) {
-		// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-		return value1String.codePointAt(0) - 0x267f;
-	}
-
 	/**
 	 * create a container, update the dice value locally, reload url, validate value persisted
 	 */
@@ -43,17 +43,17 @@ describe("fluid-hello-world", () => {
 		// Validate if the initial dice value is equal to 1
 		expect(initialValue).toEqual(1);
 
-		let value1;
 		const rollDice = async () => {
 			// Validate there is a button that can be clicked
 			await expect(page).toClick("button", { text: "Roll" });
-			const value1String = await page.evaluate((el) => el.textContent, element1);
-			value1 = getDieValueFromTextContent(value1String);
+			const valueString = await page.evaluate((el) => el.textContent, element1);
+			return getDieValueFromTextContent(valueString);
 		};
 
 		// roll dice until value is not equal to 1
+		let value1;
 		do {
-			await rollDice();
+			value1 = await rollDice();
 		} while (value1 === 1);
 
 		// load the page again and check if the value matches with the first rolled value
