@@ -6,17 +6,19 @@
 pr:
   - main
   - main-azure
+
 resources:
   repositories:
     - repository: m365Pipelines
       type: git
       name: 1ESPipelineTemplates/M365GPT
       ref: refs/tags/release
+
 extends:
   template: v1/M365.Official.PipelineTemplate.yml@m365Pipelines
   parameters:
     pool:
-      name: NewLarge-linux-1ES
+      name: Small-linux-1ES
       os: linux
     sdl:
       arrow:
