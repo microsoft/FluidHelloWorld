@@ -28,6 +28,7 @@ extends:
           serviceConnection: Arrow_FluidFramework_internal
         ${{ else }}:
           serviceConnection: Arrow_FluidFramework_public
+      # Skip tagging if Github PR coming from a fork
       settings:
         skipBuildTagsForGitHubPullRequests: "true"
       sourceAnalysisPool:
