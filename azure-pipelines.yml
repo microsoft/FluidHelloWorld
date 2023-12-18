@@ -30,7 +30,7 @@ extends:
           serviceConnection: Arrow_FluidFramework_public
       # Skip tagging if Github PR coming from a fork
       settings:
-        skipBuildTagsForGitHubPullRequests: "true"
+        skipBuildTagsForGitHubPullRequests: true
       sourceAnalysisPool:
         name: Azure-Pipelines-1ESPT-ExDShared
         image: windows-2022
