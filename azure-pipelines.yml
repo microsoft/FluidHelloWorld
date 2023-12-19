@@ -7,9 +7,6 @@ pr:
   - main
   - main-azure
 
-variables:
-  system.debug: 'true'
-
 resources:
   repositories:
     - repository: m365Pipelines
