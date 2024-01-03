@@ -26,7 +26,6 @@
 	},
 	"dependencies": {
 		"fluid-framework": "2.0.0-dev-rc.1.0.0.225277",
-		"@fluidframework/tree": "2.0.0-dev-rc.1.0.0.225277",
 		"@fluidframework/azure-client": "2.0.0-dev-rc.1.0.0.225277",
 		"@fluidframework/test-runtime-utils": "2.0.0-dev-rc.1.0.0.225277"
 	},
