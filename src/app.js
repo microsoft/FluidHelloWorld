@@ -3,30 +3,56 @@
  * Licensed under the MIT License.
  */
 
-import { SharedMap } from "fluid-framework";
-import { TinyliciousClient } from "@fluidframework/tinylicious-client";
+import { SharedTree, TreeConfiguration, SchemaFactory, Tree } from "fluid-framework";
+import { AzureClient } from "@fluidframework/azure-client";
+import { InsecureTokenProvider } from "@fluidframework/test-runtime-utils";
 
 export const diceValueKey = "dice-value-key";
+
 // Load container and render the app
 
-const client = new TinyliciousClient();
-const containerSchema = {
-	initialObjects: { diceMap: SharedMap },
+const localConnectionConfig = {
+	type: "local",
+	tokenProvider: new InsecureTokenProvider("VALUE_NOT_USED", { name: "test user" }),
+	endpoint: "http://localhost:7070",
 };
+
+const client = new AzureClient({ connection: localConnectionConfig });
+
+const containerSchema = {
+	initialObjects: { diceTree: SharedTree },
+};
+
+const sf = new SchemaFactory("fluidHelloWorldSample"); // The string passed to the Schema factory should be unique
+
+export class Dice extends sf.object("Dice", {
+	value: sf.number,
+}) {}
+
+export const treeConfiguration = new TreeConfiguration(
+	Dice,
+	() =>
+		new Dice({
+			value: 1,
+		}),
+);
 
 const root = document.getElementById("content");
 
 const createNewDice = async () => {
 	const { container } = await client.createContainer(containerSchema);
-	container.initialObjects.diceMap.set(diceValueKey, 1);
+	// Initialize the SharedTree Data Structure
+	const diceTree = container.initialObjects.diceTree.schematize(treeConfiguration);
 	const id = await container.attach();
-	renderDiceRoller(container.initialObjects.diceMap, root);
+	renderDiceRoller(diceTree, root);
 	return id;
 };
 
 const loadExistingDice = async (id) => {
 	const { container } = await client.getContainer(id, containerSchema);
-	renderDiceRoller(container.initialObjects.diceMap, root);
+	// Initialize the SharedTree Data Structure
+	const diceTree = container.initialObjects.diceTree.schematize(treeConfiguration);
+	renderDiceRoller(diceTree, root);
 };
 
 async function start() {
@@ -55,26 +81,27 @@ template.innerHTML = `
   </div>
 `;
 
-const renderDiceRoller = (diceMap, elem) => {
+const renderDiceRoller = (diceTree, elem) => {
 	elem.appendChild(template.content.cloneNode(true));
 
 	const rollButton = elem.querySelector(".roll");
 	const dice = elem.querySelector(".dice");
 
 	// Set the value at our dataKey with a random number between 1 and 6.
-	rollButton.onclick = () => diceMap.set(diceValueKey, Math.floor(Math.random() * 6) + 1);
+	rollButton.onclick = () => {
+		diceTree.root.value = (diceValueKey, Math.floor(Math.random() * 6) + 1);
+	};
 
 	// Get the current value of the shared data to update the view whenever it changes.
 	const updateDice = () => {
-		const diceValue = diceMap.get(diceValueKey);
 		// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-		dice.textContent = String.fromCodePoint(0x267f + diceValue);
-		dice.style.color = `hsl(${diceValue * 60}, 70%, 30%)`;
+		dice.textContent = String.fromCodePoint(0x267f + diceTree.root.value);
+		dice.style.color = `hsl(${diceTree.root.value * 60}, 70%, 30%)`;
 	};
 	updateDice();
 
 	// Use the changed event to trigger the rerender whenever the value changes.
-	diceMap.on("valueChanged", updateDice);
+	Tree.on(diceTree.root, "afterChange", () => updateDice());
 	// Setting "fluidStarted" is just for our test automation
 	window["fluidStarted"] = true;
 };
