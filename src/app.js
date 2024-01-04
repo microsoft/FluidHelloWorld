@@ -78,7 +78,7 @@ const renderDiceRoller = (dice, elem) => {
 	elem.appendChild(template.content.cloneNode(true));
 
 	const rollButton = elem.querySelector(".roll");
-	const diceElm = elem.querySelector(".dice");
+	const diceElem = elem.querySelector(".dice");
 
 	// Set the value at our dataKey with a random number between 1 and 6.
 	rollButton.onclick = () => {
@@ -89,8 +89,8 @@ const renderDiceRoller = (dice, elem) => {
 	const updateDice = () => {
 		const diceValue = dice.value;
 		// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-		diceElm.textContent = String.fromCodePoint(0x267f + diceValue);
-		diceElm.style.color = `hsl(${diceValue * 60}, 70%, 30%)`;
+		diceElem.textContent = String.fromCodePoint(0x267f + diceValue);
+		diceElem.style.color = `hsl(${diceValue * 60}, 70%, 30%)`;
 	};
 	updateDice();
 
