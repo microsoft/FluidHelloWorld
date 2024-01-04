@@ -6,9 +6,6 @@
 import { SharedTree, TreeConfiguration, SchemaFactory, Tree } from "fluid-framework";
 import { TinyliciousClient } from "@fluidframework/tinylicious-client";
 
-export const diceValueKey = "dice-value-key";
-// Load container and render the app
-
 const client = new TinyliciousClient();
 const containerSchema = {
 	initialObjects: { diceTree: SharedTree },
