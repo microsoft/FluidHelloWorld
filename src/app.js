@@ -92,7 +92,7 @@ const renderDiceRoller = (dice, elem) => {
 	updateDice();
 
 	// Use the changed event to trigger the rerender whenever the value changes.
-	Tree.on(dice, "afterChange", updateDice);
+	Tree.on(dice, "treeChanged", updateDice);
 	// Setting "fluidStarted" is just for our test automation
-	window["fluidStarted"] = true;
+	window.fluidStarted = true;
 };
