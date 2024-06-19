@@ -10,25 +10,25 @@
         "build:dev": "webpack --env clean",
         "start": "start-server-and-test start:server 7070 start:client",
         "start:client": "webpack serve",
-        "start:server": "npx @fluidframework/azure-local-service@latest"
+        "start:server": "npx @fluidframework/azure-local-service@~2.0.0-rc.4.0.6"
     },
     "dependencies": {
-        "@fluidframework/azure-client": "~1.0.1",
-        "@fluidframework/test-client-utils": "~1.0.1",
-        "fluid-framework": "~1.0.1"
+        "@fluidframework/azure-client": "~2.0.0-rc.4.0.6",
+        "@fluidframework/test-client-utils": "~1.4.0",
+        "fluid-framework": "~2.0.0-rc.4.0.6"
     },
     "devDependencies": {
         "@babel/core": "^7.15.5",
         "@babel/preset-env": "^7.15.0",
         "@babel/preset-react": "^7.14.5",
         "babel-loader": "^8.2.2",
-        "clean-webpack-plugin": "^3.0.0",
+        "clean-webpack-plugin": "^4.0.0",
         "concurrently": "^5.3.0",
-        "html-webpack-plugin": "^4.3.0",
-        "start-server-and-test": "^1.11.6",
-        "webpack": "^4.46.0",
-        "webpack-cli": "^4.2.0",
-        "webpack-dev-server": "^3.11.0"
+        "html-webpack-plugin": "^5.5.3",
+        "start-server-and-test": "^2.0.0",
+        "webpack": "^5.88.2",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^4.15.1"
     },
     "prettier": {
         "trailingComma": "es5",

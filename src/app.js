@@ -3,19 +3,18 @@
  * Licensed under the MIT License.
  */
 
-import { SharedMap } from "fluid-framework";
+import { SharedTree, TreeConfiguration, SchemaFactory, Tree } from "fluid-framework";
 import { AzureClient } from "@fluidframework/azure-client";
-import { InsecureTokenProvider } from "@fluidframework/test-client-utils"
+import { InsecureTokenProvider } from "@fluidframework/test-client-utils";
 
 // The config is set to run against a local service by default.
 const serviceConfig = {
     connection: {
         type: "local",
-        tokenProvider: new InsecureTokenProvider("" , { id: "userId" }),
+        tokenProvider: new InsecureTokenProvider("" , { id: "userId", name: "Test User" }),
         endpoint: "http://localhost:7070",
     }
 };
-
 
 /** 
  * To connect to an Azure Fluid Relay tenant comment out the local serviceConfig above and uncomment the serviceConfig below.
@@ -32,25 +31,42 @@ const serviceConfig = {
 
 const client = new AzureClient(serviceConfig);
 
-const diceValueKey = "dice-value-key";
-
-
 const containerSchema = {
-    initialObjects: { diceMap: SharedMap }
+    initialObjects: { diceTree: SharedTree }
 };
+
 const root = document.getElementById("content");
 
+// The string passed to the SchemaFactory should be unique
+const sf = new SchemaFactory("fluidHelloWorldSample");
+
+// Here we define an object we'll use in the schema, a Dice.
+class Dice extends sf.object("Dice", {
+	value: sf.number,
+}) {}
+
+// Here we define the tree schema, which has a single Dice object starting at 1.
+// We'll call schematize() on the SharedTree using this schema, which will give us a tree view to work with.
+const treeConfiguration = new TreeConfiguration(
+	Dice,
+	() =>
+		new Dice({
+			value: 1,
+		}),
+);
+
 const createNewDice = async () => {
-    const { container } = await client.createContainer(containerSchema);
-    container.initialObjects.diceMap.set(diceValueKey, 1);
-    const id = await container.attach();
-    renderDiceRoller(container.initialObjects.diceMap, root);
-    return id;
+	const { container } = await client.createContainer(containerSchema);
+	const dice = container.initialObjects.diceTree.schematize(treeConfiguration).root;
+	const id = await container.attach();
+	renderDiceRoller(dice, root);
+	return id;
 }
 
 const loadExistingDice = async (id) => {
-    const { container } = await client.getContainer(id, containerSchema);
-    renderDiceRoller(container.initialObjects.diceMap, root);
+	const { container } = await client.getContainer(id, containerSchema);
+	const dice = container.initialObjects.diceTree.schematize(treeConfiguration).root;
+	renderDiceRoller(dice, root);
 }
 
 async function start() {
@@ -80,24 +96,28 @@ template.innerHTML = `
   </div>
 `
 
-const renderDiceRoller = (diceMap, elem) => {
+const renderDiceRoller = (dice, elem) => {
     elem.appendChild(template.content.cloneNode(true));
 
     const rollButton = elem.querySelector(".roll");
-    const dice = elem.querySelector(".dice");
+    const diceElem = elem.querySelector(".dice");
 
     // Set the value at our dataKey with a random number between 1 and 6.
-    rollButton.onclick = () => diceMap.set(diceValueKey, Math.floor(Math.random() * 6) + 1);
+    rollButton.onclick = () => {
+        dice.value = Math.floor(Math.random() * 6) + 1
+    };
 
     // Get the current value of the shared data to update the view whenever it changes.
     const updateDice = () => {
-        const diceValue = diceMap.get(diceValueKey);
+        const diceValue = dice.value;
         // Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-        dice.textContent = String.fromCodePoint(0x267f + diceValue);
-        dice.style.color = `hsl(${diceValue * 60}, 70%, 30%)`;
+        diceElem.textContent = String.fromCodePoint(0x267f + diceValue);
+        diceElem.style.color = `hsl(${diceValue * 60}, 70%, 30%)`;
     };
     updateDice();
 
     // Use the changed event to trigger the rerender whenever the value changes.
-    diceMap.on("valueChanged", updateDice);
+	Tree.on(dice, "treeChanged", updateDice);
+    // Setting "fluidStarted" is just for our test automation
+	window.fluidStarted = true;
 }
