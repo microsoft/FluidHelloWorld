@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 
-import { SharedTree, TreeConfiguration, SchemaFactory, Tree } from "fluid-framework";
+import { SharedTree, TreeViewConfiguration, SchemaFactory, Tree } from "fluid-framework";
 import { TinyliciousClient } from "@fluidframework/tinylicious-client";
 
 const client = new TinyliciousClient();
@@ -22,27 +22,23 @@ class Dice extends sf.object("Dice", {
 }) {}
 
 // Here we define the tree schema, which has a single Dice object starting at 1.
-// We'll call schematize() on the SharedTree using this schema, which will give us a tree view to work with.
-const treeConfiguration = new TreeConfiguration(
-	Dice,
-	() =>
-		new Dice({
-			value: 1,
-		}),
-);
+// We'll call viewWith() on the SharedTree using this schema, which will give us a tree view to work with.
+// If the tree is new, we'll initialize it with a Dice object with a value of 1.
+const treeViewConfiguration = new TreeViewConfiguration({ schema: Dice });
 
 const createNewDice = async () => {
-	const { container } = await client.createContainer(containerSchema);
-	const dice = container.initialObjects.diceTree.schematize(treeConfiguration).root;
+	const { container } = await client.createContainer(containerSchema, "2");
+	const dice = container.initialObjects.diceTree.viewWith(treeViewConfiguration);
+	dice.initialize(new Dice({ value: 1 }));
 	const id = await container.attach();
-	renderDiceRoller(dice, root);
+	renderDiceRoller(dice.root, root);
 	return id;
 };
 
 const loadExistingDice = async (id) => {
-	const { container } = await client.getContainer(id, containerSchema);
-	const dice = container.initialObjects.diceTree.schematize(treeConfiguration).root;
-	renderDiceRoller(dice, root);
+	const { container } = await client.getContainer(id, containerSchema, "2");
+	const dice = container.initialObjects.diceTree.viewWith(treeViewConfiguration);
+	renderDiceRoller(dice.root, root);
 };
 
 async function start() {
@@ -92,7 +88,7 @@ const renderDiceRoller = (dice, elem) => {
 	updateDice();
 
 	// Use the changed event to trigger the rerender whenever the value changes.
-	Tree.on(dice, "treeChanged", updateDice);
+	Tree.on(dice, "nodeChanged", updateDice);
 	// Setting "fluidStarted" is just for our test automation
 	window.fluidStarted = true;
 };
