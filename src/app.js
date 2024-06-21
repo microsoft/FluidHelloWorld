@@ -23,6 +23,8 @@ class Dice extends sf.object("Dice", {
 
 // Here we define the tree schema, which has a single Dice object starting at 1.
 // We'll call viewWith() on the SharedTree using this schema, which will give us a tree view to work with.
+// The createContainer call includes the parameter "2" which indicates the version of FluidFramework that
+// the data in the container is compatible with. For this example, we are using version "2".
 // If the tree is new, we'll initialize it with a Dice object with a value of 1.
 const treeViewConfiguration = new TreeViewConfiguration({ schema: Dice });
 
