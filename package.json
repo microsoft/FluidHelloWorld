@@ -10,12 +10,12 @@
         "build:dev": "webpack --env clean",
         "start": "start-server-and-test start:server 7070 start:client",
         "start:client": "webpack serve",
-        "start:server": "npx @fluidframework/azure-local-service@rc"
+        "start:server": "npx @fluidframework/azure-local-service@latest"
     },
     "dependencies": {
-        "@fluidframework/azure-client": "~2.0.0-rc.4.0.6",
+        "@fluidframework/azure-client": "~2.0.0",
         "@fluidframework/test-client-utils": "~1.4.0",
-        "fluid-framework": "~2.0.0-rc.4.0.6"
+        "fluid-framework": "~2.0.0"
     },
     "devDependencies": {
         "@babel/core": "^7.15.5",

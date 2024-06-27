@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 
-import { SharedTree, TreeConfiguration, SchemaFactory, Tree } from "fluid-framework";
+import { SharedTree, TreeViewConfiguration, SchemaFactory, Tree } from "fluid-framework";
 import { AzureClient } from "@fluidframework/azure-client";
 import { InsecureTokenProvider } from "@fluidframework/test-client-utils";
 
@@ -46,36 +46,34 @@ class Dice extends sf.object("Dice", {
 }) {}
 
 // Here we define the tree schema, which has a single Dice object starting at 1.
-// We'll call schematize() on the SharedTree using this schema, which will give us a tree view to work with.
-const treeConfiguration = new TreeConfiguration(
-	Dice,
-	() =>
-		new Dice({
-			value: 1,
-		}),
-);
+// We'll call viewWith() on the SharedTree using this schema, which will give us a tree view to work with.
+// The createContainer call includes the parameter "2" which indicates the version of FluidFramework that
+// the data in the container is compatible with. For this example, we are using version "2".
+// If the tree is new, we'll initialize it with a Dice object with a value of 1.
+const treeViewConfiguration = new TreeViewConfiguration({ schema: Dice });
 
 const createNewDice = async () => {
-	const { container } = await client.createContainer(containerSchema);
-	const dice = container.initialObjects.diceTree.schematize(treeConfiguration).root;
+	const { container } = await client.createContainer(containerSchema, "2");
+	const dice = container.initialObjects.diceTree.viewWith(treeViewConfiguration);
+	dice.initialize(new Dice({ value: 1 }));
 	const id = await container.attach();
-	renderDiceRoller(dice, root);
+	renderDiceRoller(dice.root, root);
 	return id;
-}
+};
 
 const loadExistingDice = async (id) => {
-	const { container } = await client.getContainer(id, containerSchema);
-	const dice = container.initialObjects.diceTree.schematize(treeConfiguration).root;
-	renderDiceRoller(dice, root);
-}
+	const { container } = await client.getContainer(id, containerSchema, "2");
+	const dice = container.initialObjects.diceTree.viewWith(treeViewConfiguration);
+	renderDiceRoller(dice.root, root);
+};
 
 async function start() {
-    if (location.hash) {
-        await loadExistingDice(location.hash.substring(1))
-    } else {
-        const id = await createNewDice();
-        location.hash = id;
-    }
+	if (location.hash) {
+		await loadExistingDice(location.hash.substring(1));
+	} else {
+		const id = await createNewDice();
+		location.hash = id;
+	}
 }
 
 start().catch((error) => console.error(error));
