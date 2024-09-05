@@ -6,6 +6,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    allow:
-      - dependency-name: "fluid-framework"
-      - dependency-name: "@fluidframework/*"
+    groups:
+      fluid-framework-dependencies:
+        patterns:
+          - "@fluidframework"
+          - "fluid-framework"
