@@ -3,7 +3,7 @@ updates:
   # Enable version updates for npm
   - package-ecosystem: "npm"
     reviewers: 
-      - "microsoft/team-json"
+      - "microsoft/team-jason"
       - "microsoft/team-rohan"
     schedule:
       interval: "daily"
