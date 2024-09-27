@@ -5,9 +5,6 @@ updates:
     reviewers: 
       - "microsoft/team-json"
       - "microsoft/team-rohan"
-    # Look for `package.json` and `package-lock.json` files in these directories
-    directories:
-      - "/"
     schedule:
       interval: "daily"
     groups:
