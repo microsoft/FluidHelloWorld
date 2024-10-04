@@ -25,8 +25,8 @@
 		"test:jest": "jest"
 	},
 	"dependencies": {
-		"@fluidframework/tinylicious-client": "^2.3.0",
-		"fluid-framework": "^2.3.0"
+		"@fluidframework/tinylicious-client": "^2.3.1",
+		"fluid-framework": "^2.3.1"
 	},
 	"devDependencies": {
 		"@fluidframework/build-common": "^2.0.3",
@@ -35,10 +35,10 @@
 		"jest-junit": "^16.0.0",
 		"jest-puppeteer": "^10.1.1",
 		"prettier": "^3.0.3",
-		"puppeteer": "^23.3.0",
-		"start-server-and-test": "^2.0.7",
+		"puppeteer": "^23.5.0",
+		"start-server-and-test": "^2.0.8",
 		"tinylicious": "^5.0.0",
-		"webpack": "^5.94.0",
+		"webpack": "^5.95.0",
 		"webpack-cli": "^5.1.4",
 		"webpack-dev-server": "^5.1.0"
 	},
