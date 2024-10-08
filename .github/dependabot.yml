@@ -14,7 +14,3 @@ updates:
         patterns:
           - "@fluidframework*"
           - "fluid-framework"
-      # To reduce noise, let's bundle all the eslint-related dependencies into a single PR.
-      eslint:
-        patterns:
-          - "*eslint*"
