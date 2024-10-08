@@ -7,8 +7,9 @@ updates:
     # Look for `package.json` and `lock` files in the `root` directory
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
+      # We want to update all Fluid dependencies simultaneously to keep them in sync.
       fluid-framework-dependencies:
         patterns:
           - "@fluidframework*"
