@@ -85,6 +85,7 @@ const renderDiceRoller = (dice, elem) => {
 	const updateDice = () => {
 		const diceValue = dice.value;
 		diceElem.src = `/images/dice-${diceValue}.png`;
+		diceElem.alt = diceValue.toString();
 	};
 	updateDice();
 

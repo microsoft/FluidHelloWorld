@@ -28,37 +28,41 @@ describe("fluid-hello-world", () => {
 	 * create a container, update the dice value locally, reload url, validate value persisted
 	 */
 	it("roll and load the dice", async () => {
-		// get the dice element
-		const diceElement = page.locator(".dice");
-		let diceValue = await diceElement.map((Text) => Text.textContent.codePointAt(0)).wait();
-		const val0 = diceValue - 0x267f;
-		// Validate if the initial dice value is equal to 1
-		expect(val0).toEqual(1);
+		// The dice value is stored as alt text on the image element.
+		// Parse and return that value as a number.
+		const getDiceValue = async (diceElement) => {
+			const alt = await diceElement.map((element) => element.alt).wait();
+			return Number.parseInt(alt);
+		};
 
-		let val1;
+		// Roll the specified dice element (click the roll button)
 		const rollDice = async () => {
 			// get the roll button element
-			const rollButton = page.locator("button", { text: "Roll" });
+			const rollButton = page.locator(".rollButton");
 
 			// click the roll button
 			await rollButton.click();
-			diceValue = await diceElement.map((Text) => Text.textContent.codePointAt(0)).wait();
-			// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-			val1 = diceValue - 0x267f;
 		};
 
-		// roll dice until value has changed in a way we can easily confirm (i.e. when it is no longer equal to 1)
+		// Get the dice element
+		const diceElement1 = page.locator(".dice");
+
+		let dice1Value = await getDiceValue(diceElement1);
+
+		// Validate if the initial dice value is equal to 1
+		expect(dice1Value).toEqual(1);
+
+		// Roll dice until value has changed in a way we can easily confirm (i.e. when it is no longer equal to 1)
 		do {
 			await rollDice();
-		} while (val1 === 1);
+			dice1Value = await getDiceValue(diceElement1);
+		} while (dice1Value === 1);
 
 		// load the page again and check if the value matches with the first rolled value
 		await page.goto(url, { waitUntil: "domcontentloaded" });
 		const diceElement2 = page.locator(".dice");
-		const diceValue2 = await diceElement2.map((Text) => Text.textContent.codePointAt(0)).wait();
-		// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-		const val2 = diceValue2 - 0x267f;
+		const diceValue2 = await getDiceValue(diceElement2);
 
-		expect(val1).toEqual(val2);
+		expect(dice1Value).toEqual(diceValue2);
 	});
 });
