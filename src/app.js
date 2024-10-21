@@ -59,12 +59,12 @@ const template = document.createElement("template");
 
 template.innerHTML = `
   <style>
-    .wrapper { text-align: center }
-    .dice { font-size: 200px }
+    .wrapper { display: flex; flex-direction: column; align-items: center; }
+    .dice { width: 200px; }
     .roll { font-size: 50px;}
   </style>
   <div class="wrapper">
-    <img class="dice" />
+    <img class="dice"/>
     <button class="roll"> Roll </button>
   </div>
 `;
