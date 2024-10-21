@@ -61,19 +61,19 @@ template.innerHTML = `
   <style>
     .wrapper { display: flex; flex-direction: column; align-items: center; }
     .dice { width: 200px; }
-    .button { width: 118px; height: 48px; background: #0078D4; border-style: none; border-radius: 8px; }
-    .roll { font-size: 20px; color: #FFFFFF; }
+    .rollButton { width: 118px; height: 48px; background: #0078D4; border-style: none; border-radius: 8px; }
+    .rollText { font-size: 20px; color: #FFFFFF; }
   </style>
   <div class="wrapper">
     <img class="dice"/>
-    <button class="button"><span class="roll">Roll</span></button>
+    <button class="rollButton"><span class="rollText">Roll</span></button>
   </div>
 `;
 
 const renderDiceRoller = (dice, elem) => {
 	elem.appendChild(template.content.cloneNode(true));
 
-	const rollButton = elem.querySelector(".roll");
+	const rollButton = elem.querySelector(".rollButton");
 	const diceElem = elem.querySelector(".dice");
 
 	// Set the value at our dataKey with a random number between 1 and 6.
