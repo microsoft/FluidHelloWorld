@@ -3,11 +3,20 @@
  * Licensed under the MIT License.
  */
 
+const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = (env) => {
 	const htmlTemplate = "./src/index.html";
-	const plugins = [new HtmlWebpackPlugin({ template: htmlTemplate })];
+	const plugins = [
+		new HtmlWebpackPlugin({ template: htmlTemplate }),
+		new CopyPlugin({
+			patterns: [
+				// Copy assets from `public`
+				{ from: ".", to: ".", context: "public" },
+			],
+		}),
+	];
 
 	const mode = env && env.prod ? "production" : "development";
 

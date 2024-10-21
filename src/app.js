@@ -64,7 +64,7 @@ template.innerHTML = `
     .roll { font-size: 50px;}
   </style>
   <div class="wrapper">
-    <div class="dice"></div>
+    <img class="dice" />
     <button class="roll"> Roll </button>
   </div>
 `;
@@ -83,9 +83,7 @@ const renderDiceRoller = (dice, elem) => {
 	// Get the current value of the shared data to update the view whenever it changes.
 	const updateDice = () => {
 		const diceValue = dice.value;
-		// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-		diceElem.textContent = String.fromCodePoint(0x267f + diceValue);
-		diceElem.style.color = `hsl(${diceValue * 60}, 70%, 30%)`;
+		diceElem.src = `/images/dice-${diceValue}.png`;
 	};
 	updateDice();
 
