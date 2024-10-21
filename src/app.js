@@ -61,11 +61,12 @@ template.innerHTML = `
   <style>
     .wrapper { display: flex; flex-direction: column; align-items: center; }
     .dice { width: 200px; }
-    .roll { font-size: 50px;}
+    .button { width: 118px; height: 48px; background: #0078D4; border-style: none; border-radius: 8px; }
+	.roll { font-size: 20px; color: #FFFFFF; }
   </style>
   <div class="wrapper">
     <img class="dice"/>
-    <button class="roll"> Roll </button>
+    <button class="button"><span class="roll">Roll</span></button>
   </div>
 `;
 
