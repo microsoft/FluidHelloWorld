@@ -59,20 +59,21 @@ const template = document.createElement("template");
 
 template.innerHTML = `
   <style>
-    .wrapper { text-align: center }
-    .dice { font-size: 200px }
-    .roll { font-size: 50px;}
+    .wrapper { display: flex; flex-direction: column; align-items: center; }
+    .dice { width: 200px; }
+    .rollButton { width: 118px; height: 48px; background: #0078D4; border-style: none; border-radius: 8px; }
+    .rollText { font-size: 20px; color: #FFFFFF; }
   </style>
   <div class="wrapper">
-    <div class="dice"></div>
-    <button class="roll"> Roll </button>
+    <img class="dice"/>
+    <button class="rollButton"><span class="rollText">Roll</span></button>
   </div>
 `;
 
 const renderDiceRoller = (dice, elem) => {
 	elem.appendChild(template.content.cloneNode(true));
 
-	const rollButton = elem.querySelector(".roll");
+	const rollButton = elem.querySelector(".rollButton");
 	const diceElem = elem.querySelector(".dice");
 
 	// Set the value at our dataKey with a random number between 1 and 6.
@@ -83,9 +84,8 @@ const renderDiceRoller = (dice, elem) => {
 	// Get the current value of the shared data to update the view whenever it changes.
 	const updateDice = () => {
 		const diceValue = dice.value;
-		// Unicode 0x2680-0x2685 are the sides of a dice (⚀⚁⚂⚃⚄⚅)
-		diceElem.textContent = String.fromCodePoint(0x267f + diceValue);
-		diceElem.style.color = `hsl(${diceValue * 60}, 70%, 30%)`;
+		diceElem.src = `/images/dice-${diceValue}.png`;
+		diceElem.alt = diceValue.toString();
 	};
 	updateDice();
 
