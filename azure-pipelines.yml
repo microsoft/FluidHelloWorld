@@ -15,7 +15,7 @@ resources:
       ref: refs/tags/release
 
 extends:
-  template: v1/M365.Unfficial.PipelineTemplate.yml@m365Pipelines
+  template: v1/M365.Unofficial.PipelineTemplate.yml@m365Pipelines
   parameters:
     pool:
       name: Small-1ES
