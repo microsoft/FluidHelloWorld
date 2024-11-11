@@ -14,3 +14,7 @@ updates:
         patterns:
           - "@fluidframework*"
           - "fluid-framework"
+      # To reduce noise, we bundle related dependencies into a single PR.
+      jest:
+        patterns:
+          - "jest*"
