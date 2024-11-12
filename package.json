@@ -35,7 +35,7 @@
 		"html-webpack-plugin": "^5.6.3",
 		"jest": "^29.0.0",
 		"jest-junit": "^16.0.0",
-		"jest-puppeteer": "^10.1.2",
+		"jest-puppeteer": "^10.1.4",
 		"prettier": "^3.0.3",
 		"puppeteer": "^23.7.1",
 		"start-server-and-test": "^2.0.8",
