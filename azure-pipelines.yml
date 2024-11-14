@@ -18,7 +18,7 @@ extends:
   template: v1/M365.Unofficial.PipelineTemplate.yml@m365Pipelines
   parameters:
     pool:
-      name: Small-1ES
+      name: Small-eastus2
       os: linux
     sdl:
       sourceAnalysisPool:
