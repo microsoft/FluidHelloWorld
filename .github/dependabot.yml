@@ -15,6 +15,7 @@ updates:
     groups:
       # We want to update all Fluid dependencies simultaneously to keep them in sync.
       fluid-framework-dependencies:
+        # To reduce noise, we bundle related dependencies into a single PR.
         patterns:
           - "@fluidframework*"
           - "fluid-framework"
