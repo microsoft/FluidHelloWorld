@@ -4,6 +4,7 @@ updates:
   - package-ecosystem: "npm"
     reviewers:
       - "microsoft/fluid-cr-devx"
+    # Look for `package.json` and `lock` files in the `root` directory
     directory: "/"
     schedule:
       interval: "daily"
@@ -12,6 +13,7 @@ updates:
       - dependency-name: "fluid-framework"
       - dependency-name: "tinylicious"
     groups:
+      # We want to update all Fluid dependencies simultaneously to keep them in sync.
       fluid-framework-dependencies:
         patterns:
           - "@fluidframework*"
