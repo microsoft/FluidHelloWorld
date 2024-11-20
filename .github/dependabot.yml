@@ -1,20 +1,41 @@
 version: 2
 updates:
-  # Enable version updates for npm
+  # Daily updates for Fluid Framework dependencies
   - package-ecosystem: "npm"
     reviewers:
       - "microsoft/fluid-cr-devx"
-    # Look for `package.json` and `lock` files in the `root` directory
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+    allow:
+      - dependency-name: "@fluidframework*"
+      - dependency-name: "fluid-framework"
+      - dependency-name: "tinylicious"
     groups:
-      # We want to update all Fluid dependencies simultaneously to keep them in sync.
       fluid-framework-dependencies:
         patterns:
           - "@fluidframework*"
           - "fluid-framework"
-      # To reduce noise, we bundle related dependencies into a single PR.
+          - "tinylicious"
+    target-branch: "main"
+
+  # Weekly updates for non-Fluid dependencies
+  - package-ecosystem: "npm"
+    reviewers:
+      - "microsoft/fluid-cr-devx"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    allow:
+      - dependency-name: "*"
+    groups:
       jest:
         patterns:
           - "jest*"
+      webpack:
+        patterns:
+          - "webpack*"
+    ignore:
+      - dependency-name: "@fluidframework*"
+      - dependency-name: "fluid-framework"
+      - dependency-name: "tinylicious"
