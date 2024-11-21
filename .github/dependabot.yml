@@ -29,8 +29,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    allow:
-      - dependency-name: "*"
     groups:
       jest:
         patterns:
