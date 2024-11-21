@@ -37,7 +37,7 @@
 		"jest-junit": "^16.0.0",
 		"jest-puppeteer": "^10.1.4",
 		"prettier": "^3.0.3",
-		"puppeteer": "^23.7.1",
+		"puppeteer": "^23.9.0",
 		"start-server-and-test": "^2.0.8",
 		"tinylicious": "^5.0.0",
 		"webpack": "^5.95.0",
