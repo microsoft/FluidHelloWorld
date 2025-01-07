@@ -3,6 +3,10 @@
 
 # FluidHelloWorld build for CI
 
+trigger:
+  - main
+  - main-azure
+
 pr:
   - main
   - main-azure
