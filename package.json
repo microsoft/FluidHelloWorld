@@ -26,8 +26,8 @@
 		"test:jest": "jest"
 	},
 	"dependencies": {
-		"@fluidframework/tinylicious-client": "^2.31.1",
-		"fluid-framework": "^2.31.1"
+		"@fluidframework/tinylicious-client": "^2.32.0",
+		"fluid-framework": "^2.32.0"
 	},
 	"devDependencies": {
 		"@fluidframework/build-common": "^2.0.3",
