@@ -2,8 +2,6 @@ version: 2
 updates:
   # Daily updates for Fluid Framework dependencies
   - package-ecosystem: "npm"
-    reviewers:
-      - "microsoft/fluid-cr-devx"
     # Look for `package.json` and `lock` files in the `root` directory
     directory: "/"
     schedule:
@@ -24,8 +22,6 @@ updates:
 
   # Weekly updates for non-Fluid dependencies
   - package-ecosystem: "npm"
-    reviewers:
-      - "microsoft/fluid-cr-devx"
     directory: "/"
     schedule:
       interval: "weekly"
