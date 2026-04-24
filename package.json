@@ -7,7 +7,7 @@
 	"license": "MIT",
 	"author": "Microsoft",
 	"engines": {
-		"node": ">=20.0.0"
+		"node": ">=22"
 	},
 	"scripts": {
 		"build": "webpack --env prod",
