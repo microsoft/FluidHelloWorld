@@ -5,7 +5,7 @@ walkthrough of this example and how it works, check out the [tutorial documentat
 
 ## Requirements
 
-[Node.js](https://nodejs.dev/en/download) version 18+
+[Node.js](https://nodejs.dev/en/download) version 22+
 
 ## Getting Started
 
