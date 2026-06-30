@@ -41,8 +41,8 @@
 		"start-server-and-test": "^3.0.2",
 		"tinylicious": "^7.0.1",
 		"webpack": "^5.95.0",
-		"webpack-cli": "^7.0.2",
-		"webpack-dev-server": "^5.2.3"
+		"webpack-cli": "^7.1.0",
+		"webpack-dev-server": "^5.2.5"
 	},
 	"jest-junit": {
 		"outputDirectory": "nyc",
