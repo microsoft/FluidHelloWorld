@@ -53,6 +53,8 @@ extends:
                 inputs:
                   command: "custom"
                   customCommand: "ci"
+                env:
+                  PUPPETEER_SKIP_DOWNLOAD: "true"
               - task: CmdLine@2
                 displayName: Build
                 inputs:

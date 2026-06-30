@@ -5,6 +5,7 @@
 
 module.exports = {
 	preset: "jest-puppeteer",
+	testEnvironment: "./test/jest-puppeteer-environment.js",
 	globals: {
 		PATH: `http://localhost:7575`,
 	},
