@@ -50,9 +50,10 @@ extends:
                   version: 22.x
               - task: CmdLine@2
                 displayName: Configure npm registry
-                script: |
-                  echo "registry=https://pkgs.dev.azure.com/fluidframework/public/_packaging/publicPackages/npm/registry/" > .npmrc
-                  echo "replace-registry-host=always" >> .npmrc
+                inputs:
+                  script: |
+                    echo "registry=https://pkgs.dev.azure.com/fluidframework/public/_packaging/publicPackages/npm/registry/" > .npmrc
+                    echo "replace-registry-host=always" >> .npmrc
               - task: Npm@1
                 displayName: Install
                 inputs:
