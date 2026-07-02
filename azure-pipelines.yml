@@ -20,6 +20,7 @@ resources:
 
 variables:
   - group: ado-feeds
+  
 extends:
   template: v1/M365.Unofficial.PipelineTemplate.yml@m365Pipelines
   parameters:
