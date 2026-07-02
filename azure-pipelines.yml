@@ -18,6 +18,8 @@ resources:
       name: 1ESPipelineTemplates/M365GPT
       ref: refs/tags/release
 
+variables:
+  - group: ado-feeds
 extends:
   template: v1/M365.Unofficial.PipelineTemplate.yml@m365Pipelines
   parameters:
@@ -52,7 +54,7 @@ extends:
                 displayName: Configure npm registry
                 inputs:
                   script: |
-                    echo "registry=https://pkgs.dev.azure.com/fluidframework/public/_packaging/publicPackages/npm/registry/" > .npmrc
+                    echo "registry=$(ado-feeds-primary-registry)" > .npmrc
                     echo "replace-registry-host=always" >> .npmrc
               - task: Npm@1
                 displayName: Install
