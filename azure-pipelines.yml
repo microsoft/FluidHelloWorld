@@ -32,7 +32,6 @@ extends:
     # Skip tagging if Github PR coming from a fork
     settings:
       skipBuildTagsForGitHubPullRequests: true
-      networkIsolationPolicy: Permissive,Npm
     customBuildTags:
       - ES365AIMigrationTooling
     stages:
@@ -49,6 +48,11 @@ extends:
                 displayName: Use Node 22.x
                 inputs:
                   version: 22.x
+              - task: CmdLine@2
+                displayName: Configure npm registry
+                script: |
+                  echo "registry=https://pkgs.dev.azure.com/fluidframework/public/_packaging/publicPackages/npm/registry/" > .npmrc
+                  echo "replace-registry-host=always" >> .npmrc
               - task: Npm@1
                 displayName: Install
                 inputs:
