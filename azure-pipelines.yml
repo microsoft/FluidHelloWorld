@@ -32,6 +32,7 @@ extends:
     # Skip tagging if Github PR coming from a fork
     settings:
       skipBuildTagsForGitHubPullRequests: true
+      networkIsolationPolicy: Permissive,Npm
     customBuildTags:
       - ES365AIMigrationTooling
     stages:
