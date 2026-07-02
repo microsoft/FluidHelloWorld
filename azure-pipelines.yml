@@ -18,6 +18,9 @@ resources:
       name: 1ESPipelineTemplates/M365GPT
       ref: refs/tags/release
 
+variables:
+  - group: ado-feeds
+
 extends:
   template: v1/M365.Unofficial.PipelineTemplate.yml@m365Pipelines
   parameters:
@@ -48,6 +51,12 @@ extends:
                 displayName: Use Node 22.x
                 inputs:
                   version: 22.x
+              - task: CmdLine@2
+                displayName: Configure npm registry
+                inputs:
+                  script: |
+                    echo "registry=$(ado-feeds-primary-registry)" > .npmrc
+                    echo "replace-registry-host=always" >> .npmrc
               - task: Npm@1
                 displayName: Install
                 inputs:
