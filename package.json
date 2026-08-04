@@ -41,7 +41,7 @@
 		"start-server-and-test": "^3.0.11",
 		"tinylicious": "^7.0.1",
 		"webpack": "^5.95.0",
-		"webpack-cli": "^7.2.1",
+		"webpack-cli": "^7.2.2",
 		"webpack-dev-server": "^6.0.0"
 	},
 	"jest-junit": {
