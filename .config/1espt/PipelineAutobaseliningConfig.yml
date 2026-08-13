@@ -8,10 +8,10 @@ pipelines:
         credscan:
           lastModifiedDate: 2024-11-04
         eslint:
-          lastModifiedDate: 2024-11-04
+          lastModifiedDate: 2026-08-13
         bandit:
           lastModifiedDate: 2024-11-04
         psscriptanalyzer:
           lastModifiedDate: 2024-11-04
         armory:
-          lastModifiedDate: 2024-11-04
+          lastModifiedDate: 2026-08-13
