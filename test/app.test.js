@@ -22,6 +22,12 @@ describe("fluid-hello-world", () => {
 
 	it("Load the container", async () => {
 		await page.goto(url, { waitUntil: "domcontentloaded" });
+		await page.waitForFunction(() => window["fluidStarted"]);
+		const diceValue = await page
+			.locator(".dice")
+			.map((element) => element.alt)
+			.wait();
+		expect(diceValue).toEqual("1");
 	});
 
 	/**
