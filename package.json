@@ -26,17 +26,17 @@
 		"test:jest": "jest"
 	},
 	"dependencies": {
-		"@fluidframework/tinylicious-client": "^3.1.0",
-		"fluid-framework": "^3.1.0"
+		"@fluidframework/tinylicious-client": "^3.2.0",
+		"fluid-framework": "^3.2.0"
 	},
 	"devDependencies": {
 		"@fluidframework/build-common": "^2.0.3",
 		"copy-webpack-plugin": "^14.0.0",
 		"html-webpack-plugin": "^5.6.8",
-		"jest": "^30.5.1",
+		"jest": "^30.5.2",
 		"jest-junit": "^17.0.0",
 		"jest-puppeteer": "^11.0.0",
-		"prettier": "^3.9.7",
+		"prettier": "^3.9.9",
 		"puppeteer": "^25.11.0",
 		"start-server-and-test": "^3.0.12",
 		"tinylicious": "^7.0.1",
